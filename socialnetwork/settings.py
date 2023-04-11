@@ -8,6 +8,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'social.manjurulhoque.com', '127.0.0.1', 'social-dev.dao.vc']
 
+CSRF_TRUSTED_ORIGINS = ['https://social-dev.dao.vc']
+
+
 INSTALLED_APPS = [
     'channels',
     'django.contrib.admin',
