@@ -1,0 +1,40 @@
+from django.contrib.auth.base_user import BaseUserManager
+from django.utils.translation import gettext_lazy as _
+
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
+from core.managers import UserManager
+
+
+class User(AbstractUser):
+    class UserProfile(models.TextChoices):
+        STARTUP = "startup", "Стартап"
+        INVESTOR = "investor", "Инвестор"
+        PROFESSIONAL = "professional", "Профессионал"
+
+    email = models.EmailField(_("email address"), blank=True, unique=True)
+    phone = PhoneNumberField(
+        max_length=128, verbose_name="Номер телефона", blank=True, null=True
+    )
+    code = models.CharField(max_length=7, null=True, blank=True)
+    # Get rid of all references to the username field
+    EMAIL_FIELD = "email"
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+    username = models.CharField(
+        _("username"),
+        max_length=150,
+        help_text=_(
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        ),
+    )
+    objects = UserManager()
+    profile = models.CharField("Профиль", choices=UserProfile.choices, max_length=12)
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+
+    def __str__(self):
+        return self.email

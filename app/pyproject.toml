@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "dao-back"
+version = "0.1.0"
+description = ""
+authors = ["alexeygalt <alexeygalt@gmail.com>"]
+readme = "README.md"
+#packages = [{include = "dao_back"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2"
+djangorestframework = "^3.14.0"
+drf-spectacular = "^0.26.2"
+pre-commit = "^3.2.2"
+django-environ = "^0.10.0"
+django-phonenumber-field = "^7.0.2"
+django-versatileimagefield = "^3.0"
+drf-flex-fields = "^1.0.2"
+phonenumbers = "^8.13.10"
+psycopg2-binary = "^2.9.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
