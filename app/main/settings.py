@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "versatileimagefield",
+    "corsheaders",
     # Локальные модули
     "core",
     "profiles",
@@ -52,11 +53,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -186,7 +189,6 @@ AUTH_PASSWORD_VALIDATORS = [
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     "product_headshot": [
         ("full_size", "url"),
@@ -195,3 +197,5 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ("small_square_crop", "crop__50x50"),
     ]
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
