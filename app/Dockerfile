@@ -6,9 +6,10 @@ WORKDIR /usr/src/app
 
 RUN pip install poetry
 
-COPY poetry.lock pyproject.toml /code/
+COPY poetry.lock .
+COPY pyproject.toml .
 RUN poetry install
 
 COPY . ./
 
-ENTRYPOINT python -u ./manage.py runserver 0.0.0.0:8000
+ENTRYPOINT poetry run python -u manage.py runserver 0.0.0.0:8000

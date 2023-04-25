@@ -1,0 +1,20 @@
+name: MLP CLAIM MASTER
+
+on:
+  push:
+    branches:
+      - 'develop'
+
+jobs:
+  ci:
+    runs-on: [self-hosted]
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Copy .env
+        run: cp /home/ubuntu/envs/dev.env .env
+        working-directory: app/
+        
+      - name: Build compose
+        run: docker compose up --build -d
+        working-directory: app/
