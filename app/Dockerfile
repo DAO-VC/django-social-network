@@ -2,14 +2,13 @@ FROM python:3.11
 
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /code
-
-COPY poetry.lock pyproject.toml /code/
+WORKDIR /usr/src/app
 
 RUN pip install poetry
-RUN poetry config virtualenvs.create false
+
+COPY poetry.lock pyproject.toml /code/
 RUN poetry install
 
-COPY . .
-CMD cd app
-CMD python ./manage.py runserver 0.0.0.0:8000
+COPY . ./
+
+ENTRYPOINT python -u ./manage.py runserver 0.0.0.0:8000

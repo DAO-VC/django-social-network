@@ -10,8 +10,6 @@ services:
         condition: service_completed_successfully
       postgres:
         condition: service_healthy
-    volumes:
-      - ./.env:/app/.env
 
   migration:
     build:
@@ -22,11 +20,9 @@ services:
       postgres:
         condition: service_healthy
     command: python manage.py migrate
-    volumes:
-      - ./.env:/app/.env
 
   postgres:
-    image: postgres:latest
+    image: postgres:15
     env_file:
       - .env
     environment:
