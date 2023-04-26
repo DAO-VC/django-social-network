@@ -63,9 +63,8 @@ class Startup(models.Model):
     industries = models.ManyToManyField(
         "Industries", verbose_name="Индустрии", blank=True, related_name="industries"
     )
-    is_registered = models.BooleanField(
-        default=False, verbose_name="Уже зарегистрирована"
-    )
+    is_registered = models.BooleanField(verbose_name="Уже зарегистрирована")
+
     registration_country = models.CharField(
         "Статус", choices=CountryChoices.choices, max_length=50
     )
@@ -81,14 +80,10 @@ class Startup(models.Model):
         default=0, null=True, blank=True, verbose_name="Профит"
     )
     required_founding = models.IntegerField(
-        default=0, null=True, blank=True, verbose_name="Требуемое финансирование"
+        default=0, verbose_name="Требуемое финансирование"
     )
-    already_distributed = models.IntegerField(
-        default=0, null=True, blank=True, verbose_name="Ранние вложения"
-    )
-    capital_offer = models.IntegerField(
-        default=0, null=True, blank=True, verbose_name="Предложение инвестору"
-    )
+    already_distributed = models.IntegerField(default=0, verbose_name="Ранние вложения")
+    capital_offer = models.IntegerField(default=0, verbose_name="Предложение инвестору")
     business_type = models.ManyToManyField(
         "BusinessType", verbose_name="Тип бизнеса", blank=True, related_name="business"
     )
@@ -133,7 +128,7 @@ class Industries(models.Model):
         BLOCKCHAIN = "blockchain", "Блокчейн"
         OTHER = "other", "Остальное"
 
-    title = models.CharField("Название", max_length=32)
+    title = models.CharField("Название", max_length=50)
     type = models.CharField(choices=IndustriesType.choices, max_length=25)
 
     def __str__(self):

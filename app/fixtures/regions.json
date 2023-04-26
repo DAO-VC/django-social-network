@@ -1,0 +1,93 @@
+[
+  {
+    "model": "profiles.saleregions",
+    "pk": 1,
+    "fields": {
+      "name": "All world"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 2,
+    "fields": {
+      "name": "Northern America"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 3,
+    "fields": {
+      "name": "Central America & Caribbean"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 4,
+    "fields": {
+      "name": "South America"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 5,
+    "fields": {
+      "name": "Nordics & Baltics"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 6,
+    "fields": {
+      "name": "Western Europe"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 7,
+    "fields": {
+      "name": "Southern Europe"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 8,
+    "fields": {
+      "name": "Eastern Europe & Russia"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 9,
+    "fields": {
+      "name": "Northern Africa & Middle East"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 10,
+    "fields": {
+      "name": "Africa"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 11,
+    "fields": {
+      "name": "Asia"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 12,
+    "fields": {
+      "name": "Worldwide"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 13,
+    "fields": {
+      "name": "Australia, New Zealand & Oceania"
+    }
+  }
+]

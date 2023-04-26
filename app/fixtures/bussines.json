@@ -1,0 +1,51 @@
+[
+  {
+    "model": "profiles.businesstype",
+    "pk": 1,
+    "fields": {
+      "title": "B2B"
+    }
+  },
+  {
+    "model": "profiles.businesstype",
+    "pk": 2,
+    "fields": {
+      "title": "B2C"
+    }
+  },
+  {
+    "model": "profiles.businesstype",
+    "pk": 3,
+    "fields": {
+      "title": "B2G"
+    }
+  },
+  {
+    "model": "profiles.businesstype",
+    "pk": 4,
+    "fields": {
+      "title": "C2B"
+    }
+  },
+  {
+    "model": "profiles.businesstype",
+    "pk": 5,
+    "fields": {
+      "title": "C2C"
+    }
+  },
+  {
+    "model": "profiles.businesstype",
+    "pk": 6,
+    "fields": {
+      "title": "C2G"
+    }
+  },
+  {
+    "model": "profiles.businesstype",
+    "pk": 7,
+    "fields": {
+      "title": "SAAS"
+    }
+  }
+]

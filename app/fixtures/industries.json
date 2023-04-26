@@ -1,0 +1,291 @@
+[
+  {
+    "model": "profiles.industries",
+    "pk": 1,
+    "fields": {
+      "title": "Agricultural Tech",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 2,
+    "fields": {
+      "title": "Analytics & Big Data",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 3,
+    "fields": {
+      "title": "Artificial Intelligence & Learning",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 4,
+    "fields": {
+      "title": "Augmented Reality",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 5,
+    "fields": {
+      "title": "Biotech",
+      "type": "other"
+    }
+  },
+
+  {
+    "model": "profiles.industries",
+    "pk": 6,
+    "fields": {
+      "title": "Cleantech",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 7,
+    "fields": {
+      "title": "Clothing & Fashion",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 8,
+    "fields": {
+      "title": "Communications & Media",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 9,
+    "fields": {
+      "title": "Consumer",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 10,
+    "fields": {
+      "title": "Electronics",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 11,
+    "fields": {
+      "title": "Cryptocurrencies",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 12,
+    "fields": {
+      "title": "Cyber",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 13,
+    "fields": {
+      "title": "Security",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 14,
+    "fields": {
+      "title": "E-commerce & Online Marketplaces",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 16,
+    "fields": {
+      "title": "Education",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 17,
+    "fields": {
+      "title": "Enterprise Software",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 18,
+    "fields": {
+      "title": "Finance & Insurance",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 19,
+    "fields": {
+      "title": "Food & Nutrition",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 20,
+    "fields": {
+      "title": "Gaming",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 21,
+    "fields": {
+      "title": "Health & Wellbeing",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 22,
+    "fields": {
+      "title": "Industrial",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 23,
+    "fields": {
+      "title": "Manufacturing & Materials",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 24,
+    "fields": {
+      "title": "Marketing & AdTech",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 25,
+    "fields": {
+      "title": "Medtech & Pharma",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 26,
+    "fields": {
+      "title": "Mobile Hardware",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 27,
+    "fields": {
+      "title": "Mobile Software",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 28,
+    "fields": {
+      "title": "Music & Entertainment",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 29,
+    "fields": {
+      "title": "On-demand Services",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 30,
+    "fields": {
+      "title": "Property & Construction Tech",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 31,
+    "fields": {
+      "title": "Robotics",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 32,
+    "fields": {
+      "title": "Social Entrepreneurship",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 33,
+    "fields": {
+      "title": "Social Media & Messaging",
+      "type": "other"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 34,
+    "fields": {
+      "title": "Cryptocurrencies",
+      "type": "blockchain"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 35,
+    "fields": {
+      "title": "NTF",
+      "type": "blockchain"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 36,
+    "fields": {
+      "title": "DeFi",
+      "type": "blockchain"
+    }
+  },
+  {
+    "model": "profiles.industries",
+    "pk": 37,
+    "fields": {
+      "title": "GameFi",
+      "type": "blockchain"
+    }
+  }
+]
