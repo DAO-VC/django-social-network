@@ -76,9 +76,7 @@ class Startup(models.Model):
         related_name="industries",
     )
     stage = models.CharField("Стадия", choices=StageChoices.choices, max_length=10)
-    profit = models.IntegerField(
-        default=0, null=True, blank=True, verbose_name="Профит"
-    )
+    profit = models.IntegerField(default=0, verbose_name="Профит")
     required_founding = models.IntegerField(
         default=0, verbose_name="Требуемое финансирование"
     )
@@ -101,7 +99,13 @@ class Startup(models.Model):
     achievements = models.ForeignKey(
         "Achievements", models.CASCADE, verbose_name="Достижения"
     )
+    social_links = models.ForeignKey(
+        "Links", models.CASCADE, verbose_name="Социальные сети"
+    )
 
+    detailed_description = models.TextField(verbose_name="Детальное описание")
+
+    # TODO : detailed_description под вопросом
     class Meta:
         verbose_name = "Стартап"
         verbose_name_plural = "Стартапы"

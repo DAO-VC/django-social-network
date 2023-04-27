@@ -202,3 +202,6 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# TODO : Добавить логгер
+# TODO : Пермишн на все ручки добавить

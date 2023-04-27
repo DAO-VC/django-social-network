@@ -17,3 +17,4 @@ class LogoViewSet(FlexFieldsModelViewSet):
 class FilesViewSet(viewsets.ModelViewSet):
     queryset = File.objects.all()
     serializer_class = FileSerializer
+    # TODO : Валидация файлов

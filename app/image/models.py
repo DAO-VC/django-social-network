@@ -17,6 +17,3 @@ class Logo(models.Model):
 
 class File(models.Model):
     pdf = models.FileField(upload_to="pdf/")
-
-    def __str__(self):
-        return self.pdf

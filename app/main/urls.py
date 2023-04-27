@@ -23,6 +23,7 @@ from main import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("core.urls")),
+    path("common/", include("profiles.urls")),
     path("docs/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
     path("", include("image.urls")),
