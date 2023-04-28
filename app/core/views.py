@@ -12,7 +12,6 @@ from rest_framework.generics import (
     DestroyAPIView,
     ListAPIView,
     GenericAPIView,
-    RetrieveAPIView,
     UpdateAPIView,
 )
 from rest_framework.permissions import IsAuthenticated
@@ -165,3 +164,10 @@ class UserValidateEmailView(UpdateAPIView):
     def get_object(self):
         obj = get_object_or_404(User, id=self.kwargs.get("pk"))
         return obj
+
+
+class MeUserDeleteView(DestroyAPIView):
+    """Эндпоинт  для удаления данных  пользователя"""
+
+    queryset = User.objects.all()
+    serializer_class = UserBaseSerializer

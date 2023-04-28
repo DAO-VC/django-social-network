@@ -8,6 +8,7 @@ from core.views import (
     ResetPassword,
     ResetPasswordView,
     UserValidateEmailView,
+    MeUserDeleteView,
 )
 
 urlpatterns = [
@@ -20,6 +21,7 @@ urlpatterns = [
     path("login/", UserLoginView.as_view(), name="login"),
     path("logout/", UserDestroyView.as_view(), name="logout"),
     path("me/", MeUserView.as_view(), name="me"),
+    path("user/<int:pk>", MeUserDeleteView.as_view(), name="delete_user"),
     path("send-code/", ResetPassword.as_view(), name="request-password-reset"),
     path(
         "password-reset/<str:encoded_pk>/<str:token>/",
