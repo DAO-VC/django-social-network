@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
+import django.contrib.auth.password_validation as validators
 from core.utils import send_verification_mail
 
 USER_MODEL = get_user_model()
@@ -75,12 +75,14 @@ class EmailSerializer(serializers.Serializer):
 
 class ResetPasswordSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True, max_length=4)
+    password_repeat = serializers.CharField(write_only=True, max_length=4)
 
     class Meta:
         fields = ("password",)
 
     def validate(self, data):
         password = data.get("password")
+        password_repeat = data.get("password_repeat")
         token = self.context.get("kwargs").get("token")
         encoded_pk = self.context.get("kwargs").get("encoded_pk")
 
@@ -92,9 +94,19 @@ class ResetPasswordSerializer(serializers.Serializer):
 
         if not PasswordResetTokenGenerator().check_token(user, token):
             raise ValidationError("The reset token is invalid")
-
-        USER_MODEL.set_password(password)
-        USER_MODEL.save()
+        if password != password_repeat:
+            raise ValidationError("Password mismatch!")
+        # USER_MODEL.set_password(password)
+        # USER_MODEL.is_active = True
+        # USER_MODEL.save()
+        try:
+            # validate the password and catch the exception
+            validators.validate_password(password=password, user=user)
+        except ValidationError as e:
+            raise ValidationError(e)
+        user.set_password(password)
+        user.is_active = True
+        user.save()
         return data
 
 

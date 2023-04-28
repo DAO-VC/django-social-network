@@ -184,9 +184,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "core.validators.LowercaseValidator",
     },
-    {
-        "NAME": "core.validators.SymbolValidator",
-    },
+    # {
+    #     "NAME": "core.validators.SymbolValidator",
+    # },
 ]
 
 MEDIA_URL = "/media/"
