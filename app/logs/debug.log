@@ -1,5 +1,0 @@
-2023-04-30 13:48:38,921 django.utils.autoreload INFO     Watching for file changes with StatReloader
-2023-04-30 13:48:57,224 django.request WARNING  Bad Request: /logo/
-2023-04-30 13:48:57,224 django.request WARNING  Bad Request: /logo/
-2023-04-30 13:49:17,272 django.utils.autoreload INFO     /Users/alexeygalt/Desktop/lesson12_project_source_v3/DAO_core/app/main/settings.py changed, reloading.
-2023-04-30 13:49:17,724 django.utils.autoreload INFO     Watching for file changes with StatReloader
