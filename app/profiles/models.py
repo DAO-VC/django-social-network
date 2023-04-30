@@ -1,5 +1,5 @@
 from django.db import models
-
+from phonenumber_field.modelfields import PhoneNumberField
 from core.models import User
 from image.models import File, Logo, Background
 
@@ -120,11 +120,28 @@ class Investor(models.Model):
 
 
 class Professional(models.Model):
-    user = models.ForeignKey(User, models.PROTECT)
+    owner = models.ForeignKey(User, models.PROTECT)
+    name = models.CharField("Имя", max_length=32)
+    lastName = models.CharField("Фамилия", max_length=32)
+    email = models.EmailField("Email адрес")
+    phone = PhoneNumberField(max_length=128, verbose_name="Номер телефона")
+    about = models.TextField(verbose_name="Обо мне")
+    photo = models.ForeignKey(Logo, models.CASCADE, verbose_name="Фото")
+    cv = models.ForeignKey(File, models.CASCADE, verbose_name="Файл презентации")
+
+    # TODO: вопрос о формате файла ( они разные в стартапе и здесь)
+    # TODO: Скилы?
+    skills = models.ManyToManyField(
+        "Industries", verbose_name="Скилы", blank=True, related_name="skills"
+    )
+    salary = models.TextField(verbose_name="Зарплата")
 
     class Meta:
         verbose_name = "Профессионал"
         verbose_name_plural = "Профессионалы"
+
+    def __str__(self):
+        return self.name
 
 
 class Industries(models.Model):
