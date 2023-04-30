@@ -2,6 +2,8 @@ from django.db import models
 
 from versatileimagefield.fields import VersatileImageField, PPOIField
 
+from image.validators import validate_file_size, validate_file_extension
+
 
 class Background(models.Model):
     background = VersatileImageField(
@@ -16,4 +18,6 @@ class Logo(models.Model):
 
 
 class File(models.Model):
-    pdf = models.FileField(upload_to="pdf/")
+    pdf = models.FileField(
+        upload_to="pdf/", validators=[validate_file_size, validate_file_extension]
+    )
