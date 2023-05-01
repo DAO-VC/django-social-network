@@ -112,11 +112,23 @@ class Startup(models.Model):
 
 
 class Investor(models.Model):
-    user = models.ForeignKey(User, models.PROTECT)
+    owner = models.ForeignKey(User, models.PROTECT)
+    name = models.CharField("Имя", max_length=32)
+    lastName = models.CharField("Фамилия", max_length=32)
+    phone = PhoneNumberField(max_length=128, verbose_name="Номер телефона")
+    about = models.TextField(verbose_name="Обо мне")
+    photo = models.ForeignKey(Logo, models.CASCADE, verbose_name="Фото")
+    interest = models.ManyToManyField(
+        "Industries", verbose_name="Интересы", blank=True, related_name="interest"
+    )
+    cv = models.ForeignKey(File, models.CASCADE, verbose_name="Файл презентации")
 
     class Meta:
         verbose_name = "Инвестор"
         verbose_name_plural = "Инвесторы"
+
+    def __str__(self):
+        return self.name
 
 
 class Professional(models.Model):

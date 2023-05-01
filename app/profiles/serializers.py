@@ -9,6 +9,7 @@ from profiles.models import (
     Startup,
     BusinessType,
     Professional,
+    Investor,
 )
 
 
@@ -101,3 +102,21 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
         professional.skills.set(industries)
 
         return professional
+
+
+class InvestorBaseSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
+
+    class Meta:
+        model = Investor
+        fields = "__all__"
+
+    def create(self, validated_data):
+        interest = validated_data.pop("interest")
+        owner = self.context["request"].user
+
+        investor = Investor.objects.create(**validated_data, owner=owner)
+
+        investor.interest.set(interest)
+
+        return investor
