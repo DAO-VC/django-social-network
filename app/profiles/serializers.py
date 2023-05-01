@@ -8,6 +8,7 @@ from profiles.models import (
     SaleRegions,
     Startup,
     BusinessType,
+    Professional,
 )
 
 
@@ -82,3 +83,21 @@ class StartupBaseSerializer(serializers.ModelSerializer):
         startup.business_type.set(business_type)
         # TODO : добавить транзакции
         return startup
+
+
+class ProfessionalBaseSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
+
+    class Meta:
+        model = Professional
+        fields = "__all__"
+
+    def create(self, validated_data):
+        industries = validated_data.pop("skills")
+        owner = self.context["request"].user
+
+        professional = Professional.objects.create(**validated_data, owner=owner)
+
+        professional.skills.set(industries)
+
+        return professional
