@@ -119,7 +119,10 @@ class Investor(models.Model):
     about = models.TextField(verbose_name="Обо мне")
     photo = models.ForeignKey(Logo, models.CASCADE, verbose_name="Фото")
     interest = models.ManyToManyField(
-        "Industries", verbose_name="Интересы", blank=True, related_name="interest"
+        "Industries",
+        verbose_name="Интересы",
+        blank=True,
+        related_name="invest_interest",
     )
     cv = models.ForeignKey(File, models.CASCADE, verbose_name="Файл презентации")
 
@@ -142,9 +145,12 @@ class Professional(models.Model):
     cv = models.ForeignKey(File, models.CASCADE, verbose_name="Файл презентации")
 
     # TODO: вопрос о формате файла ( они разные в стартапе и здесь)
-    # TODO: Скилы?
+    # TODO: Добавить интересы
     skills = models.ManyToManyField(
         "Industries", verbose_name="Скилы", blank=True, related_name="skills"
+    )
+    interest = models.ManyToManyField(
+        "Industries", verbose_name="Интересы", blank=True, related_name="prof_interest"
     )
     salary = models.TextField(verbose_name="Зарплата")
 

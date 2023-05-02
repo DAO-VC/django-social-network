@@ -94,12 +94,14 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        industries = validated_data.pop("skills")
+        skills = validated_data.pop("skills")
+        interest = validated_data.pop("interest")
         owner = self.context["request"].user
 
         professional = Professional.objects.create(**validated_data, owner=owner)
 
-        professional.skills.set(industries)
+        professional.skills.set(skills)
+        professional.interest.set(interest)
 
         return professional
 
