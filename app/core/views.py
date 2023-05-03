@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, get_user_model, logout, get
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import (
@@ -44,6 +44,7 @@ class UserRegistrationView(CreateAPIView):
 
 
 # @method_decorator(csrf_exempt, name="dispatch")
+@method_decorator(ensure_csrf_cookie)
 class UserLoginView(APIView):
     """Логин пользователя"""
 
