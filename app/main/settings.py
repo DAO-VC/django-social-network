@@ -63,6 +63,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsPostCsrfMiddleware",
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -204,37 +205,12 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 # CSRF_COOKIE_SECURE = False
-# CSRF_TRUSTED_ORIGINS = ["http://localhost:4200"]
-# CORS_ALLOW_ALL_ORIGINS = True
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:4200",
+CSRF_TRUSTED_ORIGINS = ["http://localhost:4200"]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://read.only.com",
+#     "http://change.allowed.com",
 # ]
-# CORS_ALLOW_METHODS = [
-#     "DELETE",
-#     "GET",
-#     "OPTIONS",
-#     "PATCH",
-#     "POST",
-#     "PUT",
-# ]
-# CORS_ALLOW_HEADERS = [
-#     "accept",
-#     "accept-encoding",
-#     "authorization",
-#     "content-type",
-#     "dnt",
-#     "origin",
-#     "user-agent",
-#     "x-csrftoken",
-#     "x-requested-with",
-# ]
-# # CORS_ALLOW_HEADERS = (
-# # 'x-requested-with',
-# # 'content-type',
-# # 'accept',
-# # 'origin',
-# # 'authorization',
-# # 'X-CSRFToken'
+
 # TODO : Пермишн на все ручки добавить
 
 
