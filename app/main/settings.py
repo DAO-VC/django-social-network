@@ -63,7 +63,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsPostCsrfMiddleware",
+    # "corsheaders.middleware.CorsPostCsrfMiddleware",
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -204,12 +204,8 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-# CSRF_COOKIE_SECURE = False
+
 CSRF_TRUSTED_ORIGINS = ["http://localhost:4200"]
-# CORS_ALLOWED_ORIGINS = [
-#     "http://read.only.com",
-#     "http://change.allowed.com",
-# ]
 
 CSRF_COOKIE_PATH = "/"
 CSRF_COOKIE_SAMESITE = "Strict"
