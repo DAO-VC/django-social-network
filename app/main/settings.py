@@ -207,11 +207,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost:4200"]
 
-CSRF_COOKIE_PATH = "/"
-CSRF_COOKIE_SAMESITE = "Strict"
-CSRF_COOKIE_SECURE = True
-
-
 # TODO : Пермишн на все ручки добавить
 
 
