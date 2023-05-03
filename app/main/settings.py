@@ -202,7 +202,7 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ALLOW_CREDENTIALS = True
 
 # TODO : Пермишн на все ручки добавить
 
