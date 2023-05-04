@@ -150,7 +150,6 @@ REST_FRAMEWORK = {
 }
 AUTH_USER_MODEL = "core.User"
 
-AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env.str("EMAIL_HOST")

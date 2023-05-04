@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from rest_framework.exceptions import ValidationError
 from profiles.models import (
     Industries,
     Achievements,
@@ -64,8 +64,14 @@ class StartupBaseSerializer(serializers.ModelSerializer):
         purpose = validated_data.pop("purpose")
         social_links = validated_data.pop("social_links")
         industries = validated_data.pop("industries")
+        if len(industries) < 1:
+            ValidationError("Минимум одна индустрия")
         regions = validated_data.pop("regions")
+        if len(regions) < 1:
+            ValidationError("Минимум один регион")
         business_type = validated_data.pop("business_type")
+        if len(business_type) < 1:
+            ValidationError("Минимум тип")
 
         achievement_obj = Achievements.objects.create(**achievement)
         purpose_obj = Purpose.objects.create(**purpose)
