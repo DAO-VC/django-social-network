@@ -4,8 +4,9 @@ from django.contrib.auth import authenticate, login, get_user_model, logout, get
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
 from drf_spectacular.utils import extend_schema
+from django.middleware.csrf import get_token
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
@@ -36,6 +37,12 @@ from core.utils import send_emails
 User = get_user_model()
 
 
+def get_csrf(request):
+    response = JsonResponse({"Info": "Success - Set CSRF cookie"})
+    response["X-CSRFToken"] = get_token(request)
+    return response
+
+
 class UserRegistrationView(CreateAPIView):
     """Регистрация нового пользователя"""
 
@@ -43,10 +50,7 @@ class UserRegistrationView(CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
 
-# @method_decorator(csrf_exempt, name="dispatch")
-# @method_decorator(ensure_csrf_cookie, name="dispatch")
-
-
+@method_decorator(csrf_protect, name="dispatch")
 class UserLoginView(APIView):
     """Логин пользователя"""
 

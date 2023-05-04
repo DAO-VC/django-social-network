@@ -147,9 +147,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework.authentication.SessionAuthentication',
+    # ),
 }
 AUTH_USER_MODEL = "core.User"
-
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env.str("EMAIL_HOST")
@@ -201,19 +203,31 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     ]
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:4200",
-    "https://social-dev.dao.vc",
-    "https://social-dev.dao.vc/",
-    "https://*.dao.vc",
-    "https://*.dao.vc/",
-]
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = True
+#
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:4200",
+#     "https://social-dev.dao.vc",
+#     "https://social-dev.dao.vc/",
+#     "https://*.dao.vc",
+#     "https://*.dao.vc/",
+# ]
 # CSRF_COOKIE_SECURE = False
 # SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+    "http://127.0.0.1:4200",
+    "https://social-dev.dao.vc",
+    "https://*.dao.vc",
+]
+CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
+CORS_ALLOW_CREDENTIALS = True
 # TODO : Пермишн на все ручки добавить
 
 
