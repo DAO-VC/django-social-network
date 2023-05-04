@@ -45,7 +45,8 @@ class UserRegistrationView(CreateAPIView):
 
 # @method_decorator(csrf_exempt, name="dispatch")
 # @method_decorator(ensure_csrf_cookie, name="dispatch")
-@method_decorator(csrf_exempt, name="dispatch")
+
+
 class UserLoginView(APIView):
     """Логин пользователя"""
 
