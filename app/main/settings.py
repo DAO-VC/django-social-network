@@ -211,8 +211,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.dao.vc",
     "https://*.dao.vc/",
 ]
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
 
 # TODO : Пермишн на все ручки добавить
 
