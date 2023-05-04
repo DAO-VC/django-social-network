@@ -157,10 +157,16 @@ class Professional(models.Model):
     name = models.CharField("Имя", max_length=32)
     lastName = models.CharField("Фамилия", max_length=32)
     email = models.EmailField("Email адрес")
-    phone = PhoneNumberField(max_length=128, verbose_name="Номер телефона")
-    about = models.TextField(verbose_name="Обо мне")
-    photo = models.ForeignKey(Logo, models.CASCADE, verbose_name="Фото")
-    cv = models.ForeignKey(File, models.CASCADE, verbose_name="Файл презентации")
+    phone = PhoneNumberField(
+        max_length=128, verbose_name="Номер телефона", null=True, blank=True
+    )
+    about = models.TextField(verbose_name="Обо мне", null=True, blank=True)
+    photo = models.ForeignKey(
+        Logo, models.CASCADE, verbose_name="Фото", null=True, blank=True
+    )
+    cv = models.ForeignKey(
+        File, models.CASCADE, verbose_name="Файл презентации", null=True, blank=True
+    )
 
     # TODO: вопрос о формате файла ( они разные в стартапе и здесь)
     # TODO: Добавить интересы
@@ -170,7 +176,7 @@ class Professional(models.Model):
     interest = models.ManyToManyField(
         "Industries", verbose_name="Интересы", blank=True, related_name="prof_interest"
     )
-    salary = models.TextField(verbose_name="Зарплата")
+    salary = models.TextField(verbose_name="Зарплата", null=True, blank=True)
 
     class Meta:
         verbose_name = "Профессионал"

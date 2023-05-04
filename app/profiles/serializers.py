@@ -101,6 +101,8 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         skills = validated_data.pop("skills")
+        if len(skills) < 1:
+            ValidationError("Минимум один скилл")
         interest = validated_data.pop("interest")
         owner = self.context["request"].user
 
