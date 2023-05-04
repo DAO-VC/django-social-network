@@ -22,3 +22,12 @@ class ProfessionalCreateView(generics.CreateAPIView):
 class InvestorCreateView(generics.CreateAPIView):
     queryset = Investor.objects.all()
     serializer_class = InvestorBaseSerializer
+
+
+class StartListCreateView(generics.ListCreateAPIView):
+    queryset = Startup.objects.all()
+    serializer_class = StartupBaseSerializer
+
+
+# class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Startup.objects.all()
