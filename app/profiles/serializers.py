@@ -123,9 +123,15 @@ class InvestorBaseSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         interest = validated_data.pop("interest")
+        if len(interest) < 1:
+            ValidationError("Минимум одна индустрия")
         owner = self.context["request"].user
+        social_links = validated_data.pop("social_links")
+        social_links_obj = Links.objects.create(**social_links)
 
-        investor = Investor.objects.create(**validated_data, owner=owner)
+        investor = Investor.objects.create(
+            **validated_data, owner=owner, social_links=social_links_obj
+        )
 
         investor.interest.set(interest)
 

@@ -133,16 +133,26 @@ class Investor(models.Model):
     owner = models.ForeignKey(User, models.PROTECT)
     name = models.CharField("Имя", max_length=32)
     lastName = models.CharField("Фамилия", max_length=32)
-    phone = PhoneNumberField(max_length=128, verbose_name="Номер телефона")
-    about = models.TextField(verbose_name="Обо мне")
-    photo = models.ForeignKey(Logo, models.CASCADE, verbose_name="Фото")
+    email = models.EmailField("Email адрес")
+    phone = PhoneNumberField(
+        max_length=128, verbose_name="Номер телефона", null=True, blank=True
+    )
+    about = models.TextField(verbose_name="Обо мне", null=True, blank=True)
+    photo = models.ForeignKey(
+        Logo, models.CASCADE, verbose_name="Фото", null=True, blank=True
+    )
     interest = models.ManyToManyField(
         "Industries",
         verbose_name="Интересы",
         blank=True,
         related_name="invest_interest",
     )
-    cv = models.ForeignKey(File, models.CASCADE, verbose_name="Файл презентации")
+    cv = models.ForeignKey(
+        File, models.CASCADE, verbose_name="Файл презентации", null=True, blank=True
+    )
+    social_links = models.ForeignKey(
+        "Links", models.CASCADE, verbose_name="Социальные сети", null=True, blank=True
+    )
 
     class Meta:
         verbose_name = "Инвестор"
