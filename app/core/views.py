@@ -50,7 +50,8 @@ class UserRegistrationView(CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
 
-@method_decorator(csrf_protect, name="dispatch")
+# @method_decorator(csrf_protect, name="dispatch")
+@method_decorator(csrf_exempt, name="dispatch")
 class UserLoginView(APIView):
     """Логин пользователя"""
 
