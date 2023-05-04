@@ -116,6 +116,7 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
 
 class InvestorBaseSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    social_links = LinkSerializer()
 
     class Meta:
         model = Investor

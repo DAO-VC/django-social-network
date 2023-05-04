@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import environ
+from datetime import timedelta
 
 env = environ.Env(DEBUG=(bool, False))
 
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "versatileimagefield",
     "corsheaders",
+    "rest_framework_simplejwt",
     # Локальные модули
     "core",
     "profiles",
@@ -148,7 +150,7 @@ REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
 AUTH_USER_MODEL = "core.User"
@@ -206,19 +208,19 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:4200",
-    "https://social-dev.dao.vc",
-    "https://social-dev.dao.vc/",
-    "https://*.dao.vc",
-    "https://*.dao.vc/",
-]
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_HTTPONLY = True
-SESSION_COOKIE_HTTPONLY = True
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:4200",
+#     "https://social-dev.dao.vc",
+#     "https://social-dev.dao.vc/",
+#     "https://*.dao.vc",
+#     "https://*.dao.vc/",
+# ]
+# # CSRF_COOKIE_SECURE = False
+# # SESSION_COOKIE_SECURE = False
+# CSRF_COOKIE_SAMESITE = "Lax"
+# SESSION_COOKIE_SAMESITE = "Lax"
+# CSRF_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_HTTPONLY = True
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:4200",
@@ -226,7 +228,7 @@ SESSION_COOKIE_HTTPONLY = True
 #     "https://social-dev.dao.vc",
 #     "https://*.dao.vc",
 # ]
-CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
+# CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 
 # TODO : Пермишн на все ручки добавить
 
@@ -254,4 +256,10 @@ LOGGING = {
         "": {"level": "DEBUG", "handlers": ["console", "file"], "propagate": True},
         "django.request": {"level": "DEBUG", "handlers": ["console", "file"]},
     },
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    # "TOKEN_OBTAIN_SERIALIZER": "core.serializers.MyTokenObtainPairSerializer",
 }
