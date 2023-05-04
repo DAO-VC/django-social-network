@@ -19,6 +19,7 @@ drf-flex-fields = "^1.0.2"
 phonenumbers = "^8.13.10"
 psycopg2-binary = "^2.9.6"
 django-cors-headers = "^3.14.0"
+djangorestframework-simplejwt = "^5.2.2"
 
 
 [build-system]
