@@ -208,6 +208,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:4200",
     "https://social-dev.dao.vc",
     "https://social-dev.dao.vc/",
+    "https://'https://*.dao.vc",
+    "https://'https://*.dao.vc/",
 ]
 
 # TODO : Пермишн на все ручки добавить
