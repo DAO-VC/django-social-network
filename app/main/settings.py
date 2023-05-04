@@ -147,9 +147,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework.authentication.SessionAuthentication',
-    # ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+    ),
 }
 AUTH_USER_MODEL = "core.User"
 
@@ -206,13 +206,13 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 # CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_CREDENTIALS = True
 #
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:4200",
-#     "https://social-dev.dao.vc",
-#     "https://social-dev.dao.vc/",
-#     "https://*.dao.vc",
-#     "https://*.dao.vc/",
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:4200",
+    "https://social-dev.dao.vc",
+    "https://social-dev.dao.vc/",
+    "https://*.dao.vc",
+    "https://*.dao.vc/",
+]
 # CSRF_COOKIE_SECURE = False
 # SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SAMESITE = "Lax"
