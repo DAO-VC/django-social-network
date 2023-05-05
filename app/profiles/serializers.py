@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.relations import PrimaryKeyRelatedField
+
 from profiles.models import (
     Industries,
     Achievements,
@@ -65,13 +67,13 @@ class StartupBaseSerializer(serializers.ModelSerializer):
         social_links = validated_data.pop("social_links")
         industries = validated_data.pop("industries")
         if len(industries) < 1:
-            ValidationError("Минимум одна индустрия")
+            raise ValidationError("Минимум одна индустрия")
         regions = validated_data.pop("regions")
         if len(regions) < 1:
-            ValidationError("Минимум один регион")
+            raise ValidationError("Минимум один регион")
         business_type = validated_data.pop("business_type")
         if len(business_type) < 1:
-            ValidationError("Минимум тип")
+            raise ValidationError("Минимум тип")
 
         achievement_obj = Achievements.objects.create(**achievement)
         purpose_obj = Purpose.objects.create(**purpose)
@@ -102,7 +104,7 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         skills = validated_data.pop("skills")
         if len(skills) < 1:
-            ValidationError("Минимум один скилл")
+            raise ValidationError("Минимум один скилл")
         interest = validated_data.pop("interest")
         owner = self.context["request"].user
 
@@ -125,7 +127,7 @@ class InvestorBaseSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         interest = validated_data.pop("interest")
         if len(interest) < 1:
-            ValidationError("Минимум одна индустрия")
+            raise ValidationError("Минимум одна индустрия")
         owner = self.context["request"].user
         social_links = validated_data.pop("social_links")
         social_links_obj = Links.objects.create(**social_links)
@@ -137,3 +139,89 @@ class InvestorBaseSerializer(serializers.ModelSerializer):
         investor.interest.set(interest)
 
         return investor
+
+
+class StartupUpdateSerializer(serializers.ModelSerializer):
+    achievements = AchievementSerializer()
+    purpose = PurposeSerializer()
+    social_links = LinkSerializer()
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
+
+    class Meta:
+        model = Startup
+        fields = "__all__"
+
+    def update(self, instance: Startup, validated_data):
+        if "achievements" in validated_data:
+            achievement_serializer = self.fields["achievements"]
+            achievement_instance = instance.achievements
+            achievement_data = validated_data.pop("achievements")
+            achievement_serializer.update(achievement_instance, achievement_data)
+
+        if "purpose" in validated_data:
+            purpose_serializer = self.fields["purpose"]
+            purpose_instance = instance.purpose
+            purpose_data = validated_data.pop("purpose")
+            purpose_serializer.update(purpose_instance, purpose_data)
+
+        if "social_links" in validated_data:
+            social_links_serializer = self.fields["social_links"]
+            social_links_instance = instance.social_links
+            social_links_data = validated_data.pop("social_links")
+            social_links_serializer.update(social_links_instance, social_links_data)
+
+        industries = validated_data.pop("industries")
+        if len(industries) > 0:
+            instance.industries.set(industries)
+
+        regions = validated_data.pop("regions")
+        if len(regions) > 0:
+            instance.regions.set(regions)
+
+        business_type = validated_data.pop("business_type")
+        if len(business_type) > 0:
+            instance.business_type.set(business_type)
+
+        return super().update(instance, validated_data)
+
+
+class ProfessionalUpdateSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
+
+    class Meta:
+        model = Professional
+        fields = "__all__"
+
+    def update(self, instance: Professional, validated_data):
+
+        skills = validated_data.pop("skills")
+        if len(skills) > 0:
+            instance.skills.set(skills)
+
+        interest = validated_data.pop("interest")
+        if len(interest) > 0:
+            instance.interest.set(interest)
+
+        return super().update(instance, validated_data)
+
+
+class InvestorUpdateSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    social_links = LinkSerializer()
+
+    class Meta:
+        model = Investor
+        fields = "__all__"
+
+    def update(self, instance, validated_data):
+        interest = validated_data.pop("interest")
+        if len(interest) > 0:
+            instance.interest.set(interest)
+
+        if "social_links" in validated_data:
+            social_links_serializer = self.fields["social_links"]
+            social_links_instance = instance.social_links
+            social_links_data = validated_data.pop("social_links")
+            social_links_serializer.update(social_links_instance, social_links_data)
+
+        return super().update(instance, validated_data)
