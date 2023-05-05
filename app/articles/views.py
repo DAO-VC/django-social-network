@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
 
+from articles.filters import ArticleFilter
 from articles.models import Article
 from articles.serializers import ArticleCreateSerializer, ArticleUpdateSerializer
 
@@ -21,3 +22,11 @@ class ArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleUpdateSerializer
     http_method_names = ["get", "put", "delete"]
+
+
+class ArticleParamView(generics.ListAPIView):
+    """Поиск по названию поста"""
+
+    queryset = Article.objects.all()
+    serializer_class = ArticleCreateSerializer
+    filterset_class = ArticleFilter
