@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "core",
     "profiles",
     "image",
+    "vacancy",
 ]
 
 MIDDLEWARE = [
