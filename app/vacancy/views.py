@@ -18,4 +18,4 @@ class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Vacancy.objects.all()
     serializer_class = VacancyUpdateSerializer
-    http_method_names = ["put", "delete"]
+    http_method_names = ["get", "put", "delete"]

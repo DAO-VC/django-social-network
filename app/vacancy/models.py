@@ -12,3 +12,4 @@ class Vacancy(models.Model):
     skills = models.ManyToManyField(
         Industries, verbose_name="Скилы", blank=True, related_name="vacancy_skills"
     )
+    # TODO: обязательные поля

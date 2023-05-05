@@ -29,6 +29,7 @@ urlpatterns = [
     path("docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
     path("", include("image.urls")),
     path("", include("vacancy.urls")),
+    path("", include("articles.urls")),
 ]
 
 if settings.DEBUG:
