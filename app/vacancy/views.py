@@ -4,6 +4,8 @@ from vacancy.serializers import VacancyCreateSerializer, VacancyUpdateSerializer
 
 
 class VacancyListCreateView(generics.ListCreateAPIView):
+    """Список всех вакансий стартапа | создание вакансии"""
+
     queryset = Vacancy.objects.all()
     serializer_class = VacancyCreateSerializer
 
@@ -12,6 +14,8 @@ class VacancyListCreateView(generics.ListCreateAPIView):
 
 
 class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
+    """Изменение | удаление вакансии"""
+
     queryset = Vacancy.objects.all()
     serializer_class = VacancyUpdateSerializer
     http_method_names = ["put", "delete"]
