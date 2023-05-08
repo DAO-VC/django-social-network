@@ -1,7 +1,7 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from core.models import User
-from image.models import File, Logo, Background
+from image.models import File, Image
 
 
 class Startup(models.Model):
@@ -59,10 +59,20 @@ class Startup(models.Model):
     foundation_year = models.IntegerField(null=True, blank=True)
     short_description = models.TextField(verbose_name="Описание", null=True, blank=True)
     logo = models.ForeignKey(
-        Logo, models.CASCADE, verbose_name="Логотип", null=True, blank=True
+        Image,
+        models.CASCADE,
+        verbose_name="Логотип",
+        null=True,
+        blank=True,
+        related_name="startup_logo",
     )
     background = models.ForeignKey(
-        Background, models.CASCADE, verbose_name="Бэкграунд", null=True, blank=True
+        Image,
+        models.CASCADE,
+        verbose_name="Бэкграунд",
+        null=True,
+        blank=True,
+        related_name="startup_background",
     )
     industries = models.ManyToManyField(
         "Industries", verbose_name="Индустрии", blank=True, related_name="industries"
@@ -139,7 +149,7 @@ class Investor(models.Model):
     )
     about = models.TextField(verbose_name="Обо мне", null=True, blank=True)
     photo = models.ForeignKey(
-        Logo, models.CASCADE, verbose_name="Фото", null=True, blank=True
+        Image, models.CASCADE, verbose_name="Фото", null=True, blank=True
     )
     interest = models.ManyToManyField(
         "Industries",
@@ -172,7 +182,7 @@ class Professional(models.Model):
     )
     about = models.TextField(verbose_name="Обо мне", null=True, blank=True)
     photo = models.ForeignKey(
-        Logo, models.CASCADE, verbose_name="Фото", null=True, blank=True
+        Image, models.CASCADE, verbose_name="Фото", null=True, blank=True
     )
     cv = models.ForeignKey(
         File, models.CASCADE, verbose_name="Файл презентации", null=True, blank=True

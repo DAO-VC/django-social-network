@@ -1,29 +1,29 @@
 from rest_flex_fields import FlexFieldsModelSerializer
 from rest_framework import serializers
-from .models import Background, Logo, File
+from .models import Image, File
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 
-class BackgroundSerializer(FlexFieldsModelSerializer):
-    background = VersatileImageFieldSerializer(sizes="product_headshot")
+class ImageSerializer(FlexFieldsModelSerializer):
+    image = VersatileImageFieldSerializer(sizes="product_headshot")
 
     class Meta:
-        model = Background
+        model = Image
         fields = [
             "id",
-            "background",
+            "image",
         ]
 
 
-class LogoSerializer(FlexFieldsModelSerializer):
-    logo = VersatileImageFieldSerializer(sizes="product_headshot")
-
-    class Meta:
-        model = Logo
-        fields = [
-            "id",
-            "logo",
-        ]
+# class LogoSerializer(FlexFieldsModelSerializer):
+#     logo = VersatileImageFieldSerializer(sizes="product_headshot")
+#
+#     class Meta:
+#         model = Logo
+#         fields = [
+#             "id",
+#             "logo",
+#         ]
 
 
 class FileSerializer(serializers.ModelSerializer):

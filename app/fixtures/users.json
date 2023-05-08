@@ -1,0 +1,13 @@
+[
+  {
+    "model": "core.user",
+    "pk": 1,
+    "fields": {
+      "email": "admin@mail.com",
+      "password": "pbkdf2_sha256$600000$QdZyZ0MEtrXooxTQAV4JLD$3bZPJ7d8kw5JyzqYfZ7WrkX8sOMaSZ7ZOhBXx/Fe6iY=",
+      "is_superuser": "True",
+      "is_active": "True",
+      "is_staff": "True"
+    }
+  }
+]
