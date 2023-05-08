@@ -8,24 +8,24 @@ class Startup(models.Model):
     """Модель сущности Стартап"""
 
     class StageChoices(models.TextChoices):
-        ANGEL = "Angel", "Ангел"
-        PRE_SEED = "Pre-Seed", "Пресид"
-        SEED = "Seed", "Сид"
+        ANGEL = "angel", "Ангел"
+        PRE_SEED = "preSeed", "Пресид"
+        SEED = "seed", "Сид"
 
     class BusinessType(models.TextChoices):
-        B2B = "B2B", "Business to Business"
-        B2C = "B2C", "Business to consumer"
-        B2G = "B2G", "Business to Government"
-        C2B = "C2B", "Consumer to business"
-        C2C = "C2C", "Consumer to consumer"
-        C2G = "C2G", "Consumer to Government"
-        SAAS = "SAAS", "Software on Demand"
+        B2B = "b2b", "Business to Business"
+        B2C = "b2c", "Business to consumer"
+        B2G = "b2g", "Business to Government"
+        C2B = "c2b", "Consumer to business"
+        C2C = "c2c", "Consumer to consumer"
+        C2G = "c2g", "Consumer to Government"
+        SAAS = "saas", "Software on Demand"
 
     class CurrentStage(models.TextChoices):
-        PROJECT_START = "Project Start", "Старт проекта"
-        WORKING_ON_THE_PRODUCT = "Working on the product", "Работа над продуктом"
-        ENTERING_THE_MARKET = "Entering the market", "Выход на рынок"
-        GROWTH_AND_SCALING = "Growth and scaling", "Рост и масштабирование"
+        PROJECT_START = "projectStart", "Старт проекта"
+        WORKING_ON_THE_PRODUCT = "workingOnTheProduct", "Работа над продуктом"
+        ENTERING_THE_MARKET = "enteringTheMarket", "Выход на рынок"
+        GROWTH_AND_SCALING = "growthAndScaling", "Рост и масштабирование"
 
     class CountryChoices(models.TextChoices):
         NORTHERN_AMERICA = "Northern America", "Северная Америка"
