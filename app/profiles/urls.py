@@ -7,6 +7,8 @@ from profiles.views import (
     StartUpUpdateDetailView,
     ProfessionalUpdateDetailView,
     InvestorUpdateDetailView,
+    IndustriesListView,
+    RegionsListView,
 )
 
 urlpatterns = [
@@ -38,5 +40,15 @@ urlpatterns = [
         "main/profiles/investor/",
         InvestorUpdateDetailView.as_view(),
         name="update_delete_investor",
+    ),
+    path(
+        "common/industries/",
+        IndustriesListView.as_view(),
+        name="industries_list",
+    ),
+    path(
+        "common/regions/",
+        RegionsListView.as_view(),
+        name="regions_list",
     ),
 ]

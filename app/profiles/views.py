@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
 
-from profiles.models import Startup, Professional, Investor
+from profiles.models import Startup, Professional, Investor, Industries, SaleRegions
 from profiles.serializers import (
     StartupBaseSerializer,
     ProfessionalBaseSerializer,
@@ -9,6 +9,8 @@ from profiles.serializers import (
     StartupUpdateSerializer,
     ProfessionalUpdateSerializer,
     InvestorUpdateSerializer,
+    IndustriesSerializer,
+    SaleRegionSerializer,
 )
 
 
@@ -75,3 +77,17 @@ class InvestorUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         obj = Professional.objects.filter(owner__id=self.request.user.id).first()
         return obj
+
+
+class IndustriesListView(generics.ListAPIView):
+    """Список всех индустрий"""
+
+    queryset = Industries.objects.all()
+    serializer_class = IndustriesSerializer
+
+
+class RegionsListView(generics.ListAPIView):
+    """Список всех регионов"""
+
+    queryset = SaleRegions.objects.all()
+    serializer_class = SaleRegionSerializer
