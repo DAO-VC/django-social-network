@@ -26,6 +26,7 @@ services:
       poetry run python manage.py loaddata fixtures/bussines.json &&
       poetry run python manage.py loaddata fixtures/industries.json &&
       poetry run python manage.py loaddata fixtures/regions.json"
+      poetry run python manage.py loaddata fixtures/users.json"
 
   postgres:
     image: postgres:15

@@ -219,20 +219,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.dao.vc",
     "https://*.dao.vc/",
 ]
-# # CSRF_COOKIE_SECURE = False
-# # SESSION_COOKIE_SECURE = False
-# CSRF_COOKIE_SAMESITE = "Lax"
-# SESSION_COOKIE_SAMESITE = "Lax"
-# CSRF_COOKIE_HTTPONLY = True
-# SESSION_COOKIE_HTTPONLY = True
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:4200",
-#     "http://127.0.0.1:4200",
-#     "https://social-dev.dao.vc",
-#     "https://*.dao.vc",
-# ]
-# CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 
 # TODO : Пермишн на все ручки добавить
 
