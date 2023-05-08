@@ -1,6 +1,4 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-
+from django.urls import path
 from image.views import BackgroundViewSet, LogoViewSet, FilesViewSet
 
 image_list = BackgroundViewSet.as_view(

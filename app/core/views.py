@@ -126,7 +126,7 @@ class ResetPassword(GenericAPIView):
                 "reset_password",
                 kwargs={"encoded_pk": encoded_pk, "token": token},
             )
-            reset_link = f"localhost:8000{reset_url}"
+            reset_link = f"https://social-dev.dao.vc{reset_url}"
             try:
                 send_emails(recipient_email=email, message_url=reset_link)
                 return Response("Success. Check Your Email")
