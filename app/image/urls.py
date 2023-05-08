@@ -10,15 +10,6 @@ image_list = ImageViewSet.as_view(
 
 image_detail = ImageViewSet.as_view({"get": "retrieve", "delete": "destroy"})
 
-# logo_list = LogoViewSet.as_view(
-#     {
-#         "get": "list",
-#         "post": "create",
-#     }
-# )
-#
-# logo_detail = LogoViewSet.as_view({"get": "retrieve", "delete": "destroy"})
-
 file_list = FilesViewSet.as_view(
     {
         "get": "list",

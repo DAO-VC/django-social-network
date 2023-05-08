@@ -212,28 +212,6 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:4200",
-#     "https://social-dev.dao.vc",
-#     "https://social-dev.dao.vc/",
-#     "https://*.dao.vc",
-#     "https://*.dao.vc/",
-# ]
-# # CSRF_COOKIE_SECURE = False
-# # SESSION_COOKIE_SECURE = False
-# CSRF_COOKIE_SAMESITE = "Lax"
-# SESSION_COOKIE_SAMESITE = "Lax"
-# CSRF_COOKIE_HTTPONLY = True
-# SESSION_COOKIE_HTTPONLY = True
-
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:4200",
-#     "http://127.0.0.1:4200",
-#     "https://social-dev.dao.vc",
-#     "https://*.dao.vc",
-# ]
-# CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
-
 # TODO : Пермишн на все ручки добавить
 
 
@@ -265,5 +243,4 @@ LOGGING = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
-    # "TOKEN_OBTAIN_SERIALIZER": "core.serializers.MyTokenObtainPairSerializer",
 }

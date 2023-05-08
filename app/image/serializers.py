@@ -15,17 +15,6 @@ class ImageSerializer(FlexFieldsModelSerializer):
         ]
 
 
-# class LogoSerializer(FlexFieldsModelSerializer):
-#     logo = VersatileImageFieldSerializer(sizes="product_headshot")
-#
-#     class Meta:
-#         model = Logo
-#         fields = [
-#             "id",
-#             "logo",
-#         ]
-
-
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File

@@ -11,13 +11,6 @@ class ImageViewSet(FlexFieldsModelViewSet):
     queryset = Image.objects.all()
 
 
-# class LogoViewSet(FlexFieldsModelViewSet):
-#     """Создание | Получение | Удаление лого"""
-#
-#     serializer_class = LogoSerializer
-#     queryset = Logo.objects.all()
-
-
 class FilesViewSet(viewsets.ModelViewSet):
     """Создание | Получение | Удаление файла [.pdf, .pptx]"""
 
