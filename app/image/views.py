@@ -1,21 +1,21 @@
-from .models import Background, Logo, File
-from .serializers import BackgroundSerializer, LogoSerializer, FileSerializer
+from .models import Image, File
+from .serializers import ImageSerializer, FileSerializer
 from rest_flex_fields.views import FlexFieldsModelViewSet
 from rest_framework import viewsets
 
 
-class BackgroundViewSet(FlexFieldsModelViewSet):
-    """Создание | Получение | Удаление бэкграунда"""
+class ImageViewSet(FlexFieldsModelViewSet):
+    """Создание | Получение | Удаление изображения"""
 
-    serializer_class = BackgroundSerializer
-    queryset = Background.objects.all()
+    serializer_class = ImageSerializer
+    queryset = Image.objects.all()
 
 
-class LogoViewSet(FlexFieldsModelViewSet):
-    """Создание | Получение | Удаление лого"""
-
-    serializer_class = LogoSerializer
-    queryset = Logo.objects.all()
+# class LogoViewSet(FlexFieldsModelViewSet):
+#     """Создание | Получение | Удаление лого"""
+#
+#     serializer_class = LogoSerializer
+#     queryset = Logo.objects.all()
 
 
 class FilesViewSet(viewsets.ModelViewSet):

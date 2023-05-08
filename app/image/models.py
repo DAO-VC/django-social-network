@@ -10,27 +10,27 @@ from image.validators import (
 )
 
 
-class Background(models.Model):
-    background = VersatileImageField(
+class Image(models.Model):
+    image = VersatileImageField(
         "Background",
-        upload_to="backgrounds/",
-        ppoi_field="background_ppoi",
+        upload_to="images/",
+        ppoi_field="image_ppoi",
         validators=[validate_image_extension, validate_image_size],
     )
-    background_ppoi = PPOIField()
+    image_ppoi = PPOIField()
 
 
-class Logo(models.Model):
-    logo = VersatileImageField(
-        "Logo",
-        upload_to="logos/",
-        ppoi_field="logo_ppoi",
-        validators=[validate_image_extension, validate_image_size],
-    )
-    logo_ppoi = PPOIField()
+# class Logo(models.Model):
+#     logo = VersatileImageField(
+#         "Logo",
+#         upload_to="logos/",
+#         ppoi_field="logo_ppoi",
+#         validators=[validate_image_extension, validate_image_size],
+#     )
+#     logo_ppoi = PPOIField()
 
 
 class File(models.Model):
     pdf = models.FileField(
-        upload_to="pdf/", validators=[validate_file_size, validate_file_extension]
+        upload_to="files/", validators=[validate_file_size, validate_file_extension]
     )
