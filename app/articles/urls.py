@@ -1,6 +1,11 @@
 from django.urls import path
 
-from articles.views import ArticleListCreateView, ArticleRetrieveView, ArticleParamView
+from articles.views import (
+    ArticleListCreateView,
+    ArticleRetrieveView,
+    ArticleParamView,
+    AllArticleListView,
+)
 
 urlpatterns = [
     path(
@@ -12,4 +17,5 @@ urlpatterns = [
         ArticleRetrieveView.as_view(),
         name="retrieve_article",
     ),
+    path("main/articles/", AllArticleListView.as_view(), name="all_list_article"),
 ]

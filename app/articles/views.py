@@ -6,6 +6,14 @@ from articles.models import Article
 from articles.serializers import ArticleCreateSerializer, ArticleUpdateSerializer
 
 
+class AllArticleListView(generics.ListAPIView):
+    """Список всех постов сайта"""
+
+    queryset = Article.objects.all()
+    serializer_class = ArticleCreateSerializer
+    # TODO: сортировка по дате создания
+
+
 class ArticleListCreateView(generics.ListCreateAPIView):
     """Список всех постов стартапа | создание поста"""
 
