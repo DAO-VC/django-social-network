@@ -8,6 +8,7 @@ from profiles.models import (
     Industries,
     SaleRegions,
     Resume,
+    BusinessType,
 )
 from profiles.permissions import ResumePermission
 from profiles.serializers import (
@@ -21,6 +22,7 @@ from profiles.serializers import (
     SaleRegionSerializer,
     ResumeCreateSerializer,
     ResumeUpdateSerializer,
+    BusinessTypeSerializer,
 )
 
 
@@ -94,6 +96,13 @@ class IndustriesListView(generics.ListAPIView):
 
     queryset = Industries.objects.all()
     serializer_class = IndustriesSerializer
+
+
+class BusinessTypeListView(generics.ListAPIView):
+    """Список всех бизнес-типов"""
+
+    queryset = BusinessType.objects.all()
+    serializer_class = BusinessTypeSerializer
 
 
 class RegionsListView(generics.ListAPIView):

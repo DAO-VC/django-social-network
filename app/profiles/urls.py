@@ -11,6 +11,7 @@ from profiles.views import (
     RegionsListView,
     ResumeListCreateView,
     ResumeRetrieveUpdateDeleteView,
+    BusinessTypeListView,
 )
 
 urlpatterns = [
@@ -52,6 +53,11 @@ urlpatterns = [
         "common/regions/",
         RegionsListView.as_view(),
         name="regions_list",
+    ),
+    path(
+        "common/business_types/",
+        BusinessTypeListView.as_view(),
+        name="business_type_list",
     ),
     path(
         "main/resume/",
