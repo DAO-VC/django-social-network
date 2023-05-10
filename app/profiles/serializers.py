@@ -260,5 +260,4 @@ class ResumeUpdateSerializer(serializers.ModelSerializer):
         skills = validated_data.pop("skills")
         if len(skills) > 0:
             instance.interest.set(skills)
-        # test
         return super().update(instance, validated_data)

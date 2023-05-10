@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from profiles.models import Startup
-from vacancy.models import Vacancy
+from profiles.models import Startup, Investor
+from vacancy.models import Vacancy, Offer
 
 
 class VacancyCreateSerializer(serializers.ModelSerializer):
@@ -32,9 +32,42 @@ class VacancyUpdateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def update(self, instance, validated_data):
-
         skills = validated_data.pop("skills")
         if len(skills) > 0:
             instance.skills.set(skills)
 
+        return super().update(instance, validated_data)
+
+
+class OfferCreateSerializer(serializers.ModelSerializer):
+    investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+
+    class Meta:
+        model = Offer
+        fields = "__all__"
+
+    def create(self, validated_data):
+        investor: Investor = Investor.objects.filter(
+            owner=self.context["request"].user
+        ).first()
+
+        industries = validated_data.pop("industries")
+        if len(industries) < 1:
+            raise ValidationError("Минимум одина индустрия")
+
+        resume = Offer.objects.create(**validated_data, investor_id=investor)
+        resume.industries.set(industries)
+
+        return resume
+
+
+class OfferUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Offer
+        exclude = ("investor_id",)
+
+    def update(self, instance, validated_data):
+        industries = validated_data.pop("industries")
+        if len(industries) > 0:
+            instance.industries.set(industries)
         return super().update(instance, validated_data)
