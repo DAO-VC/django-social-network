@@ -1,7 +1,15 @@
 from django.shortcuts import render
 from rest_framework import generics
 
-from profiles.models import Startup, Professional, Investor, Industries, SaleRegions
+from profiles.models import (
+    Startup,
+    Professional,
+    Investor,
+    Industries,
+    SaleRegions,
+    Resume,
+)
+from profiles.permissions import ResumePermission
 from profiles.serializers import (
     StartupBaseSerializer,
     ProfessionalBaseSerializer,
@@ -11,6 +19,8 @@ from profiles.serializers import (
     InvestorUpdateSerializer,
     IndustriesSerializer,
     SaleRegionSerializer,
+    ResumeCreateSerializer,
+    ResumeUpdateSerializer,
 )
 
 
@@ -91,3 +101,22 @@ class RegionsListView(generics.ListAPIView):
 
     queryset = SaleRegions.objects.all()
     serializer_class = SaleRegionSerializer
+
+
+class ResumeListCreateView(generics.ListCreateAPIView):
+    """Список всех резюме профессионала | создание резюме"""
+
+    queryset = Resume.objects.all()
+    serializer_class = ResumeCreateSerializer
+
+    def get_queryset(self):
+        return Resume.objects.filter(professional_id__owner=self.request.user.id)
+
+
+class ResumeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Получение | удаление | обновление резюме"""
+
+    queryset = Resume.objects.all()
+    serializer_class = ResumeUpdateSerializer
+    http_method_names = ["get", "put", "delete"]
+    permission_classes = [ResumePermission]

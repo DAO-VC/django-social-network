@@ -9,6 +9,8 @@ from profiles.views import (
     InvestorUpdateDetailView,
     IndustriesListView,
     RegionsListView,
+    ResumeListCreateView,
+    ResumeRetrieveUpdateDeleteView,
 )
 
 urlpatterns = [
@@ -50,5 +52,15 @@ urlpatterns = [
         "common/regions/",
         RegionsListView.as_view(),
         name="regions_list",
+    ),
+    path(
+        "main/resume/",
+        ResumeListCreateView.as_view(),
+        name="get_create_resume",
+    ),
+    path(
+        "main/resume/<int:pk>",
+        ResumeRetrieveUpdateDeleteView.as_view(),
+        name="retrieve_resume",
     ),
 ]
