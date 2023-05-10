@@ -261,6 +261,7 @@ class BusinessType(models.Model):
 
 class Resume(models.Model):
     professional_id = models.ForeignKey(Professional, models.CASCADE)
+    link = models.CharField("Ссылка", max_length=32, null=True, blank=True)
     name_surname = models.CharField("Имя-фамилия", max_length=32)
     position = models.CharField("Позиция", max_length=32)
     phone = PhoneNumberField(max_length=128, verbose_name="Номер телефона")
