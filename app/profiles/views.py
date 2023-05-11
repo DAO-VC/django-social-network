@@ -30,28 +30,37 @@ from profiles.serializers import (
 )
 
 
-class StartUpCreateView(generics.CreateAPIView):
+class StartUpCreateView(generics.ListCreateAPIView):
     """Онбоардинг стартап"""
 
     queryset = Startup.objects.all()
     serializer_class = StartupBaseSerializer
     permission_classes = (IsAuthenticated, StartupCreatePermission)
 
+    def get_queryset(self):
+        return Startup.objects.filter(owner__id=self.request.user.id)
 
-class ProfessionalCreateView(generics.CreateAPIView):
+
+class ProfessionalCreateView(generics.ListCreateAPIView):
     """Онбоардинг профессионал"""
 
     queryset = Professional.objects.all()
     serializer_class = ProfessionalBaseSerializer
     permission_classes = (IsAuthenticated, ProfessionalCreatePermission)
 
+    def get_queryset(self):
+        return Professional.objects.filter(owner__id=self.request.user.id)
 
-class InvestorCreateView(generics.CreateAPIView):
+
+class InvestorCreateView(generics.ListCreateAPIView):
     """Онбоардинг инвестор"""
 
     queryset = Investor.objects.all()
     serializer_class = InvestorBaseSerializer
     permission_classes = (IsAuthenticated, InvestorCreatePermission)
+
+    def get_queryset(self):
+        return Investor.objects.filter(owner__id=self.request.user.id)
 
 
 # class StartListCreateView(generics.ListCreateAPIView):
