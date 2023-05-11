@@ -29,6 +29,7 @@ class User(AbstractUser):
             "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
         ),
     )
+    is_onboarding = models.BooleanField(verbose_name="Онбоардинг")
     objects = UserManager()
     profile = models.CharField("Профиль", choices=UserProfile.choices, max_length=12)
 

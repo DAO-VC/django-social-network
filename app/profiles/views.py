@@ -16,6 +16,7 @@ from profiles.models import (
     SaleRegions,
     BusinessType,
 )
+from profiles.permissions import OnboardingPermission
 
 from profiles.serializers import (
     StartupBaseSerializer,
@@ -38,7 +39,11 @@ class StartUpCreateView(generics.CreateAPIView):
 
     queryset = Startup.objects.all()
     serializer_class = StartupBaseSerializer
-    permission_classes = (IsAuthenticated, StartupCreatePermission)
+    permission_classes = (
+        IsAuthenticated,
+        StartupCreatePermission,
+        OnboardingPermission,
+    )
 
     # def get_queryset(self):
     #     return Startup.objects.filter(owner__id=self.request.user.id)
@@ -49,7 +54,11 @@ class ProfessionalCreateView(generics.CreateAPIView):
 
     queryset = Professional.objects.all()
     serializer_class = ProfessionalBaseSerializer
-    permission_classes = (IsAuthenticated, ProfessionalCreatePermission)
+    permission_classes = (
+        IsAuthenticated,
+        ProfessionalCreatePermission,
+        OnboardingPermission,
+    )
 
     # def get_queryset(self):
     #     return Professional.objects.filter(owner__id=self.request.user.id)
@@ -60,7 +69,11 @@ class InvestorCreateView(generics.CreateAPIView):
 
     queryset = Investor.objects.all()
     serializer_class = InvestorBaseSerializer
-    permission_classes = (IsAuthenticated, InvestorCreatePermission)
+    permission_classes = (
+        IsAuthenticated,
+        InvestorCreatePermission,
+        OnboardingPermission,
+    )
 
     # def get_queryset(self):
     #     return Investor.objects.filter(owner__id=self.request.user.id)
@@ -78,7 +91,10 @@ class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Startup.objects.all()
     serializer_class = StartupUpdateSerializer
     http_method_names = ["get", "put"]
-    permission_classes = (IsAuthenticated, UpdatePermission)
+    permission_classes = (
+        IsAuthenticated,
+        UpdatePermission,
+    )
 
     def get_serializer_class(self):
         if self.request.method == "GET":

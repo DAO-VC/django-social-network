@@ -90,6 +90,8 @@ class StartupBaseSerializer(serializers.ModelSerializer):
         startup.industries.set(industries)
         startup.regions.set(regions)
         startup.business_type.set(business_type)
+        owner.is_onboarding = True
+        owner.save()
         # TODO : добавить транзакции
         return startup
 
@@ -112,6 +114,9 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
 
         professional.skills.set(skills)
         professional.interest.set(interest)
+
+        owner.is_onboarding = True
+        owner.save()
 
         return professional
 
@@ -137,6 +142,9 @@ class InvestorBaseSerializer(serializers.ModelSerializer):
         )
 
         investor.interest.set(interest)
+
+        owner.is_onboarding = True
+        owner.save()
 
         return investor
 

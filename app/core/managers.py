@@ -13,6 +13,7 @@ class UserManager(BaseUserManager):
         user.first_name = first_name
         user.last_name = last_name
         user.is_active = False
+        user.is_onboarding = False
         user.phone = phone
         user.set_password(password)
         user.save(using=self._db)
