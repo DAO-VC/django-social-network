@@ -255,6 +255,7 @@ class SaleRegions(models.Model):
 
 class BusinessType(models.Model):
     title = models.CharField("Название", max_length=32)
+    description = models.TextField("Описание")
 
     def __str__(self):
         return self.title

@@ -3,49 +3,56 @@
     "model": "profiles.businesstype",
     "pk": 1,
     "fields": {
-      "title": "B2B"
+      "title": "b2b",
+      "description": "The type of interaction when the company is a supplier of goods or services for other companies and entrepreneurs."
     }
   },
   {
     "model": "profiles.businesstype",
     "pk": 2,
     "fields": {
-      "title": "B2C"
+      "title": "b2c",
+      "description": "Commercial interaction, where the consumer of a product or service is an end user - an individual"
     }
   },
   {
     "model": "profiles.businesstype",
     "pk": 3,
     "fields": {
-      "title": "B2G"
+      "title": "b2g",
+      "description": "Business relationship between a commercial structure and the state.Sales of goods."
     }
   },
   {
     "model": "profiles.businesstype",
     "pk": 4,
     "fields": {
-      "title": "C2B"
+      "title": "c2b",
+      "description": "TA business model where the consumer independently generates demand. company creates and adapts a product according to consumer demand building on the data of the real market creates and adapts a product according to consumer demand."
     }
   },
   {
     "model": "profiles.businesstype",
     "pk": 5,
     "fields": {
-      "title": "C2C"
+      "title": "c2c",
+      "description": "A form of e-commerce where commercial transactions take place between consumers. Business in this case acts as an intermediary and provides a trading platform for interaction."
     }
   },
   {
     "model": "profiles.businesstype",
     "pk": 6,
     "fields": {
-      "title": "C2G"
+      "title": "c2g",
+      "description": "A form of interaction where electronic transactions are conducted between individuals and government organizations."
     }
   },
   {
     "model": "profiles.businesstype",
     "pk": 7,
     "fields": {
-      "title": "SAAS"
+      "title": "saas",
+      "description": "Business relationship between a commercial structure and the state. Sales of goods."
     }
   }
 ]
