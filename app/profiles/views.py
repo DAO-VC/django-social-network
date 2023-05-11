@@ -27,40 +27,43 @@ from profiles.serializers import (
     IndustriesSerializer,
     SaleRegionSerializer,
     BusinessTypeSerializer,
+    StartupSerializer,
+    ProfessionalSerializer,
+    InvestorSerializer,
 )
 
 
-class StartUpCreateView(generics.ListCreateAPIView):
+class StartUpCreateView(generics.CreateAPIView):
     """Онбоардинг стартап"""
 
     queryset = Startup.objects.all()
     serializer_class = StartupBaseSerializer
     permission_classes = (IsAuthenticated, StartupCreatePermission)
 
-    def get_queryset(self):
-        return Startup.objects.filter(owner__id=self.request.user.id)
+    # def get_queryset(self):
+    #     return Startup.objects.filter(owner__id=self.request.user.id)
 
 
-class ProfessionalCreateView(generics.ListCreateAPIView):
+class ProfessionalCreateView(generics.CreateAPIView):
     """Онбоардинг профессионал"""
 
     queryset = Professional.objects.all()
     serializer_class = ProfessionalBaseSerializer
     permission_classes = (IsAuthenticated, ProfessionalCreatePermission)
 
-    def get_queryset(self):
-        return Professional.objects.filter(owner__id=self.request.user.id)
+    # def get_queryset(self):
+    #     return Professional.objects.filter(owner__id=self.request.user.id)
 
 
-class InvestorCreateView(generics.ListCreateAPIView):
+class InvestorCreateView(generics.CreateAPIView):
     """Онбоардинг инвестор"""
 
     queryset = Investor.objects.all()
     serializer_class = InvestorBaseSerializer
     permission_classes = (IsAuthenticated, InvestorCreatePermission)
 
-    def get_queryset(self):
-        return Investor.objects.filter(owner__id=self.request.user.id)
+    # def get_queryset(self):
+    #     return Investor.objects.filter(owner__id=self.request.user.id)
 
 
 # class StartListCreateView(generics.ListCreateAPIView):
@@ -74,11 +77,16 @@ class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Startup.objects.all()
     serializer_class = StartupUpdateSerializer
-    http_method_names = ["put"]
+    http_method_names = ["get", "put"]
     permission_classes = (IsAuthenticated, UpdatePermission)
 
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return StartupSerializer
+        return StartupUpdateSerializer
+
     def get_object(self):
-        obj = Professional.objects.filter(owner__id=self.request.user.id).first()
+        obj = Startup.objects.filter(owner__id=self.request.user.id).first()
         return obj
 
 
@@ -87,6 +95,7 @@ class ProfessionalUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     serializer_class = ProfessionalUpdateSerializer
     http_method_names = [
+        "get",
         "put",
     ]
     permission_classes = (IsAuthenticated, UpdatePermission)
@@ -101,12 +110,13 @@ class InvestorUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     serializer_class = InvestorUpdateSerializer
     http_method_names = [
+        "get",
         "put",
     ]
     permission_classes = (IsAuthenticated, UpdatePermission)
 
     def get_object(self):
-        obj = Professional.objects.filter(owner__id=self.request.user.id).first()
+        obj = Investor.objects.filter(owner__id=self.request.user.id).first()
         return obj
 
 
@@ -149,3 +159,45 @@ class RegionsListView(generics.ListAPIView):
 #     serializer_class = ResumeUpdateSerializer
 #     http_method_names = ["get", "put", "delete"]
 #     permission_classes = [ResumePermission]
+
+
+class AllStartupListView(generics.ListAPIView):
+    """Список всех стартапов сайта"""
+
+    queryset = Startup.objects.all()
+    serializer_class = StartupSerializer
+
+
+class AllStartupRetrieveView(generics.RetrieveAPIView):
+    """Детальное получение стартапа"""
+
+    queryset = Startup.objects.all()
+    serializer_class = StartupSerializer
+
+
+class AllProfessionalsListView(generics.ListAPIView):
+    """Список всех профессионалов сайта"""
+
+    queryset = Professional.objects.all()
+    serializer_class = ProfessionalSerializer
+
+
+class AllProfessionalRetrieveView(generics.RetrieveAPIView):
+    """Детальное получение профессионалов"""
+
+    queryset = Professional.objects.all()
+    serializer_class = ProfessionalSerializer
+
+
+class AllInvestorsListView(generics.ListAPIView):
+    """Список всех инвесторов сайта"""
+
+    queryset = Investor.objects.all()
+    serializer_class = InvestorSerializer
+
+
+class AllInvestorsRetrieveView(generics.RetrieveAPIView):
+    """Детальное получение инвестора"""
+
+    queryset = Investor.objects.all()
+    serializer_class = InvestorSerializer

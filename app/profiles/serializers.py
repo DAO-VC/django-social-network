@@ -260,3 +260,21 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
 #         if len(skills) > 0:
 #             instance.interest.set(skills)
 #         return super().update(instance, validated_data)
+
+
+class StartupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Startup
+        fields = "__all__"
+
+
+class ProfessionalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Professional
+        fields = "__all__"
+
+
+class InvestorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Investor
+        fields = "__all__"

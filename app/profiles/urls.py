@@ -10,6 +10,12 @@ from profiles.views import (
     IndustriesListView,
     RegionsListView,
     BusinessTypeListView,
+    AllStartupListView,
+    AllStartupRetrieveView,
+    AllProfessionalRetrieveView,
+    AllProfessionalsListView,
+    AllInvestorsListView,
+    AllInvestorsRetrieveView,
 )
 
 urlpatterns = [
@@ -67,4 +73,34 @@ urlpatterns = [
     #     ResumeRetrieveUpdateDeleteView.as_view(),
     #     name="retrieve_resume",
     # ),
+    path(
+        "main/startups/",
+        AllStartupListView.as_view(),
+        name="all_startup_list",
+    ),
+    path(
+        "main/startups/<int:pk>",
+        AllStartupRetrieveView.as_view(),
+        name="all_startup_detail",
+    ),
+    path(
+        "main/professionals/",
+        AllProfessionalsListView.as_view(),
+        name="all_professionals_list",
+    ),
+    path(
+        "main/professionals/<int:pk>",
+        AllProfessionalRetrieveView.as_view(),
+        name="all_professionals_detail",
+    ),
+    path(
+        "main/investors/",
+        AllInvestorsListView.as_view(),
+        name="all_investors_list",
+    ),
+    path(
+        "main/investors/<int:pk>",
+        AllInvestorsRetrieveView.as_view(),
+        name="all_investors_detail",
+    ),
 ]
