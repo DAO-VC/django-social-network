@@ -7,7 +7,9 @@
       "password": "pbkdf2_sha256$600000$QdZyZ0MEtrXooxTQAV4JLD$3bZPJ7d8kw5JyzqYfZ7WrkX8sOMaSZ7ZOhBXx/Fe6iY=",
       "is_superuser": "True",
       "is_active": "True",
-      "is_staff": "True"
+      "is_staff": "True",
+      "is_onboarding": "False",
+
     }
   }
 ]
