@@ -37,12 +37,6 @@ from core.utils import send_emails
 User = get_user_model()
 
 
-def get_csrf(request):
-    response = JsonResponse({"Info": "Success - Set CSRF cookie"})
-    response["X-CSRFToken"] = get_token(request)
-    return response
-
-
 class UserRegistrationView(CreateAPIView):
     """Регистрация нового пользователя"""
 
@@ -81,20 +75,20 @@ class UserLoginView(APIView):
         )
 
 
-class UserDestroyView(DestroyAPIView):
-    """Логаут пользователя"""
-
-    queryset = User.objects.all()
-    serializer_class = UserBaseSerializer
-    permission_classes = (IsAuthenticated,)
-
-    def get_object(self):
-        obj = get_user(self.request)
-        return obj
-
-    def delete(self, request, *args, **kwargs):
-        logout(request)
-        return Response(status=204)
+# class UserDestroyView(DestroyAPIView):
+#     """Логаут пользователя"""
+#
+#     queryset = User.objects.all()
+#     serializer_class = UserBaseSerializer
+#     permission_classes = (IsAuthenticated,)
+#
+#     def get_object(self):
+#         obj = get_user(self.request)
+#         return obj
+#
+#     def delete(self, request, *args, **kwargs):
+#         logout(request)
+#         return Response(status=204)
 
 
 class MeUserView(ListAPIView):
