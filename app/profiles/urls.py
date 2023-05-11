@@ -39,7 +39,7 @@ urlpatterns = [
         name="update_delete_company",
     ),
     path(
-        "main/profiles/candidate/",
+        "main/profiles/professional/",
         ProfessionalUpdateDetailView.as_view(),
         name="update_delete_professional",
     ),
