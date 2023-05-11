@@ -260,28 +260,28 @@ class BusinessType(models.Model):
         return self.title
 
 
-class Resume(models.Model):
-    professional_id = models.ForeignKey(Professional, models.CASCADE)
-    link = models.CharField("Ссылка", max_length=32, null=True, blank=True)
-    name_surname = models.CharField("Имя-фамилия", max_length=32)
-    position = models.CharField("Позиция", max_length=32)
-    phone = PhoneNumberField(max_length=128, verbose_name="Номер телефона")
-    email = models.EmailField("Email адрес")
-    salary = models.IntegerField(verbose_name="Зарплата")
-    about = models.TextField(verbose_name="Обо мне", null=True, blank=True)
-    education = models.TextField(verbose_name="Образование", null=True, blank=True)
-    work_experience = models.TextField(
-        verbose_name="Опыт работы", null=True, blank=True
-    )
-    skills = models.ManyToManyField(
-        Industries, verbose_name="Скилы", blank=True, related_name="resume_skills"
-    )
-    photo = models.ForeignKey(
-        Image, models.CASCADE, verbose_name="Фото", null=True, blank=True
-    )
-    cv = models.ForeignKey(
-        File, models.CASCADE, verbose_name="Файл презентации", null=True, blank=True
-    )
-
-    def __str__(self):
-        return self.name_surname
+# class Resume(models.Model):
+#     professional_id = models.ForeignKey(Professional, models.CASCADE)
+#     link = models.CharField("Ссылка", max_length=32, null=True, blank=True)
+#     name_surname = models.CharField("Имя-фамилия", max_length=32)
+#     position = models.CharField("Позиция", max_length=32)
+#     phone = PhoneNumberField(max_length=128, verbose_name="Номер телефона")
+#     email = models.EmailField("Email адрес")
+#     salary = models.IntegerField(verbose_name="Зарплата")
+#     about = models.TextField(verbose_name="Обо мне", null=True, blank=True)
+#     education = models.TextField(verbose_name="Образование", null=True, blank=True)
+#     work_experience = models.TextField(
+#         verbose_name="Опыт работы", null=True, blank=True
+#     )
+#     skills = models.ManyToManyField(
+#         Industries, verbose_name="Скилы", blank=True, related_name="resume_skills"
+#     )
+#     photo = models.ForeignKey(
+#         Image, models.CASCADE, verbose_name="Фото", null=True, blank=True
+#     )
+#     cv = models.ForeignKey(
+#         File, models.CASCADE, verbose_name="Файл презентации", null=True, blank=True
+#     )
+#
+#     def __str__(self):
+#         return self.name_surname

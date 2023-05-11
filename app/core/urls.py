@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from core.views import (
     UserRegistrationView,
     UserLoginView,
-    UserDestroyView,
+    # UserDestroyView,
     MeUserView,
     ResetPassword,
     ResetPasswordView,

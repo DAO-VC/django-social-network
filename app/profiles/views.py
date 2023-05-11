@@ -1,16 +1,22 @@
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
+from core.permissions import (
+    StartupCreatePermission,
+    ProfessionalCreatePermission,
+    InvestorCreatePermission,
+    UpdatePermission,
+)
 from profiles.models import (
     Startup,
     Professional,
     Investor,
     Industries,
     SaleRegions,
-    Resume,
     BusinessType,
 )
-from profiles.permissions import ResumePermission
+
 from profiles.serializers import (
     StartupBaseSerializer,
     ProfessionalBaseSerializer,
@@ -20,8 +26,6 @@ from profiles.serializers import (
     InvestorUpdateSerializer,
     IndustriesSerializer,
     SaleRegionSerializer,
-    ResumeCreateSerializer,
-    ResumeUpdateSerializer,
     BusinessTypeSerializer,
 )
 
@@ -31,6 +35,7 @@ class StartUpCreateView(generics.CreateAPIView):
 
     queryset = Startup.objects.all()
     serializer_class = StartupBaseSerializer
+    permission_classes = (IsAuthenticated, StartupCreatePermission)
 
 
 class ProfessionalCreateView(generics.CreateAPIView):
@@ -38,6 +43,7 @@ class ProfessionalCreateView(generics.CreateAPIView):
 
     queryset = Professional.objects.all()
     serializer_class = ProfessionalBaseSerializer
+    permission_classes = (IsAuthenticated, ProfessionalCreatePermission)
 
 
 class InvestorCreateView(generics.CreateAPIView):
@@ -45,6 +51,7 @@ class InvestorCreateView(generics.CreateAPIView):
 
     queryset = Investor.objects.all()
     serializer_class = InvestorBaseSerializer
+    permission_classes = (IsAuthenticated, InvestorCreatePermission)
 
 
 # class StartListCreateView(generics.ListCreateAPIView):
@@ -59,6 +66,7 @@ class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Startup.objects.all()
     serializer_class = StartupUpdateSerializer
     http_method_names = ["put"]
+    permission_classes = (IsAuthenticated, UpdatePermission)
 
     def get_object(self):
         obj = Professional.objects.filter(owner__id=self.request.user.id).first()
@@ -72,6 +80,7 @@ class ProfessionalUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
     http_method_names = [
         "put",
     ]
+    permission_classes = (IsAuthenticated, UpdatePermission)
 
     def get_object(self):
         obj = Professional.objects.filter(owner__id=self.request.user.id).first()
@@ -85,6 +94,7 @@ class InvestorUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
     http_method_names = [
         "put",
     ]
+    permission_classes = (IsAuthenticated, UpdatePermission)
 
     def get_object(self):
         obj = Professional.objects.filter(owner__id=self.request.user.id).first()
@@ -112,20 +122,21 @@ class RegionsListView(generics.ListAPIView):
     serializer_class = SaleRegionSerializer
 
 
-class ResumeListCreateView(generics.ListCreateAPIView):
-    """Список всех резюме профессионала | создание резюме"""
-
-    queryset = Resume.objects.all()
-    serializer_class = ResumeCreateSerializer
-
-    def get_queryset(self):
-        return Resume.objects.filter(professional_id__owner=self.request.user.id)
-
-
-class ResumeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """Получение | удаление | обновление резюме"""
-
-    queryset = Resume.objects.all()
-    serializer_class = ResumeUpdateSerializer
-    http_method_names = ["get", "put", "delete"]
-    permission_classes = [ResumePermission]
+# class ResumeListCreateView(generics.ListCreateAPIView):
+#     """Список всех резюме профессионала | создание резюме"""
+#
+#     queryset = Resume.objects.all()
+#     serializer_class = ResumeCreateSerializer
+#     permission_classes = (IsAuthenticated, ProfessionalCreatePermission)
+#
+#     def get_queryset(self):
+#         return Resume.objects.filter(professional_id__owner=self.request.user.id)
+#
+#
+# class ResumeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+#     """Получение | удаление | обновление резюме"""
+#
+#     queryset = Resume.objects.all()
+#     serializer_class = ResumeUpdateSerializer
+#     http_method_names = ["get", "put", "delete"]
+#     permission_classes = [ResumePermission]
