@@ -2,6 +2,15 @@ from rest_framework import serializers
 
 from articles.models import Article
 from profiles.models import Startup
+from profiles.serializers import ImageUrlField
+
+
+class ArticleBaseSerializer(serializers.ModelSerializer):
+    image = ImageUrlField(read_only=True)
+
+    class Meta:
+        model = Article
+        fields = "__all__"
 
 
 class ArticleCreateSerializer(serializers.ModelSerializer):

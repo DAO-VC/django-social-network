@@ -21,6 +21,7 @@ class ProfessionalCreatePermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.profile != "professional":
             return False
+        return True
 
 
 class InvestorCreatePermission(permissions.BasePermission):
