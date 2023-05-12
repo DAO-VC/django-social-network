@@ -2,6 +2,8 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.relations import PrimaryKeyRelatedField
 
+from image.serializers import ImageSerializer
+from main import settings
 from profiles.models import (
     Industries,
     Achievements,
@@ -270,7 +272,25 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
 #         return super().update(instance, validated_data)
 
 
+class FileUrlField(serializers.RelatedField):
+    def to_representation(self, value):
+        # Build absolute URL (next line is just sample code)
+        url = settings.MEDIA_ROOT + str(value.pdf)
+        return url
+
+
+class ImageUrlField(serializers.RelatedField):
+    def to_representation(self, value):
+        # Build absolute URL (next line is just sample code)
+        url = settings.MEDIA_ROOT + str(value.image)
+        return url
+
+
 class StartupSerializer(serializers.ModelSerializer):
+    logo = ImageUrlField(read_only=True)
+    background = ImageUrlField(read_only=True)
+    pitch_presentation = FileUrlField(read_only=True)
+
     class Meta:
         model = Startup
         fields = "__all__"

@@ -10,14 +10,22 @@ from image.validators import (
 )
 
 
+# class Image(models.Model):
+#     image = VersatileImageField(
+#         "Background",
+#         upload_to="images/",
+#         ppoi_field="image_ppoi",
+#         validators=[validate_image_extension, validate_image_size],
+#     )
+#     image_ppoi = PPOIField()
+
+
 class Image(models.Model):
-    image = VersatileImageField(
+    image = models.FileField(
         "Background",
         upload_to="images/",
-        ppoi_field="image_ppoi",
         validators=[validate_image_extension, validate_image_size],
     )
-    image_ppoi = PPOIField()
 
 
 class File(models.Model):

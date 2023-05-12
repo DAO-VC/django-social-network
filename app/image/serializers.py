@@ -4,9 +4,18 @@ from .models import Image, File
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 
-class ImageSerializer(FlexFieldsModelSerializer):
-    image = VersatileImageFieldSerializer(sizes="product_headshot")
+# class ImageSerializer(FlexFieldsModelSerializer):
+#     image = VersatileImageFieldSerializer(sizes="product_headshot")
+#
+#     class Meta:
+#         model = Image
+#         fields = [
+#             "id",
+#             "image",
+#         ]
 
+
+class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = [
