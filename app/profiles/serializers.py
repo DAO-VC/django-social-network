@@ -275,7 +275,7 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
 class FileUrlField(serializers.RelatedField):
     def to_representation(self, value):
         # Build absolute URL (next line is just sample code)
-        url = f"http://social-dev.dao.vc{settings.MEDIA_URL} + {str(value.image)}"
+        url = f"http://social-dev.dao.vc{settings.MEDIA_URL} + {str(value.pdf)}"
         return url
 
 
