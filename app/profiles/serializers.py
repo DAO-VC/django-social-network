@@ -275,14 +275,14 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
 class FileUrlField(serializers.RelatedField):
     def to_representation(self, value):
         # Build absolute URL (next line is just sample code)
-        url = settings.MEDIA_ROOT + str(value.pdf)
+        url = settings.MEDIA_URL + str(value.pdf)
         return url
 
 
 class ImageUrlField(serializers.RelatedField):
     def to_representation(self, value):
         # Build absolute URL (next line is just sample code)
-        url = settings.MEDIA_ROOT + str(value.image)
+        url = settings.MEDIA_URL + str(value.image)
         return url
 
 
