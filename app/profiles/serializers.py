@@ -297,12 +297,18 @@ class StartupSerializer(serializers.ModelSerializer):
 
 
 class ProfessionalSerializer(serializers.ModelSerializer):
+    logo = ImageUrlField(read_only=True)
+    cv = FileUrlField(read_only=True)
+
     class Meta:
         model = Professional
         fields = "__all__"
 
 
 class InvestorSerializer(serializers.ModelSerializer):
+    photo = ImageUrlField(read_only=True)
+    cv = FileUrlField(read_only=True)
+
     class Meta:
         model = Investor
         fields = "__all__"
