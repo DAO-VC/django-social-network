@@ -86,7 +86,7 @@ class StartupBaseSerializer(serializers.ModelSerializer):
             achievements=achievement_obj,
             purpose=purpose_obj,
             social_links=social_links_obj,
-            owner=owner
+            owner=owner,
         )
 
         startup.industries.set(industries)
@@ -275,14 +275,14 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
 class FileUrlField(serializers.RelatedField):
     def to_representation(self, value):
         # Build absolute URL (next line is just sample code)
-        url = settings.MEDIA_URL + str(value.pdf)
+        url = f"http://social-dev.dao.vc{settings.MEDIA_URL} + {str(value.image)}"
         return url
 
 
 class ImageUrlField(serializers.RelatedField):
     def to_representation(self, value):
         # Build absolute URL (next line is just sample code)
-        url = settings.MEDIA_URL + str(value.image)
+        url = f"http://social-dev.dao.vc{settings.MEDIA_URL} + {str(value.image)}"
         return url
 
 
