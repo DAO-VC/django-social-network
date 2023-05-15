@@ -290,6 +290,9 @@ class StartupSerializer(serializers.ModelSerializer):
     logo = ImageUrlField(read_only=True)
     background = ImageUrlField(read_only=True)
     pitch_presentation = FileUrlField(read_only=True)
+    social_links = LinkSerializer()
+    purpose = PurposeSerializer()
+    achievements = AchievementSerializer()
 
     class Meta:
         model = Startup
@@ -308,6 +311,7 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 class InvestorSerializer(serializers.ModelSerializer):
     photo = ImageUrlField(read_only=True)
     cv = FileUrlField(read_only=True)
+    social_links = LinkSerializer()
 
     class Meta:
         model = Investor
