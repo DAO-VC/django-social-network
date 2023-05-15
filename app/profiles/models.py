@@ -53,7 +53,7 @@ class Startup(models.Model):
             "Австралия, Новая зеландия и Океания",
         )
 
-    owner = models.ForeignKey(User, models.PROTECT)
+    owner = models.ForeignKey(User, models.CASCADE)
     name = models.CharField("Название", max_length=32)
     url = models.CharField("Урл", max_length=32, null=True, blank=True)
     foundation_year = models.IntegerField(null=True, blank=True)
@@ -140,7 +140,7 @@ class Startup(models.Model):
 
 
 class Investor(models.Model):
-    owner = models.ForeignKey(User, models.PROTECT)
+    owner = models.ForeignKey(User, models.CASCADE)
     name = models.CharField("Имя", max_length=32)
     lastName = models.CharField("Фамилия", max_length=32)
     email = models.EmailField("Email адрес")
@@ -173,7 +173,7 @@ class Investor(models.Model):
 
 
 class Professional(models.Model):
-    owner = models.ForeignKey(User, models.PROTECT)
+    owner = models.ForeignKey(User, models.CASCADE)
     name = models.CharField("Имя", max_length=32)
     lastName = models.CharField("Фамилия", max_length=32)
     email = models.EmailField("Email адрес")
