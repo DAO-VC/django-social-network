@@ -74,8 +74,8 @@ class EmailSerializer(serializers.Serializer):
 
 
 class ResetPasswordSerializer(serializers.Serializer):
-    password = serializers.CharField(write_only=True, max_length=4)
-    password_repeat = serializers.CharField(write_only=True, max_length=4)
+    password = serializers.CharField(write_only=True)
+    password_repeat = serializers.CharField(write_only=True)
 
     class Meta:
         fields = ("password",)
