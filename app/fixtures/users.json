@@ -11,5 +11,44 @@
       "is_onboarding": "False"
 
     }
+  },
+  {
+    "model": "core.user",
+    "pk": 2,
+    "fields": {
+      "email": "startup@gmail.com",
+      "password": "pbkdf2_sha256$600000$21XGDYs5rRa4uvsvkxOqGO$JoQ/o2LM7tKyYmPQ6dDJJqaUqfGO7Xl10r8cpNG9ht4=",
+      "is_superuser": "False",
+      "is_active": "True",
+      "is_staff": "False",
+      "is_onboarding": "False",
+      "profile": "startup"
+    }
+  },
+   {
+    "model": "core.user",
+    "pk": 3,
+    "fields": {
+      "email": "investor@gmail.com",
+      "password": "pbkdf2_sha256$600000$21XGDYs5rRa4uvsvkxOqGO$JoQ/o2LM7tKyYmPQ6dDJJqaUqfGO7Xl10r8cpNG9ht4=",
+      "is_superuser": "False",
+      "is_active": "True",
+      "is_staff": "False",
+      "is_onboarding": "False",
+      "profile": "investor"
+    }
+  },
+     {
+    "model": "core.user",
+    "pk": 4,
+    "fields": {
+      "email": "candidate@gmail.com",
+      "password": "pbkdf2_sha256$600000$21XGDYs5rRa4uvsvkxOqGO$JoQ/o2LM7tKyYmPQ6dDJJqaUqfGO7Xl10r8cpNG9ht4=",
+      "is_superuser": "False",
+      "is_active": "True",
+      "is_staff": "False",
+      "is_onboarding": "False",
+      "profile": "professional"
+    }
   }
 ]
