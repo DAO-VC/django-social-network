@@ -4,6 +4,7 @@
     "pk": 1,
     "fields": {
       "title": "b2b",
+      "full_title": "Business to Business",
       "description": "The type of interaction when the company is a supplier of goods or services for other companies and entrepreneurs."
     }
   },
@@ -12,6 +13,7 @@
     "pk": 2,
     "fields": {
       "title": "b2c",
+      "full_title": "Business to consumer",
       "description": "Commercial interaction, where the consumer of a product or service is an end user - an individual"
     }
   },
@@ -20,6 +22,7 @@
     "pk": 3,
     "fields": {
       "title": "b2g",
+      "full_title": "Business to Government",
       "description": "Business relationship between a commercial structure and the state.Sales of goods."
     }
   },
@@ -28,6 +31,7 @@
     "pk": 4,
     "fields": {
       "title": "c2b",
+      "full_title": "Consumer to business",
       "description": "TA business model where the consumer independently generates demand. company creates and adapts a product according to consumer demand building on the data of the real market creates and adapts a product according to consumer demand."
     }
   },
@@ -36,6 +40,7 @@
     "pk": 5,
     "fields": {
       "title": "c2c",
+      "full_title": "Consumer to consumer",
       "description": "A form of e-commerce where commercial transactions take place between consumers. Business in this case acts as an intermediary and provides a trading platform for interaction."
     }
   },
@@ -44,6 +49,7 @@
     "pk": 6,
     "fields": {
       "title": "c2g",
+      "full_title": "Consumer to Government",
       "description": "A form of interaction where electronic transactions are conducted between individuals and government organizations."
     }
   },
@@ -52,6 +58,7 @@
     "pk": 7,
     "fields": {
       "title": "saas",
+      "full_title": "Software on Demand",
       "description": "Business relationship between a commercial structure and the state. Sales of goods."
     }
   }
