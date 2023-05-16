@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
@@ -45,9 +44,6 @@ class StartUpCreateView(generics.CreateAPIView):
         OnboardingPermission,
     )
 
-    # def get_queryset(self):
-    #     return Startup.objects.filter(owner__id=self.request.user.id)
-
 
 class ProfessionalCreateView(generics.CreateAPIView):
     """Онбоардинг профессионал"""
@@ -60,9 +56,6 @@ class ProfessionalCreateView(generics.CreateAPIView):
         OnboardingPermission,
     )
 
-    # def get_queryset(self):
-    #     return Professional.objects.filter(owner__id=self.request.user.id)
-
 
 class InvestorCreateView(generics.CreateAPIView):
     """Онбоардинг инвестор"""
@@ -74,15 +67,6 @@ class InvestorCreateView(generics.CreateAPIView):
         InvestorCreatePermission,
         OnboardingPermission,
     )
-
-    # def get_queryset(self):
-    #     return Investor.objects.filter(owner__id=self.request.user.id)
-
-
-# class StartListCreateView(generics.ListCreateAPIView):
-#     """Создание стартапа"""
-#     queryset = Startup.objects.all()
-#     serializer_class = StartupBaseSerializer
 
 
 class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):

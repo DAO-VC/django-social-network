@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework.relations import PrimaryKeyRelatedField
-
 from image.serializers import ImageSerializer, FileSerializer
-from main import settings
 from profiles.models import (
     Industries,
     Achievements,

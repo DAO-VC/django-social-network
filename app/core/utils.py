@@ -37,8 +37,5 @@ def send_verification_mail(email):
 
     message = get_template("letter-code.html").render(ctx)
 
-    subject = "DAO verification code"
-    # message = f"Your verification code:\n{generated_code}\nThanks for using DAO."
-
     send_emails(recipient_email=email, message_url=message)
     return generated_code

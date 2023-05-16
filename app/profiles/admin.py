@@ -11,7 +11,7 @@ from profiles.models import (
     Industries,
 )
 
-# Register your models here.
+
 admin.site.register(Startup)
 admin.site.register(Investor)
 admin.site.register(Professional)

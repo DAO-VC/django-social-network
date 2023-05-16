@@ -21,8 +21,6 @@ file_detail = FilesViewSet.as_view({"get": "retrieve", "delete": "destroy"})
 urlpatterns = [
     path("images/", image_list, name="image_list"),
     path("images/<int:pk>/", image_detail, name="image_detail"),
-    # path("logo/", logo_list, name="logo_list"),
-    # path("logo/<int:pk>/", logo_detail, name="logo_detail"),
     path("documents/", file_list, name="file_list"),
     path("documents/<int:pk>/", file_detail, name="file_detail"),
 ]

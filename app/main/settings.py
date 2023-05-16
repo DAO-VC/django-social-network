@@ -68,7 +68,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "corsheaders.middleware.CorsPostCsrfMiddleware",
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -95,39 +94,10 @@ WSGI_APPLICATION = "main.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 DATABASES = {
     "default": env.db(),
 }
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-#     },
-#     {
-#         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-#     },
-#     {
-#         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-#     },
-#     {
-#         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-#     },
-#     {'NAME': 'core.validators.UppercaseValidator', },
-#     {'NAME': 'core.validators.LowercaseValidator', },
-#     {'NAME': 'core.validators.SymbolValidator', },
-#     {'NAME': 'my.project.validators.NumberValidator',
-#      'OPTIONS': {
-#          'min_digits': 1, }},
-#
-# ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -193,9 +163,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "core.validators.LowercaseValidator",
     },
-    # {
-    #     "NAME": "core.validators.SymbolValidator",
-    # },
 ]
 
 MEDIA_URL = "/media/"

@@ -43,7 +43,6 @@ class UserRegistrationView(CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
 
-# @method_decorator(csrf_protect, name="dispatch")
 @method_decorator(csrf_exempt, name="dispatch")
 class UserLoginView(APIView):
     """Логин пользователя"""
@@ -72,22 +71,6 @@ class UserLoginView(APIView):
         return JsonResponse(
             {"error": "Invalid login"}, status=status.HTTP_404_NOT_FOUND
         )
-
-
-# class UserDestroyView(DestroyAPIView):
-#     """Логаут пользователя"""
-#
-#     queryset = User.objects.all()
-#     serializer_class = UserBaseSerializer
-#     permission_classes = (IsAuthenticated,)
-#
-#     def get_object(self):
-#         obj = get_user(self.request)
-#         return obj
-#
-#     def delete(self, request, *args, **kwargs):
-#         logout(request)
-#         return Response(status=204)
 
 
 class MeUserView(ListAPIView):
