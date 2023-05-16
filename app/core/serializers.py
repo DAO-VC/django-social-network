@@ -32,7 +32,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def validate_password_repeat(self, data):
         if data != self.initial_data.get("password"):
-            raise serializers.ValidationError("Пароли не одинаковые")
+            raise serializers.ValidationError("Passwords are not the same")
         return data
 
     def create(self, validated_data):

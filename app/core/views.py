@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     DestroyAPIView,
@@ -55,12 +56,12 @@ class UserLoginView(APIView):
         email = data.get("email")
         if email in [None, ""]:
             return JsonResponse(
-                {"email": ["Введите email"]}, status=status.HTTP_400_BAD_REQUEST
+                {"email": ["Enter email"]}, status=status.HTTP_400_BAD_REQUEST
             )
         password = data.get("password")
         if password in [None, ""]:
             return JsonResponse(
-                {"password": ["Введите пароль"]}, status=status.HTTP_400_BAD_REQUEST
+                {"password": ["Enter password"]}, status=status.HTTP_400_BAD_REQUEST
             )
 
         user = authenticate(request, email=email, password=password)
@@ -170,7 +171,7 @@ class UserValidateEmailView(UpdateAPIView):
 
 
 class MeUserDeleteView(DestroyAPIView):
-    """Эндпоинт  для удаления данных  пользователя"""
+    """Эндпоинт для удаления данных пользователя"""
 
     queryset = User.objects.all()
     serializer_class = UserBaseSerializer
