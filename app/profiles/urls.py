@@ -74,32 +74,32 @@ urlpatterns = [
     #     name="retrieve_resume",
     # ),
     path(
-        "main/startups/",
+        "common/startups/",
         AllStartupListView.as_view(),
         name="all_startup_list",
     ),
     path(
-        "main/startups/<int:pk>",
+        "common/startups/<int:pk>",
         AllStartupRetrieveView.as_view(),
         name="all_startup_detail",
     ),
     path(
-        "main/professionals/",
+        "common/professionals/",
         AllProfessionalsListView.as_view(),
         name="all_professionals_list",
     ),
     path(
-        "main/professionals/<int:pk>",
+        "common/professionals/<int:pk>",
         AllProfessionalRetrieveView.as_view(),
         name="all_professionals_detail",
     ),
     path(
-        "main/investors/",
+        "common/investors/",
         AllInvestorsListView.as_view(),
         name="all_investors_list",
     ),
     path(
-        "main/investors/<int:pk>",
+        "common/investors/<int:pk>",
         AllInvestorsRetrieveView.as_view(),
         name="all_investors_detail",
     ),

@@ -5,6 +5,12 @@ from profiles.models import Startup, Investor
 from vacancy.models import Vacancy, Offer
 
 
+class VacancyBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vacancy
+        fields = "__all__"
+
+
 class VacancyCreateSerializer(serializers.ModelSerializer):
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
 

@@ -12,12 +12,12 @@ from articles.serializers import (
 from core.permissions import StartupCreatePermission
 
 
-class AllArticleListView(generics.ListAPIView):
-    """Список всех постов сайта"""
-
-    queryset = Article.objects.all()
-    serializer_class = ArticleBaseSerializer
-    # TODO: сортировка по дате создания
+# class AllArticleListView(generics.ListAPIView):
+#     """Список всех постов сайта"""
+#
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleBaseSerializer
+#     # TODO: сортировка по дате создания
 
 
 class ArticleListCreateView(generics.ListCreateAPIView):
@@ -51,7 +51,7 @@ class ArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ArticleParamView(generics.ListAPIView):
-    """Поиск по названию поста"""
+    """Список всех статей | Поиск по названию поста"""
 
     queryset = Article.objects.all()
     serializer_class = ArticleBaseSerializer

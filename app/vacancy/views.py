@@ -6,6 +6,7 @@ from core.permissions import (
     StartupCreatePermission,
     UpdatePermission,
 )
+from vacancy.filters import VacancyFilter
 from vacancy.models import Vacancy, Offer
 from vacancy.permissions import OfferPermission
 from vacancy.serializers import (
@@ -13,6 +14,7 @@ from vacancy.serializers import (
     VacancyUpdateSerializer,
     OfferCreateSerializer,
     OfferUpdateSerializer,
+    VacancyBaseSerializer,
 )
 
 
@@ -54,3 +56,12 @@ class OfferRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OfferUpdateSerializer
     http_method_names = ["get", "put", "delete"]
     permission_classes = [IsAuthenticated, OfferPermission]
+
+
+class VacancyParamView(generics.ListAPIView):
+    """Список всех вакансий | поиск по ним"""
+
+    queryset = Vacancy.objects.all()
+    serializer_class = VacancyBaseSerializer
+    filterset_class = VacancyFilter
+    permission_classes = (IsAuthenticated,)

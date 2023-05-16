@@ -5,6 +5,7 @@ from vacancy.views import (
     VacancyRetrieveView,
     OfferListCreateView,
     OfferRetrieveUpdateDeleteView,
+    VacancyParamView,
 )
 
 urlpatterns = [
@@ -26,4 +27,5 @@ urlpatterns = [
         OfferRetrieveUpdateDeleteView.as_view(),
         name="retrieve_offer",
     ),
+    path("common/vacancies/", VacancyParamView.as_view(), name="search_vacancy"),
 ]
