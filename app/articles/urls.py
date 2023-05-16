@@ -7,10 +7,10 @@ from articles.views import (
 )
 
 urlpatterns = [
-    path("main/article/", ArticleListCreateView.as_view(), name="list_create_article"),
+    path("main/articles/", ArticleListCreateView.as_view(), name="list_create_article"),
     path("common/articles/", ArticleParamView.as_view(), name="all_articles"),
     path(
-        "main/article/<int:pk>",
+        "main/articles/<int:pk>",
         ArticleRetrieveView.as_view(),
         name="retrieve_article",
     ),
