@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
 from articles.models import Article
+from image.serializers import ImageSerializer
 from profiles.models import Startup
-from profiles.serializers import ImageUrlField
 
 
 class ArticleBaseSerializer(serializers.ModelSerializer):
-    image = ImageUrlField(read_only=True)
+    image = ImageSerializer(read_only=True)
 
     class Meta:
         model = Article

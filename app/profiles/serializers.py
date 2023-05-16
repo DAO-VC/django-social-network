@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.relations import PrimaryKeyRelatedField
 
-from image.serializers import ImageSerializer
+from image.serializers import ImageSerializer, FileSerializer
 from main import settings
 from profiles.models import (
     Industries,
@@ -272,24 +272,10 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
 #         return super().update(instance, validated_data)
 
 
-class FileUrlField(serializers.RelatedField):
-    def to_representation(self, value):
-        # Build absolute URL (next line is just sample code)
-        url = f"http://social-dev.dao.vc{settings.MEDIA_URL}{str(value.pdf)}"
-        return url
-
-
-class ImageUrlField(serializers.RelatedField):
-    def to_representation(self, value):
-        # Build absolute URL (next line is just sample code)
-        url = f"http://social-dev.dao.vc{settings.MEDIA_URL}{str(value.image)}"
-        return url
-
-
 class StartupSerializer(serializers.ModelSerializer):
-    logo = ImageUrlField(read_only=True)
-    background = ImageUrlField(read_only=True)
-    pitch_presentation = FileUrlField(read_only=True)
+    logo = ImageSerializer(read_only=True)
+    background = ImageSerializer(read_only=True)
+    pitch_presentation = FileSerializer(read_only=True)
     social_links = LinkSerializer()
     purpose = PurposeSerializer()
     achievements = AchievementSerializer()
@@ -300,8 +286,8 @@ class StartupSerializer(serializers.ModelSerializer):
 
 
 class ProfessionalSerializer(serializers.ModelSerializer):
-    logo = ImageUrlField(read_only=True)
-    cv = FileUrlField(read_only=True)
+    logo = ImageSerializer(read_only=True)
+    cv = FileSerializer(read_only=True)
 
     class Meta:
         model = Professional
@@ -309,8 +295,8 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 
 
 class InvestorSerializer(serializers.ModelSerializer):
-    photo = ImageUrlField(read_only=True)
-    cv = FileUrlField(read_only=True)
+    photo = ImageSerializer(read_only=True)
+    cv = FileSerializer(read_only=True)
     social_links = LinkSerializer()
 
     class Meta:

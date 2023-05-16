@@ -116,6 +116,11 @@ class ProfessionalUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
     ]
     permission_classes = (IsAuthenticated, UpdatePermission)
 
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return ProfessionalSerializer
+        return ProfessionalUpdateSerializer
+
     def get_object(self):
         obj = Professional.objects.filter(owner__id=self.request.user.id).first()
         return obj
@@ -130,6 +135,11 @@ class InvestorUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
         "put",
     ]
     permission_classes = (IsAuthenticated, UpdatePermission)
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return InvestorSerializer
+        return InvestorUpdateSerializer
 
     def get_object(self):
         obj = Investor.objects.filter(owner__id=self.request.user.id).first()
