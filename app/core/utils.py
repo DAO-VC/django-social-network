@@ -1,6 +1,7 @@
 import random
 
 from django.core.mail import get_connection, EmailMessage
+from django.template.loader import get_template
 
 from main import settings
 
@@ -17,9 +18,11 @@ def send_emails(recipient_email: str, message_url: str):
         subject = "DAO"
         email_from = settings.EMAIL_HOST_USER
 
-        EmailMessage(
+        msg = EmailMessage(
             subject, message_url, email_from, [recipient_email], connection=connection
-        ).send()
+        )
+        msg.content_subtype = "html"  # Main content is now text/html
+        msg.send()
 
     return
 
@@ -30,7 +33,12 @@ def generate_activation_code():
 
 def send_verification_mail(email):
     generated_code = generate_activation_code()
+    ctx = {"code": generated_code}
+
+    message = get_template("letter-code.html").render(ctx)
+
     subject = "DAO verification code"
-    message = f"Your verification code:\n{generated_code}\nThanks for using DAO."
+    # message = f"Your verification code:\n{generated_code}\nThanks for using DAO."
+
     send_emails(recipient_email=email, message_url=message)
     return generated_code

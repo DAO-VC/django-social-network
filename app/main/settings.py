@@ -76,7 +76,7 @@ ROOT_URLCONF = "main.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -88,6 +88,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = "main.wsgi.application"
 
@@ -219,7 +220,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.dao.vc",
     "https://*.dao.vc/",
 ]
-
 
 # TODO : Пермишн на все ручки добавить
 

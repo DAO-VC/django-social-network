@@ -1,13 +1,11 @@
 import json
 
-from django.contrib.auth import authenticate, login, get_user_model, logout, get_user
+from django.contrib.auth import authenticate, login, get_user_model
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.template.loader import get_template
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
-from drf_spectacular.utils import extend_schema
-from django.middleware.csrf import get_token
-from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.generics import (
     CreateAPIView,
     DestroyAPIView,
@@ -121,8 +119,11 @@ class ResetPassword(GenericAPIView):
                 kwargs={"encoded_pk": encoded_pk, "token": token},
             )
             reset_link = f"https://dev.onboarding.dao.vc{reset_url}"
+            ctx = {"link": reset_link}
+
+            message = get_template("reset password.html").render(ctx)
             try:
-                send_emails(recipient_email=email, message_url=reset_link)
+                send_emails(recipient_email=email, message_url=message)
                 return Response("Success. Check Your Email")
             except Exception as e:
                 print(e)
