@@ -3,6 +3,24 @@ from main import settings
 from .models import Image, File
 
 
+class ImageBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = [
+            "id",
+            "image",
+        ]
+
+
+class FileBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = [
+            "id",
+            "pdf",
+        ]
+
+
 class ImageSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
