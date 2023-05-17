@@ -19,6 +19,8 @@ from rest_framework.response import Response
 from django.urls import reverse
 from rest_framework.views import APIView
 from django.utils.encoding import force_bytes
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from core.serializers import (
     UserRegistrationSerializer,
     UserLoginSerializer,
@@ -27,6 +29,7 @@ from core.serializers import (
     EmailSerializer,
     UserCodeInputSerializer,
     UserCodeUpdateSerializer,
+    MyTokenObtainPairSerializer,
 )
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.http import urlsafe_base64_encode
@@ -158,3 +161,7 @@ class MeUserDeleteView(DestroyAPIView):
 
     queryset = User.objects.all()
     serializer_class = UserBaseSerializer
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

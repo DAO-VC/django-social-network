@@ -6,6 +6,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 import django.contrib.auth.password_validation as validators
 from core.utils import send_verification_mail
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 USER_MODEL = get_user_model()
 
@@ -135,3 +136,16 @@ class UserCodeUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = USER_MODEL
         fields = ()
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        attrs["email"] = attrs.get("email").lower()
+        data = super().validate(attrs)
+
+        refresh = self.get_token(self.user)
+
+        data["refresh"] = str(refresh)
+        data["access"] = str(refresh.access_token)
+
+        return data

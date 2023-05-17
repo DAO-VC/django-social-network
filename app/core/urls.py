@@ -8,6 +8,7 @@ from core.views import (
     ResetPasswordView,
     UserValidateEmailView,
     MeUserDeleteView,
+    MyTokenObtainPairView,
 )
 
 urlpatterns = [
@@ -17,7 +18,8 @@ urlpatterns = [
     path(
         "register/email/<int:pk>/", UserValidateEmailView.as_view(), name="verify_email"
     ),
-    path("login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    # path("login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("login/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("login/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("me/", MeUserView.as_view(), name="me"),
     path("user/<int:pk>", MeUserDeleteView.as_view(), name="delete_user"),
