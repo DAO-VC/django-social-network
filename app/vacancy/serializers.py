@@ -1,8 +1,9 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from django.db.utils import IntegrityError
+from profiles.models import Startup, Investor, Professional
+from vacancy.models import Vacancy, Offer, Candidate
 from rest_framework.exceptions import ValidationError
-
-from profiles.models import Startup, Investor
-from vacancy.models import Vacancy, Offer
 
 
 class VacancyBaseSerializer(serializers.ModelSerializer):
@@ -77,3 +78,43 @@ class OfferUpdateSerializer(serializers.ModelSerializer):
         if len(industries) > 0:
             instance.industries.set(industries)
         return super().update(instance, validated_data)
+
+
+class CandidateCreateSerializer(serializers.ModelSerializer):
+    startup = serializers.PrimaryKeyRelatedField(read_only=True)
+    professional_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    vacancy_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    accept_status = serializers.CharField(read_only=True)
+    base_status = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Candidate
+        fields = "__all__"
+
+    def create(self, validated_data):
+        vacancy_id = get_object_or_404(
+            Vacancy, pk=self.context.get("view").kwargs.get("pk")
+        )
+        startup = vacancy_id.company_id
+        professional = get_object_or_404(
+            Professional, owner=self.context["request"].user
+        )
+        try:
+            candidate = Candidate.objects.create(
+                vacancy_id=vacancy_id,
+                startup=startup,
+                professional_id=professional,
+                accept_status=Candidate.AcceptStatus.PENDING_FOR_APPROVAL,
+                base_status=Candidate.BaseStatus.NEW,
+            )
+        except IntegrityError:
+            raise ValidationError("Вы уже подались на эту вакансию")
+
+        return candidate
+
+
+class CandidateBaseSerializer(serializers.ModelSerializer):
+    # TODO : поля
+    class Meta:
+        model = Candidate
+        fields = "__all__"
