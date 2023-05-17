@@ -197,6 +197,7 @@ class Professional(models.Model):
         "Industries", verbose_name="Интересы", blank=True, related_name="prof_interest"
     )
     salary = models.TextField(verbose_name="Зарплата", null=True, blank=True)
+
     # resume = models.ForeignKey("Resume", models.CASCADE,null=True, blank=True,related_name="prof_resume")
 
     class Meta:

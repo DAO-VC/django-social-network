@@ -1,6 +1,6 @@
 from django.db import models
 
-from profiles.models import Startup, Industries, Investor
+from profiles.models import Startup, Industries, Investor, Professional
 
 
 class Vacancy(models.Model):
@@ -26,3 +26,34 @@ class Offer(models.Model):
     )
     details = models.TextField("Детали")
     # TODO: article?
+
+
+class Candidate(models.Model):
+    class BaseStatus(models.TextChoices):
+        NEW = "new", "Новый"
+        VIEWED = "viewed", "Просмотрен"
+
+    class AcceptStatus(models.TextChoices):
+        PENDING_FOR_APPROVAL = "pendingforapproval", "Подал заявку"
+        APPROVE = "approve", "Подтвержден"
+        IN_THE_TEAM = "intheteam", "В команде"
+
+    startup = models.ForeignKey(Startup, models.CASCADE)
+    professional_id = models.ForeignKey(Professional, models.CASCADE)
+    vacancy_id = models.ForeignKey(Vacancy, models.CASCADE)
+    base_status = models.CharField(
+        "Статус просмотра",
+        choices=BaseStatus.choices,
+        max_length=20,
+        null=True,
+        blank=True,
+    )
+    accept_status = models.CharField(
+        "Статус", choices=AcceptStatus.choices, max_length=50, null=True, blank=True
+    )
+
+    class Meta:
+        unique_together = (
+            "professional_id",
+            "vacancy_id",
+        )
