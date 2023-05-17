@@ -93,7 +93,7 @@ class ResetPassword(GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        email = serializer.data["email"]
+        email = serializer.data["email"].lower()
         user = User.objects.filter(email=email).first()
         if user:
             encoded_pk = urlsafe_base64_encode(force_bytes(user.pk))

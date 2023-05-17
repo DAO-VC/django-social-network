@@ -38,7 +38,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop("password_repeat")
         profile = self.context.get("view").kwargs.get("profile_value")
-        user = USER_MODEL.objects.create_user(**validated_data)
+        email = validated_data.pop("email").lower()
+        user = USER_MODEL.objects.create_user(email=email, **validated_data)
         match profile:
             case "startup":
                 user.profile = "startup"
