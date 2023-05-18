@@ -8,9 +8,12 @@ class Startup(models.Model):
     """Модель сущности Стартап"""
 
     class StageChoices(models.TextChoices):
-        ANGEL = "angel", "Ангел"
-        PRE_SEED = "preSeed", "Пресид"
-        SEED = "seed", "Сид"
+        SEED = "seed", "Основание"
+        PRIVATE = "private", "Приват"
+        STRATEGIC = "strategic", "Стратеджик"
+        PUBLIC = "public", "Паблик"
+        SECONDARY_FUNDRAISING = "secondaryFundraising", "Вторичное финансирование"
+        NO_FUNDRAISING_REQUIRED = "noFundraisingRequired", "Финансирование не требуется"
 
     class BusinessType(models.TextChoices):
         B2B = "b2b", "Business to Business"
