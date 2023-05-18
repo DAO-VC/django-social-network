@@ -81,7 +81,6 @@ class OfferUpdateSerializer(serializers.ModelSerializer):
 
 
 class CandidateCreateSerializer(serializers.ModelSerializer):
-    startup = serializers.PrimaryKeyRelatedField(read_only=True)
     professional_id = serializers.PrimaryKeyRelatedField(read_only=True)
     vacancy_id = serializers.PrimaryKeyRelatedField(read_only=True)
     accept_status = serializers.CharField(read_only=True)
@@ -95,14 +94,12 @@ class CandidateCreateSerializer(serializers.ModelSerializer):
         vacancy_id = get_object_or_404(
             Vacancy, pk=self.context.get("view").kwargs.get("pk")
         )
-        startup = vacancy_id.company_id
         professional = get_object_or_404(
             Professional, owner=self.context["request"].user
         )
         try:
             candidate = Candidate.objects.create(
                 vacancy_id=vacancy_id,
-                startup=startup,
                 professional_id=professional,
                 accept_status=Candidate.AcceptStatus.PENDING_FOR_APPROVAL,
                 base_status=Candidate.BaseStatus.NEW,
@@ -118,3 +115,23 @@ class CandidateBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Candidate
         fields = "__all__"
+
+
+class StartupApproveCandidateSerializer(serializers.ModelSerializer):
+    professional_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    vacancy_id = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Candidate
+        fields = ["professional_id", "vacancy_id", "base_status", "accept_status"]
+
+    def update(self, instance: Candidate, validated_data):
+        startup = Startup.objects.filter(owner=self.context["request"].user).first()
+        if instance in startup.work_team.all():
+            raise ValidationError("This candidate already in startups team")
+        startup.work_team.add(instance)
+        startup.save()
+        instance.base_status = Candidate.BaseStatus.VIEWED
+        instance.accept_status = Candidate.AcceptStatus.IN_THE_TEAM
+        # TODO : нужно переводить в статус скрыта
+        return instance

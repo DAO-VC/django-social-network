@@ -12,6 +12,9 @@ from vacancy.views import (
     StartupRetrieveCandidates,
     ProfessionalMyApplicationsListView,
     ProfessionalMyApplicationsRetrieveView,
+    StartupApproveRetrieveCandidate,
+    StartupWorkTeamList,
+    StartupWorkTeamRetrieveDelete,
 )
 
 urlpatterns = [
@@ -63,5 +66,20 @@ urlpatterns = [
         "main/professional/applications/<int:pk>",
         ProfessionalMyApplicationsRetrieveView.as_view(),
         name="retrieve_applications_professional",
+    ),
+    path(
+        "main/startup/candidates/<int:pk>/approve",
+        StartupApproveRetrieveCandidate.as_view(),
+        name="approve_startup_candidates",
+    ),
+    path(
+        "main/startup/my_team/",
+        StartupWorkTeamList.as_view(),
+        name="startup_work_team",
+    ),
+    path(
+        "main/startup/my_team/<int:pk>/",
+        StartupWorkTeamRetrieveDelete.as_view(),
+        name="retrieve_startup_work_team",
     ),
 ]

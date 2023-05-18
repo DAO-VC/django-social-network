@@ -7,5 +7,5 @@ class VacancyFilter(rest_framework.FilterSet):
     class Meta:
         model = Vacancy
         fields = {
-            "company_id": ("exact",),
+            "position": ("exact",),
         }

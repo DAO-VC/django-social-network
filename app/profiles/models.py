@@ -132,6 +132,12 @@ class Startup(models.Model):
     detailed_description = models.TextField(
         verbose_name="Детальное описание", null=True, blank=True
     )
+    work_team = models.ManyToManyField(
+        "vacancy.Candidate",
+        verbose_name="Команда",
+        blank=True,
+        related_name="startup_work_team",
+    )
 
     # TODO : detailed_description под вопросом
     class Meta:

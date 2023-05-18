@@ -38,7 +38,6 @@ class Candidate(models.Model):
         APPROVE = "approve", "Подтвержден"
         IN_THE_TEAM = "intheteam", "В команде"
 
-    startup = models.ForeignKey(Startup, models.CASCADE)
     professional_id = models.ForeignKey(Professional, models.CASCADE)
     vacancy_id = models.ForeignKey(Vacancy, models.CASCADE)
     base_status = models.CharField(

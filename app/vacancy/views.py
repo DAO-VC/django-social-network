@@ -7,6 +7,7 @@ from core.permissions import (
     UpdatePermission,
     ProfessionalCreatePermission,
 )
+from profiles.models import Startup
 from vacancy.filters import VacancyFilter
 from vacancy.models import Vacancy, Offer, Candidate
 from vacancy.permissions import OfferPermission
@@ -18,13 +19,13 @@ from vacancy.serializers import (
     VacancyBaseSerializer,
     CandidateCreateSerializer,
     CandidateBaseSerializer,
+    StartupApproveCandidateSerializer,
 )
 
 
 class VacancyListCreateView(generics.ListCreateAPIView):
     """Список всех вакансий стартапа | создание вакансии"""
 
-    queryset = Vacancy.objects.all()
     serializer_class = VacancyCreateSerializer
     permission_classes = (IsAuthenticated, StartupCreatePermission)
 
@@ -44,7 +45,6 @@ class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
 class OfferListCreateView(generics.ListCreateAPIView):
     """Список всех оферов инвестора | создание офера"""
 
-    queryset = Offer.objects.all()
     serializer_class = OfferCreateSerializer
     permission_classes = (IsAuthenticated, InvestorCreatePermission)
 
@@ -89,27 +89,24 @@ class CandidateCreateView(generics.CreateAPIView):
 class StartupCandidates(generics.ListAPIView):
     """Список всех кандидатов стартапа"""
 
-    queryset = Candidate.objects.all()
     serializer_class = CandidateBaseSerializer
 
     def get_queryset(self):
-        return Candidate.objects.filter(startup__owner=self.request.user)
+        return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
 
 
 class StartupRetrieveCandidates(generics.RetrieveDestroyAPIView):
     """Получение | удаление кандидата стартапа"""
 
-    queryset = Candidate.objects.all()
     serializer_class = CandidateBaseSerializer
 
     def get_queryset(self):
-        return Candidate.objects.filter(startup__owner=self.request.user)
+        return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
 
 
 class ProfessionalMyApplicationsListView(generics.ListAPIView):
     """Список всех заявок профессионала"""
 
-    queryset = Candidate.objects.all()
     serializer_class = CandidateBaseSerializer
 
     def get_queryset(self):
@@ -119,9 +116,38 @@ class ProfessionalMyApplicationsListView(generics.ListAPIView):
 class ProfessionalMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
     """Получение | удаление заявки профессионала по id"""
 
-    queryset = Candidate.objects.all()
     serializer_class = CandidateBaseSerializer
     http_method_names = ["get", "delete"]
 
     def get_queryset(self):
         return Candidate.objects.filter(professional_id__owner_id=self.request.user.id)
+
+
+class StartupApproveRetrieveCandidate(generics.RetrieveUpdateAPIView):
+    """Добавление кандидата в команду стартапа"""
+
+    serializer_class = StartupApproveCandidateSerializer
+    http_method_names = ["put"]
+
+    def get_queryset(self):
+        return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
+
+
+class StartupWorkTeamList(generics.ListAPIView):
+    """Список команды стартапа"""
+
+    serializer_class = CandidateBaseSerializer
+
+    def get_queryset(self):
+        startup = Startup.objects.filter(owner__id=self.request.user.id).first()
+        return startup.work_team.all()
+
+
+class StartupWorkTeamRetrieveDelete(generics.RetrieveDestroyAPIView):
+    """Удаление | получение члена команды"""
+
+    serializer_class = CandidateBaseSerializer
+
+    def get_queryset(self):
+        startup = Startup.objects.filter(owner__id=self.request.user.id).first()
+        return startup.work_team.all()
