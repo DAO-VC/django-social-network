@@ -94,7 +94,7 @@ class Startup(models.Model):
         blank=True,
         related_name="sale_regions",
     )
-    stage = models.CharField("Стадия", choices=StageChoices.choices, max_length=10)
+    stage = models.CharField("Стадия", choices=StageChoices.choices, max_length=32)
     profit = models.IntegerField(default=0, verbose_name="Профит")
     required_founding = models.IntegerField(
         default=0, verbose_name="Требуемое финансирование", null=True, blank=True
