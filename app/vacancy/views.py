@@ -10,7 +10,7 @@ from core.permissions import (
 from profiles.models import Startup
 from vacancy.filters import VacancyFilter
 from vacancy.models import Vacancy, Offer, Candidate
-from vacancy.permissions import OfferPermission
+from vacancy.permissions import OfferPermission, VacancyOwnerPermission
 from vacancy.serializers import (
     VacancyCreateSerializer,
     VacancyUpdateSerializer,
@@ -20,6 +20,7 @@ from vacancy.serializers import (
     CandidateCreateSerializer,
     CandidateBaseSerializer,
     StartupApproveCandidateSerializer,
+    VacancyVisibleSerializer,
 )
 
 
@@ -39,7 +40,16 @@ class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancyUpdateSerializer
     http_method_names = ["get", "put", "delete"]
-    permission_classes = (IsAuthenticated, UpdatePermission)
+    permission_classes = (IsAuthenticated, VacancyOwnerPermission)
+
+
+class VacancyVisibleRetrieveView(generics.UpdateAPIView):
+    """Изменение видимости вакансии"""
+
+    queryset = Vacancy.objects.all()
+    serializer_class = VacancyVisibleSerializer
+    http_method_names = ["put"]
+    permission_classes = (IsAuthenticated, VacancyOwnerPermission)
 
 
 class OfferListCreateView(generics.ListCreateAPIView):

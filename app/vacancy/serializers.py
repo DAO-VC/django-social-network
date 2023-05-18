@@ -46,6 +46,30 @@ class VacancyUpdateSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
+class VacancyVisibleSerializer(serializers.ModelSerializer):
+    # company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+
+    class Meta:
+        model = Vacancy
+        fields = "__all__"
+        read_only_fields = (
+            "company_id",
+            "position",
+            "requirements",
+            "is_visible",
+            "salary",
+            "skills",
+        )
+
+    def update(self, instance: Vacancy, validated_data):
+        if instance.is_visible:
+            instance.is_visible = False
+        else:
+            instance.is_visible = True
+        instance.save()
+        return instance
+
+
 class OfferCreateSerializer(serializers.ModelSerializer):
     investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
 

@@ -15,6 +15,7 @@ from vacancy.views import (
     StartupApproveRetrieveCandidate,
     StartupWorkTeamList,
     StartupWorkTeamRetrieveDelete,
+    VacancyVisibleRetrieveView,
 )
 
 urlpatterns = [
@@ -25,6 +26,11 @@ urlpatterns = [
         "main/vacancies/<int:pk>",
         VacancyRetrieveView.as_view(),
         name="retrieve_vacancy",
+    ),
+    path(
+        "main/vacancies/<int:pk>/visible/",
+        VacancyVisibleRetrieveView.as_view(),
+        name="visible_retrieve_vacancy",
     ),
     path(
         "main/offers/",
