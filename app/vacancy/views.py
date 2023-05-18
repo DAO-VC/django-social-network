@@ -74,10 +74,13 @@ class OfferRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 class VacancyAllView(generics.ListAPIView):
     """Список всех вакансий | поиск по ним"""
 
-    queryset = Vacancy.objects.all()
+    # queryset = Vacancy.objects.all()
     serializer_class = VacancyBaseSerializer
     filterset_class = VacancyFilter
     permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Vacancy.objects.filter(is_visible=True)
 
 
 class VacancyAllDetailView(generics.RetrieveAPIView):

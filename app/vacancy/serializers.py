@@ -47,8 +47,6 @@ class VacancyUpdateSerializer(serializers.ModelSerializer):
 
 
 class VacancyVisibleSerializer(serializers.ModelSerializer):
-    # company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
-
     class Meta:
         model = Vacancy
         fields = "__all__"
