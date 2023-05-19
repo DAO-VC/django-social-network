@@ -8,6 +8,7 @@ from articles.serializers import (
     ArticleCreateSerializer,
     ArticleUpdateSerializer,
     ArticleBaseSerializer,
+    ArticleUpdateVisionSerializer,
 )
 from core.permissions import StartupCreatePermission
 
@@ -53,7 +54,19 @@ class ArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
 class ArticleParamView(generics.ListAPIView):
     """Список всех статей | Поиск по названию поста"""
 
-    queryset = Article.objects.all()
     serializer_class = ArticleBaseSerializer
     filterset_class = ArticleFilter
     permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Article.objects.filter(is_visible=True)
+
+
+class ArticleVisibleView(generics.UpdateAPIView):
+    """Обновление видимости статьи стартапом"""
+
+    serializer_class = ArticleUpdateVisionSerializer
+    http_method_names = ["put"]
+
+    def get_queryset(self):
+        return Article.objects.filter(company_id__owner_id=self.request.user.id)

@@ -32,3 +32,19 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = "__all__"
+
+
+class ArticleUpdateVisionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = "__all__"
+        read_only_fields = ["company_id", "image", "name", "description", "is_visible"]
+
+    def update(self, instance: Article, validated_data):
+        if instance.is_visible:
+            instance.is_visible = False
+        else:
+            instance.is_visible = True
+
+        instance.save()
+        return instance

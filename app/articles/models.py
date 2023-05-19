@@ -11,6 +11,7 @@ class Article(models.Model):
     image = models.ForeignKey(
         Image, models.CASCADE, verbose_name="Фото", null=True, blank=True
     )
+    is_visible = models.BooleanField(verbose_name="Видим")
     # TODO : tags ??
     # TODO: обязательные поля
 

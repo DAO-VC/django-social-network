@@ -4,6 +4,7 @@ from articles.views import (
     ArticleListCreateView,
     ArticleRetrieveView,
     ArticleParamView,
+    ArticleVisibleView,
 )
 
 urlpatterns = [
@@ -13,6 +14,11 @@ urlpatterns = [
         "main/articles/<int:pk>",
         ArticleRetrieveView.as_view(),
         name="retrieve_article",
+    ),
+    path(
+        "main/articles/<int:pk>/visible",
+        ArticleVisibleView.as_view(),
+        name="change_visible_article",
     ),
     # path("main/articles/", AllArticleListView.as_view(), name="all_list_article"),
 ]
