@@ -11,6 +11,7 @@ from articles.serializers import (
     ArticleUpdateVisionSerializer,
 )
 from core.permissions import StartupCreatePermission
+from django.db.models import F
 
 
 # class AllArticleListView(generics.ListAPIView):
@@ -56,7 +57,6 @@ class ArticleParamView(generics.ListAPIView):
 
     serializer_class = ArticleBaseSerializer
     filterset_class = ArticleFilter
-    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Article.objects.filter(is_visible=True)
@@ -70,3 +70,19 @@ class ArticleVisibleView(generics.UpdateAPIView):
 
     def get_queryset(self):
         return Article.objects.filter(company_id__owner_id=self.request.user.id)
+
+
+class AllArticleRetrieveView(generics.RetrieveAPIView):
+    """Список всех статей по id"""
+
+    serializer_class = ArticleBaseSerializer
+    filterset_class = ArticleFilter
+
+    def get_queryset(self):
+        return Article.objects.filter(is_visible=True)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance: Article = self.get_object()
+        instance.view_count = F("view_count") + 1
+        instance.save()
+        return super().retrieve(request, *args, **kwargs)

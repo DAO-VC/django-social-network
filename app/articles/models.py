@@ -12,6 +12,7 @@ class Article(models.Model):
         Image, models.CASCADE, verbose_name="Фото", null=True, blank=True
     )
     is_visible = models.BooleanField(verbose_name="Видим")
+    view_count = models.IntegerField(default=0)
     # TODO : tags ??
     # TODO: обязательные поля
 
