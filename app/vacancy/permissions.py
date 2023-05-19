@@ -19,8 +19,8 @@ class VacancyOwnerPermission(permissions.BasePermission):
 
 
 class WorkTeamOwnerPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj: Startup):
-        if obj.owner.id != request.user.id:
+    def has_object_permission(self, request, view, obj: Candidate):
+        if obj.vacancy_id.company_id.owner.id != request.user.id:
             return False
         return True
 

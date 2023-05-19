@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from django.db.utils import IntegrityError
 from profiles.models import Startup, Investor, Professional
+from profiles.serializers import ProfessionalSerializer
 from vacancy.models import Vacancy, Offer, Candidate
 from rest_framework.exceptions import ValidationError
 
@@ -134,17 +135,21 @@ class CandidateCreateSerializer(serializers.ModelSerializer):
 
 class CandidateBaseSerializer(serializers.ModelSerializer):
     # TODO : поля
+    professional_id = ProfessionalSerializer()
+    vacancy_id = VacancyBaseSerializer()
+
     class Meta:
         model = Candidate
         fields = "__all__"
 
 
 class StartupApproveCandidateSerializer(serializers.ModelSerializer):
-    professional_id = serializers.PrimaryKeyRelatedField(read_only=True)
-    vacancy_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    professional_id = ProfessionalSerializer(read_only=True)
+    vacancy_id = VacancyBaseSerializer(read_only=True)
 
     class Meta:
         model = Candidate
+
         fields = ["professional_id", "vacancy_id", "base_status", "accept_status"]
 
     def update(self, instance: Candidate, validated_data):
@@ -155,5 +160,6 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
         startup.save()
         instance.base_status = Candidate.BaseStatus.VIEWED
         instance.accept_status = Candidate.AcceptStatus.IN_THE_TEAM
+        instance.save()
         # TODO : нужно переводить в статус скрыта
         return instance

@@ -159,7 +159,11 @@ class StartupWorkTeamList(generics.ListAPIView):
     """Список команды стартапа"""
 
     serializer_class = CandidateBaseSerializer
-    permission_classes = (IsAuthenticated, WorkTeamOwnerPermission)
+    permission_classes = (
+        IsAuthenticated,
+        StartupCreatePermission,
+        WorkTeamOwnerPermission,
+    )
 
     def get_queryset(self):
         startup = Startup.objects.filter(owner__id=self.request.user.id).first()
@@ -170,7 +174,7 @@ class StartupWorkTeamRetrieveDelete(generics.RetrieveDestroyAPIView):
     """Удаление | получение члена команды"""
 
     serializer_class = CandidateBaseSerializer
-    permission_classes = (IsAuthenticated, VacancyOwnerPermission)
+    permission_classes = (IsAuthenticated, WorkTeamOwnerPermission)
 
     def get_queryset(self):
         startup = Startup.objects.filter(owner__id=self.request.user.id).first()
