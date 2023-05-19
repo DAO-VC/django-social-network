@@ -16,6 +16,7 @@ from vacancy.views import (
     StartupWorkTeamList,
     StartupWorkTeamRetrieveDelete,
     VacancyVisibleRetrieveView,
+    ListAllVacancyCandidates,
 )
 
 urlpatterns = [
@@ -57,6 +58,11 @@ urlpatterns = [
         "main/startup/candidates/",
         StartupCandidates.as_view(),
         name="all_startup_candidates",
+    ),
+    path(
+        "main/vacancies/<int:pk>/candidates",
+        ListAllVacancyCandidates.as_view(),
+        name="all_candidates_vacancy",
     ),
     path(
         "main/startup/candidates/<int:pk>",

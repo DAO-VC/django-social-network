@@ -4,13 +4,19 @@ from rest_framework.permissions import IsAuthenticated
 from core.permissions import (
     InvestorCreatePermission,
     StartupCreatePermission,
-    UpdatePermission,
     ProfessionalCreatePermission,
 )
 from profiles.models import Startup
 from vacancy.filters import VacancyFilter
 from vacancy.models import Vacancy, Offer, Candidate
-from vacancy.permissions import OfferPermission, VacancyOwnerPermission
+from vacancy.permissions import (
+    OfferPermission,
+    VacancyOwnerPermission,
+    WorkTeamOwnerPermission,
+    ListAllVacancyCandidatesPermission,
+    ProfessionalMyApplicationsPermission,
+    StartupCandidatesPermission,
+)
 from vacancy.serializers import (
     VacancyCreateSerializer,
     VacancyUpdateSerializer,
@@ -74,10 +80,8 @@ class OfferRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 class VacancyAllView(generics.ListAPIView):
     """Список всех вакансий | поиск по ним"""
 
-    # queryset = Vacancy.objects.all()
     serializer_class = VacancyBaseSerializer
     filterset_class = VacancyFilter
-    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Vacancy.objects.filter(is_visible=True)
@@ -103,6 +107,7 @@ class StartupCandidates(generics.ListAPIView):
     """Список всех кандидатов стартапа"""
 
     serializer_class = CandidateBaseSerializer
+    permission_classes = (IsAuthenticated, StartupCandidatesPermission)
 
     def get_queryset(self):
         return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
@@ -112,6 +117,7 @@ class StartupRetrieveCandidates(generics.RetrieveDestroyAPIView):
     """Получение | удаление кандидата стартапа"""
 
     serializer_class = CandidateBaseSerializer
+    permission_classes = (IsAuthenticated, StartupCandidatesPermission)
 
     def get_queryset(self):
         return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
@@ -121,6 +127,7 @@ class ProfessionalMyApplicationsListView(generics.ListAPIView):
     """Список всех заявок профессионала"""
 
     serializer_class = CandidateBaseSerializer
+    permission_classes = (IsAuthenticated, ProfessionalMyApplicationsPermission)
 
     def get_queryset(self):
         return Candidate.objects.filter(professional_id__owner_id=self.request.user.id)
@@ -131,6 +138,7 @@ class ProfessionalMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
 
     serializer_class = CandidateBaseSerializer
     http_method_names = ["get", "delete"]
+    permission_classes = (IsAuthenticated, ProfessionalMyApplicationsPermission)
 
     def get_queryset(self):
         return Candidate.objects.filter(professional_id__owner_id=self.request.user.id)
@@ -141,6 +149,7 @@ class StartupApproveRetrieveCandidate(generics.RetrieveUpdateAPIView):
 
     serializer_class = StartupApproveCandidateSerializer
     http_method_names = ["put"]
+    permission_classes = (IsAuthenticated, ListAllVacancyCandidatesPermission)
 
     def get_queryset(self):
         return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
@@ -150,6 +159,7 @@ class StartupWorkTeamList(generics.ListAPIView):
     """Список команды стартапа"""
 
     serializer_class = CandidateBaseSerializer
+    permission_classes = (IsAuthenticated, WorkTeamOwnerPermission)
 
     def get_queryset(self):
         startup = Startup.objects.filter(owner__id=self.request.user.id).first()
@@ -160,7 +170,18 @@ class StartupWorkTeamRetrieveDelete(generics.RetrieveDestroyAPIView):
     """Удаление | получение члена команды"""
 
     serializer_class = CandidateBaseSerializer
+    permission_classes = (IsAuthenticated, WorkTeamOwnerPermission)
 
     def get_queryset(self):
         startup = Startup.objects.filter(owner__id=self.request.user.id).first()
         return startup.work_team.all()
+
+
+class ListAllVacancyCandidates(generics.ListAPIView):
+    """Получение списка всех кандидатов на вакансию стартапа"""
+
+    serializer_class = CandidateBaseSerializer
+    permission_classes = (IsAuthenticated, ListAllVacancyCandidatesPermission)
+
+    def get_queryset(self):
+        return Candidate.objects.filter(vacancy_id=self.kwargs["pk"])
