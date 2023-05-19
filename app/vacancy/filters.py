@@ -1,6 +1,6 @@
 from django_filters import rest_framework
 
-from vacancy.models import Vacancy, Candidate
+from vacancy.models import Vacancy
 
 
 class VacancyFilter(rest_framework.FilterSet):
