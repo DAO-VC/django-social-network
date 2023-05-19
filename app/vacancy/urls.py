@@ -60,12 +60,12 @@ urlpatterns = [
         name="all_startup_candidates",
     ),
     path(
-        "main/vacancies/<int:pk>/candidates",
+        "main/vacancies/<int:pk>/candidates/",
         ListAllVacancyCandidates.as_view(),
         name="all_candidates_vacancy",
     ),
     path(
-        "main/startup/candidates/<int:pk>",
+        "main/startup/candidates/<int:pk>/",
         StartupRetrieveCandidates.as_view(),
         name="retrieve_startup_candidates",
     ),
@@ -75,12 +75,12 @@ urlpatterns = [
         name="all_applications_professional",
     ),
     path(
-        "main/professional/applications/<int:pk>",
+        "main/professional/applications/<int:pk>/",
         ProfessionalMyApplicationsRetrieveView.as_view(),
         name="retrieve_applications_professional",
     ),
     path(
-        "main/startup/candidates/<int:pk>/approve",
+        "main/startup/candidates/<int:pk>/approve/",
         StartupApproveRetrieveCandidate.as_view(),
         name="approve_startup_candidates",
     ),

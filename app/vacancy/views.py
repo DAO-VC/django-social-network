@@ -170,7 +170,7 @@ class StartupWorkTeamRetrieveDelete(generics.RetrieveDestroyAPIView):
     """Удаление | получение члена команды"""
 
     serializer_class = CandidateBaseSerializer
-    permission_classes = (IsAuthenticated, WorkTeamOwnerPermission)
+    permission_classes = (IsAuthenticated, VacancyOwnerPermission)
 
     def get_queryset(self):
         startup = Startup.objects.filter(owner__id=self.request.user.id).first()
