@@ -35,7 +35,7 @@ class Candidate(models.Model):
 
     class AcceptStatus(models.TextChoices):
         PENDING_FOR_APPROVAL = "pendingforapproval", "Подал заявку"
-        APPROVE = "approve", "Подтвержден"
+        ACCEPT = "accept", "Подтвержден"
         IN_THE_TEAM = "intheteam", "В команде"
 
     professional_id = models.ForeignKey(Professional, models.CASCADE)

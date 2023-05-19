@@ -163,3 +163,18 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
         instance.save()
         # TODO : нужно переводить в статус скрыта
         return instance
+
+
+class StartupAcceptRetrieveCandidate(serializers.ModelSerializer):
+    professional_id = ProfessionalSerializer(read_only=True)
+    vacancy_id = VacancyBaseSerializer(read_only=True)
+
+    class Meta:
+        model = Candidate
+
+        fields = ["professional_id", "vacancy_id", "base_status", "accept_status"]
+
+    def update(self, instance: Candidate, validated_data):
+        instance.accept_status = Candidate.AcceptStatus.ACCEPT
+        instance.save()
+        return instance
