@@ -7,7 +7,7 @@ from core.permissions import (
     ProfessionalCreatePermission,
 )
 from profiles.models import Startup
-from vacancy.filters import VacancyFilter
+from vacancy.filters import VacancyFilter, ListAllVacancyCandidatesFilter
 from vacancy.models import Vacancy, Offer, Candidate
 from vacancy.permissions import (
     OfferPermission,

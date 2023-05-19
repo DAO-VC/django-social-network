@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 from profiles.models import Startup, Industries, Investor, Professional
 
 
@@ -49,6 +49,9 @@ class Candidate(models.Model):
     )
     accept_status = models.CharField(
         "Статус", choices=AcceptStatus.choices, max_length=50, null=True, blank=True
+    )
+    created_at = models.DateTimeField(
+        default=timezone.now, verbose_name="Дата создания"
     )
 
     class Meta:
