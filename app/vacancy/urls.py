@@ -25,7 +25,7 @@ urlpatterns = [
         "main/vacancies/", VacancyListCreateView.as_view(), name="list_create_vacancy"
     ),
     path(
-        "main/vacancies/<int:pk>",
+        "main/vacancies/<int:pk>/",
         VacancyRetrieveView.as_view(),
         name="retrieve_vacancy",
     ),
@@ -40,18 +40,18 @@ urlpatterns = [
         name="list_create_offer",
     ),
     path(
-        "main/offers/<int:pk>",
+        "main/offers/<int:pk>/",
         OfferRetrieveUpdateDeleteView.as_view(),
         name="retrieve_offer",
     ),
     path("common/vacancies/", VacancyAllView.as_view(), name="all_vacancy"),
     path(
-        "common/vacancies/<int:pk>",
+        "common/vacancies/<int:pk>/",
         VacancyAllDetailView.as_view(),
         name="all_detail_vacancy",
     ),
     path(
-        "common/vacancies/<int:pk>/apply",
+        "common/vacancies/<int:pk>/apply/",
         CandidateCreateView.as_view(),
         name="apply_candidate",
     ),

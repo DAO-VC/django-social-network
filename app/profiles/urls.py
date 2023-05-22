@@ -79,7 +79,7 @@ urlpatterns = [
         name="all_startup_list",
     ),
     path(
-        "common/startups/<int:pk>",
+        "common/startups/<int:pk>/",
         AllStartupRetrieveView.as_view(),
         name="all_startup_detail",
     ),
@@ -89,7 +89,7 @@ urlpatterns = [
         name="all_professionals_list",
     ),
     path(
-        "common/professionals/<int:pk>",
+        "common/professionals/<int:pk>/",
         AllProfessionalRetrieveView.as_view(),
         name="all_professionals_detail",
     ),
@@ -99,7 +99,7 @@ urlpatterns = [
         name="all_investors_list",
     ),
     path(
-        "common/investors/<int:pk>",
+        "common/investors/<int:pk>/",
         AllInvestorsRetrieveView.as_view(),
         name="all_investors_detail",
     ),

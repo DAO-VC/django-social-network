@@ -7,7 +7,6 @@ from core.permissions import (
     ProfessionalCreatePermission,
 )
 from profiles.models import Startup
-from vacancy.filters import VacancyFilter, CandidatesFilter
 from vacancy.models import Vacancy, Offer, Candidate
 from vacancy.permissions import (
     OfferPermission,
@@ -84,7 +83,13 @@ class VacancyAllView(generics.ListAPIView):
     """Список всех вакансий | поиск по ним"""
 
     serializer_class = VacancyBaseSerializer
-    filterset_class = VacancyFilter
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["id", "company_id", "salary", "requirements"]
+    ordering_fields = ["company_id", "position", "salary", "requirements", "created_at"]
 
     def get_queryset(self):
         return Vacancy.objects.filter(is_visible=True)

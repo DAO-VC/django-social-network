@@ -12,6 +12,9 @@ class Vacancy(models.Model):
     skills = models.ManyToManyField(
         Industries, verbose_name="Скилы", blank=True, related_name="vacancy_skills"
     )
+    created_at = models.DateTimeField(
+        default=timezone.now, verbose_name="Дата создания"
+    )
     # TODO: обязательные поля
 
 
@@ -26,6 +29,9 @@ class Offer(models.Model):
     )
     details = models.TextField("Детали")
     # TODO: article?
+    created_at = models.DateTimeField(
+        default=timezone.now, verbose_name="Дата создания"
+    )
 
 
 class Candidate(models.Model):
