@@ -105,8 +105,10 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         skills = validated_data.pop("skills")
         if len(skills) < 1:
-            raise ValidationError("Минимум один скилл")
+            raise ValidationError("skills : minimum  one skill")
         interest = validated_data.pop("interest")
+        if len(skills) < 1:
+            raise ValidationError("interest : minimum  one interest")
         owner = self.context["request"].user
 
         professional = Professional.objects.create(**validated_data, owner=owner)
@@ -283,7 +285,7 @@ class StartupSerializer(serializers.ModelSerializer):
 
 
 class ProfessionalSerializer(serializers.ModelSerializer):
-    logo = ImageSerializer(read_only=True)
+    photo = ImageSerializer(read_only=True)
     cv = FileSerializer(read_only=True)
 
     class Meta:
