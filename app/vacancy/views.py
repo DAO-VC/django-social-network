@@ -7,7 +7,7 @@ from core.permissions import (
     ProfessionalCreatePermission,
 )
 from profiles.models import Startup
-from vacancy.filters import VacancyFilter
+from vacancy.filters import VacancyFilter, CandidatesFilter
 from vacancy.models import Vacancy, Offer, Candidate
 from vacancy.permissions import (
     OfferPermission,
@@ -29,6 +29,8 @@ from vacancy.serializers import (
     VacancyVisibleSerializer,
     StartupAcceptRetrieveCandidate,
 )
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 
 class VacancyListCreateView(generics.ListCreateAPIView):
@@ -201,6 +203,13 @@ class ListAllVacancyCandidates(generics.ListAPIView):
 
     serializer_class = CandidateBaseSerializer
     permission_classes = (IsAuthenticated, ListAllVacancyCandidatesPermission)
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["id", "base_status", "accept_status"]
+    ordering_fields = ["base_status", "accept_status", "created_at"]
 
     def get_queryset(self):
         return Candidate.objects.filter(vacancy_id=self.kwargs["pk"])
