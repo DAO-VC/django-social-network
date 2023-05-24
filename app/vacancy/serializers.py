@@ -9,12 +9,16 @@ from django.db.models import Q
 
 
 class VacancyBaseSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор вакансии"""
+
     class Meta:
         model = Vacancy
         fields = "__all__"
 
 
 class VacancyCreateSerializer(serializers.ModelSerializer):
+    """Сериализато создания вакансии"""
+
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
     class Meta:
@@ -42,6 +46,8 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
 
 
 class VacancyUpdateSerializer(serializers.ModelSerializer):
+    """Сериализатор обновления вакансии"""
+
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
     class Meta:
@@ -57,6 +63,8 @@ class VacancyUpdateSerializer(serializers.ModelSerializer):
 
 
 class VacancyVisibleSerializer(serializers.ModelSerializer):
+    """Сериализатор изменения видимости вакансии"""
+
     class Meta:
         model = Vacancy
         fields = "__all__"
@@ -79,6 +87,8 @@ class VacancyVisibleSerializer(serializers.ModelSerializer):
 
 
 class OfferCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор создания офера"""
+
     investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
     class Meta:
@@ -101,6 +111,8 @@ class OfferCreateSerializer(serializers.ModelSerializer):
 
 
 class OfferUpdateSerializer(serializers.ModelSerializer):
+    """Сериализатор обновления офера"""
+
     class Meta:
         model = Offer
         exclude = ("investor_id",)
@@ -113,6 +125,8 @@ class OfferUpdateSerializer(serializers.ModelSerializer):
 
 
 class CandidateCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор подачи заявки кандидата на вакансию -> Созадние кандидата"""
+
     professional_id = serializers.PrimaryKeyRelatedField(read_only=True)
     vacancy_id = serializers.PrimaryKeyRelatedField(read_only=True)
     accept_status = serializers.CharField(read_only=True)
@@ -143,6 +157,8 @@ class CandidateCreateSerializer(serializers.ModelSerializer):
 
 
 class CandidateBaseSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор кандидата"""
+
     # TODO : поля
     professional_id = ProfessionalSerializer()
     vacancy_id = VacancyBaseSerializer()
@@ -153,6 +169,8 @@ class CandidateBaseSerializer(serializers.ModelSerializer):
 
 
 class StartupApproveCandidateSerializer(serializers.ModelSerializer):
+    """Добавление подтвержденного кандидата в команду стартапа"""
+
     professional_id = ProfessionalSerializer(read_only=True)
     vacancy_id = VacancyBaseSerializer(read_only=True)
 
@@ -162,7 +180,6 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
         fields = ["professional_id", "vacancy_id", "base_status", "accept_status"]
 
     def update(self, instance: Candidate, validated_data):
-        # startup = Startup.objects.filter(owner=self.context["request"].user).first()
         startup = Startup.objects.filter(id=instance.vacancy_id.company_id.id).first()
         position = instance.vacancy_id.position
         work_team_obj = WorkTeam.objects.create(
@@ -181,6 +198,8 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
 
 
 class StartupAcceptRetrieveCandidate(serializers.ModelSerializer):
+    """Сериализатор изменения статуса цандидаты на ACCEPT"""
+
     professional_id = ProfessionalSerializer(read_only=True)
     vacancy_id = VacancyBaseSerializer(read_only=True)
 
@@ -196,6 +215,8 @@ class StartupAcceptRetrieveCandidate(serializers.ModelSerializer):
 
 
 class WorkTeamBaseSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор участника команды"""
+
     candidate_id = CandidateBaseSerializer(read_only=True)
 
     class Meta:
@@ -204,6 +225,8 @@ class WorkTeamBaseSerializer(serializers.ModelSerializer):
 
 
 class WorkTeamUpdatePermissionsSerializer(serializers.ModelSerializer):
+    """Сериализатор обновления возможностей участника команды"""
+
     class Meta:
         model = WorkTeam
         fields = [

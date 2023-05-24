@@ -4,6 +4,8 @@ from profiles.models import Startup, Industries, Investor, Professional
 
 
 class Vacancy(models.Model):
+    """Сущность вакансии стартапа"""
+
     company_id = models.ForeignKey(Startup, models.CASCADE)
     position = models.CharField("Позиция", max_length=32)
     requirements = models.CharField("Требования", max_length=32)
@@ -19,6 +21,8 @@ class Vacancy(models.Model):
 
 
 class Offer(models.Model):
+    """Сущность офера инвестора"""
+
     investor_id = models.ForeignKey(Investor, models.CASCADE)
     amount = models.IntegerField(verbose_name="Кол-во инвестиций")
     industries = models.ManyToManyField(
@@ -35,6 +39,8 @@ class Offer(models.Model):
 
 
 class Candidate(models.Model):
+    """Сущность кандидата на вакансию стартапа"""
+
     class BaseStatus(models.TextChoices):
         NEW = "new", "Новый"
         VIEWED = "viewed", "Просмотрен"
@@ -68,6 +74,7 @@ class Candidate(models.Model):
 
 
 class WorkTeam(models.Model):
+    """Сущность - участник команды стартапа"""
 
     candidate_id = models.ForeignKey(Candidate, models.CASCADE)
     articles_and_news_management = models.BooleanField(

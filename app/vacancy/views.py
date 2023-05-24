@@ -39,7 +39,6 @@ class VacancyListCreateView(generics.ListCreateAPIView):
     """Список всех вакансий стартапа | создание вакансии"""
 
     serializer_class = VacancyCreateSerializer
-    # permission_classes = (IsAuthenticated, StartupCreatePermission)
     permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
 
     def get_queryset(self):
@@ -210,7 +209,6 @@ class StartupWorkTeamList(generics.ListAPIView):
 class StartupWorkTeamRetrieveDelete(generics.RetrieveUpdateDestroyAPIView):
     """Удаление | изменение | получение члена команды"""
 
-    serializer_class = WorkTeamBaseSerializer
     permission_classes = (IsAuthenticated, StartupWorkTeamUpdatePermission)
     http_method_names = ["get", "put", "delete"]
 
@@ -220,7 +218,6 @@ class StartupWorkTeamRetrieveDelete(generics.RetrieveUpdateDestroyAPIView):
         return WorkTeamBaseSerializer
 
     def get_queryset(self):
-        # startup = Startup.objects.filter(owner__id=self.request.user.id).first()
         obj = Startup.objects.filter(
             Q(
                 work_team__candidate_id__professional_id__owner__in=[
@@ -231,17 +228,6 @@ class StartupWorkTeamRetrieveDelete(generics.RetrieveUpdateDestroyAPIView):
         ).first()
         self.check_object_permissions(self.request, obj)
         return obj.work_team.all()
-
-
-# class StartupWorkTeamChangePermissionsView(generics.UpdateAPIView):
-#     """Страница изменения прав участника команды"""
-#     serializer_class = WorkTeamUpdatePermissionsSerializer
-#
-#     def get_queryset(self):
-#         startup = Startup.objects.filter(
-#             Q(work_team__candidate_id__professional_id__owner__in=[self.request.user.id]) |
-#             Q(owner=self.request.user.id)).first()
-#         return startup.work_team.all()
 
 
 class ListAllVacancyCandidates(generics.ListAPIView):
