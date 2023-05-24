@@ -136,7 +136,7 @@ class Startup(models.Model):
         verbose_name="Детальное описание", null=True, blank=True
     )
     work_team = models.ManyToManyField(
-        "vacancy.Candidate",
+        "vacancy.WorkTeam",
         verbose_name="Команда",
         blank=True,
         related_name="startup_work_team",

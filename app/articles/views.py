@@ -3,15 +3,15 @@ from rest_framework.permissions import IsAuthenticated
 
 from articles.filters import ArticleFilter
 from articles.models import Article
-from articles.permissions import ArticlePermission
+from articles.permissions import ArticlePermission, ArticleBasePermission
 from articles.serializers import (
     ArticleCreateSerializer,
     ArticleUpdateSerializer,
     ArticleBaseSerializer,
     ArticleUpdateVisionSerializer,
 )
-from core.permissions import StartupCreatePermission
-from django.db.models import F
+
+from django.db.models import F, Q
 
 
 # class AllArticleListView(generics.ListAPIView):
@@ -25,9 +25,7 @@ from django.db.models import F
 class ArticleListCreateView(generics.ListCreateAPIView):
     """Список всех постов стартапа | создание поста"""
 
-    queryset = Article.objects.all()
-    serializer_class = ArticleCreateSerializer
-    permission_classes = (IsAuthenticated, StartupCreatePermission)
+    permission_classes = (IsAuthenticated, ArticleBasePermission)
 
     def get_serializer_class(self):
         if self.request.method == "GET":
@@ -35,7 +33,16 @@ class ArticleListCreateView(generics.ListCreateAPIView):
         return ArticleCreateSerializer
 
     def get_queryset(self):
-        return Article.objects.filter(company_id__owner_id=self.request.user.id)
+        obj = Article.objects.filter(
+            Q(
+                company_id__work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            )
+            | Q(company_id__owner=self.request.user.id)
+        )
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 class ArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
@@ -67,9 +74,19 @@ class ArticleVisibleView(generics.UpdateAPIView):
 
     serializer_class = ArticleUpdateVisionSerializer
     http_method_names = ["put"]
+    permission_classes = (IsAuthenticated, ArticlePermission)
 
+    # def get_queryset(self):
+    #     return Article.objects.filter(company_id__owner_id=self.request.user.id)
     def get_queryset(self):
-        return Article.objects.filter(company_id__owner_id=self.request.user.id)
+        return Article.objects.filter(
+            Q(
+                company_id__work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            )
+            | Q(company_id__owner=self.request.user.id)
+        )
 
 
 class AllArticleRetrieveView(generics.RetrieveAPIView):

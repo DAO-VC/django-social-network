@@ -3,6 +3,7 @@ from rest_framework import serializers
 from articles.models import Article
 from image.serializers import ImageSerializer
 from profiles.models import Startup
+from django.db.models import Q
 
 
 class ArticleBaseSerializer(serializers.ModelSerializer):
@@ -21,7 +22,15 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        company_id = Startup.objects.filter(owner=self.context["request"].user).first()
+        company_id = Startup.objects.filter(
+            Q(
+                work_team__candidate_id__professional_id__owner__id__in=[
+                    self.context["request"].user.id
+                ]
+            )
+            | Q(owner=self.context["request"].user)
+        ).first()
+
         article = Article.objects.create(**validated_data, company_id=company_id)
         return article
 

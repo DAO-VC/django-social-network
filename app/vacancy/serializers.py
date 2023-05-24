@@ -3,8 +3,9 @@ from rest_framework import serializers
 from django.db.utils import IntegrityError
 from profiles.models import Startup, Investor, Professional
 from profiles.serializers import ProfessionalSerializer
-from vacancy.models import Vacancy, Offer, Candidate
+from vacancy.models import Vacancy, Offer, Candidate, WorkTeam
 from rest_framework.exceptions import ValidationError
+from django.db.models import Q
 
 
 class VacancyBaseSerializer(serializers.ModelSerializer):
@@ -21,7 +22,15 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        company_id = Startup.objects.filter(owner=self.context["request"].user).first()
+        company_id = Startup.objects.filter(
+            Q(
+                work_team__candidate_id__professional_id__owner__in=[
+                    self.context["request"].user.id
+                ]
+            )
+            | Q(owner=self.context["request"].user)
+        ).first()
+
         skills = validated_data.pop("skills")
         if len(skills) < 1:
             raise ValidationError("Минимум один скил")
@@ -153,10 +162,16 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
         fields = ["professional_id", "vacancy_id", "base_status", "accept_status"]
 
     def update(self, instance: Candidate, validated_data):
-        startup = Startup.objects.filter(owner=self.context["request"].user).first()
-        if instance in startup.work_team.all():
+        # startup = Startup.objects.filter(owner=self.context["request"].user).first()
+        startup = Startup.objects.filter(id=instance.vacancy_id.company_id.id).first()
+        position = instance.vacancy_id.position
+        work_team_obj = WorkTeam.objects.create(
+            candidate_id=instance, position=position
+        )
+
+        if work_team_obj in startup.work_team.all():
             raise ValidationError("This candidate already in startups team")
-        startup.work_team.add(instance)
+        startup.work_team.add(work_team_obj)
         startup.save()
         instance.base_status = Candidate.BaseStatus.VIEWED
         instance.accept_status = Candidate.AcceptStatus.IN_THE_TEAM
@@ -178,3 +193,22 @@ class StartupAcceptRetrieveCandidate(serializers.ModelSerializer):
         instance.accept_status = Candidate.AcceptStatus.ACCEPT
         instance.save()
         return instance
+
+
+class WorkTeamBaseSerializer(serializers.ModelSerializer):
+    candidate_id = CandidateBaseSerializer(read_only=True)
+
+    class Meta:
+        model = WorkTeam
+        fields = "__all__"
+
+
+class WorkTeamUpdatePermissionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkTeam
+        fields = [
+            "articles_and_news_management",
+            "performers_management",
+            "company_management",
+            "vacancy_management",
+        ]

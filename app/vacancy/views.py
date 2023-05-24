@@ -1,9 +1,8 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-
+from django.db.models import Q
 from core.permissions import (
     InvestorCreatePermission,
-    StartupCreatePermission,
     ProfessionalCreatePermission,
 )
 from profiles.models import Startup
@@ -11,10 +10,12 @@ from vacancy.models import Vacancy, Offer, Candidate
 from vacancy.permissions import (
     OfferPermission,
     VacancyOwnerPermission,
-    WorkTeamOwnerPermission,
     ListAllVacancyCandidatesPermission,
     ProfessionalMyApplicationsPermission,
     StartupCandidatesPermission,
+    StartupWorkTeamPermission,
+    StartupWorkTeamUpdatePermission,
+    VacancyGetCreatePermission,
 )
 from vacancy.serializers import (
     VacancyCreateSerializer,
@@ -27,6 +28,8 @@ from vacancy.serializers import (
     StartupApproveCandidateSerializer,
     VacancyVisibleSerializer,
     StartupAcceptRetrieveCandidate,
+    WorkTeamBaseSerializer,
+    WorkTeamUpdatePermissionsSerializer,
 )
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
@@ -36,10 +39,18 @@ class VacancyListCreateView(generics.ListCreateAPIView):
     """Список всех вакансий стартапа | создание вакансии"""
 
     serializer_class = VacancyCreateSerializer
-    permission_classes = (IsAuthenticated, StartupCreatePermission)
+    # permission_classes = (IsAuthenticated, StartupCreatePermission)
+    permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
 
     def get_queryset(self):
-        return Vacancy.objects.filter(company_id__owner_id=self.request.user.id)
+        return Vacancy.objects.filter(
+            Q(
+                company_id__work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            )
+            | Q(company_id__owner=self.request.user.id)
+        )
 
 
 class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
@@ -180,27 +191,57 @@ class StartupAcceptCandidate(generics.UpdateAPIView):
 class StartupWorkTeamList(generics.ListAPIView):
     """Список команды стартапа"""
 
-    serializer_class = CandidateBaseSerializer
-    permission_classes = (
-        IsAuthenticated,
-        StartupCreatePermission,
-        WorkTeamOwnerPermission,
-    )
+    serializer_class = WorkTeamBaseSerializer
+    permission_classes = (IsAuthenticated, StartupWorkTeamPermission)
 
     def get_queryset(self):
-        startup = Startup.objects.filter(owner__id=self.request.user.id).first()
-        return startup.work_team.all()
+        obj = Startup.objects.filter(
+            Q(
+                work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            )
+            | Q(owner=self.request.user.id)
+        ).first()
+        self.check_object_permissions(self.request, obj)
+        return obj.work_team.all()
 
 
-class StartupWorkTeamRetrieveDelete(generics.RetrieveDestroyAPIView):
-    """Удаление | получение члена команды"""
+class StartupWorkTeamRetrieveDelete(generics.RetrieveUpdateDestroyAPIView):
+    """Удаление | изменение | получение члена команды"""
 
-    serializer_class = CandidateBaseSerializer
-    permission_classes = (IsAuthenticated, WorkTeamOwnerPermission)
+    serializer_class = WorkTeamBaseSerializer
+    permission_classes = (IsAuthenticated, StartupWorkTeamUpdatePermission)
+    http_method_names = ["get", "put", "delete"]
+
+    def get_serializer_class(self):
+        if self.request.method == "PUT":
+            return WorkTeamUpdatePermissionsSerializer
+        return WorkTeamBaseSerializer
 
     def get_queryset(self):
-        startup = Startup.objects.filter(owner__id=self.request.user.id).first()
-        return startup.work_team.all()
+        # startup = Startup.objects.filter(owner__id=self.request.user.id).first()
+        obj = Startup.objects.filter(
+            Q(
+                work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            )
+            | Q(owner=self.request.user.id)
+        ).first()
+        self.check_object_permissions(self.request, obj)
+        return obj.work_team.all()
+
+
+# class StartupWorkTeamChangePermissionsView(generics.UpdateAPIView):
+#     """Страница изменения прав участника команды"""
+#     serializer_class = WorkTeamUpdatePermissionsSerializer
+#
+#     def get_queryset(self):
+#         startup = Startup.objects.filter(
+#             Q(work_team__candidate_id__professional_id__owner__in=[self.request.user.id]) |
+#             Q(owner=self.request.user.id)).first()
+#         return startup.work_team.all()
 
 
 class ListAllVacancyCandidates(generics.ListAPIView):
