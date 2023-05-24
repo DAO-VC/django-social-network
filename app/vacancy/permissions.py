@@ -1,6 +1,6 @@
 from django.db.models import Q
 from rest_framework import permissions
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import AuthenticationFailed
 
 from profiles.models import Startup
 from vacancy.models import Offer, Vacancy, Candidate, WorkTeam
@@ -19,7 +19,7 @@ class VacancyOwnerPermission(permissions.BasePermission):
         try:
             startup: Startup = Startup.objects.get(owner=obj.company_id.owner)
         except AttributeError:
-            raise NotFound("Object don't exist")
+            raise AuthenticationFailed("permisson: You do not have access to this role")
 
         if obj.company_id.owner.id == request.user.id:
             return True
@@ -66,7 +66,7 @@ class StartupCandidatesPermission(permissions.BasePermission):
 class StartupWorkTeamPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj: Startup):
         if not obj:
-            raise NotFound("Object don't exist")
+            raise AuthenticationFailed("permisson: You do not have access to this role")
         if obj.owner.id == request.user.id:
             return True
         if request.user.id in [
@@ -83,7 +83,7 @@ class StartupWorkTeamUpdatePermission(permissions.BasePermission):
             | Q(owner=request.user.id)
         ).first()
         if not startup:
-            raise NotFound("Object don't exist")
+            raise AuthenticationFailed("permisson: You do not have access to this role")
         if startup.owner.id == request.user.id:
             return True
         if request.user.id in [
@@ -106,7 +106,7 @@ class VacancyGetCreatePermission(permissions.BasePermission):
         ).first()
 
         if not startup:
-            raise NotFound("Object don't exist")
+            raise AuthenticationFailed("permisson: You do not have access to this role")
         if request.method == "GET":
             return True
 

@@ -28,10 +28,12 @@ def send_emails(recipient_email: str, message_url: str):
 
 
 def generate_activation_code():
+    """Генерация кода проверки"""
     return int("".join([str(random.randint(0, 10)) for _ in range(6)]))
 
 
 def send_verification_mail(email):
+    """Отправка email с проверочным кодом"""
     generated_code = generate_activation_code()
     ctx = {"code": generated_code}
 

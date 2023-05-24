@@ -12,6 +12,8 @@ USER_MODEL = get_user_model()
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    """Сариализатор регистрации пользователя"""
+
     password_repeat = serializers.CharField(write_only=True)
 
     class Meta:
@@ -59,18 +61,24 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserBaseSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор пользователя"""
+
     class Meta:
         model = USER_MODEL
         fields = "__all__"
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
+    """Сериализатор логина пользователя"""
+
     class Meta:
         model = USER_MODEL
         fields = ("email", "password")
 
 
 class EmailSerializer(serializers.Serializer):
+    """Email сериализатор"""
+
     email = serializers.EmailField()
 
     class Meta:
@@ -78,6 +86,8 @@ class EmailSerializer(serializers.Serializer):
 
 
 class ResetPasswordSerializer(serializers.Serializer):
+    """Сериализатор восстановления пароля"""
+
     password = serializers.CharField(write_only=True)
     password_repeat = serializers.CharField(write_only=True)
 
@@ -112,6 +122,8 @@ class ResetPasswordSerializer(serializers.Serializer):
 
 
 class UserCodeInputSerializer(serializers.ModelSerializer):
+    """Сериализатор ввода проверочного кода"""
+
     code = serializers.CharField(write_only=True, max_length=7)
 
     def update(self, instance, validated_data):
@@ -129,6 +141,8 @@ class UserCodeInputSerializer(serializers.ModelSerializer):
 
 
 class UserCodeUpdateSerializer(serializers.ModelSerializer):
+    """Сериализатор отправки нового  проверочного кода"""
+
     def update(self, instance, validated_data):
         code = send_verification_mail(email=instance.email)
         instance.code = code
@@ -141,6 +155,8 @@ class UserCodeUpdateSerializer(serializers.ModelSerializer):
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """Надстройка над JWT login"""
+
     def validate(self, attrs):
         attrs["email"] = attrs.get("email").lower()
         data = super().validate(attrs)

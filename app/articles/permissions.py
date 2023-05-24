@@ -1,6 +1,6 @@
 from django.db.models import Q
 from rest_framework import permissions
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import AuthenticationFailed
 from articles.models import Article
 from profiles.models import Startup
 from vacancy.models import WorkTeam
@@ -13,7 +13,7 @@ class ArticlePermission(permissions.BasePermission):
             startup: Startup = Startup.objects.get(owner=obj.company_id.owner)
 
         except AttributeError:
-            raise NotFound("Object don't exist")
+            raise AuthenticationFailed("permisson: You do not have access to this role")
 
         if obj.company_id.owner.id == request.user.id:
             return True
@@ -36,7 +36,7 @@ class ArticleBasePermission(permissions.BasePermission):
             | Q(owner=request.user.id)
         ).first()
         if not startup:
-            raise NotFound("Object don't exist")
+            raise AuthenticationFailed("permisson: You do not have access to this role")
         if request.method == "POST":
             if startup.owner.id == request.user.id:
                 return True

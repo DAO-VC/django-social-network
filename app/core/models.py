@@ -6,6 +6,8 @@ from core.managers import UserManager
 
 
 class User(AbstractUser):
+    """Базовая модель пользователя"""
+
     class UserProfile(models.TextChoices):
         STARTUP = "startup", "Стартап"
         INVESTOR = "investor", "Инвестор"
