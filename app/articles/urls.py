@@ -26,5 +26,4 @@ urlpatterns = [
         ArticleVisibleView.as_view(),
         name="change_visible_article",
     ),
-    # path("main/articles/", AllArticleListView.as_view(), name="all_list_article"),
 ]

@@ -6,6 +6,8 @@ from profiles.models import Startup
 
 
 class Article(models.Model):
+    """Сущность статьи стартапа"""
+
     company_id = models.ForeignKey(Startup, models.CASCADE)
     name = models.CharField("Заголовок", max_length=32)
     description = models.TextField("Описание", null=True, blank=True)

@@ -278,6 +278,7 @@ class StartupSerializer(serializers.ModelSerializer):
     social_links = LinkSerializer()
     purpose = PurposeSerializer()
     achievements = AchievementSerializer()
+    registration_country = SaleRegionSerializer(read_only=True)
 
     class Meta:
         model = Startup

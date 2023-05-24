@@ -1,6 +1,5 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-
 from articles.filters import ArticleFilter
 from articles.models import Article
 from articles.permissions import ArticlePermission, ArticleBasePermission
@@ -12,14 +11,6 @@ from articles.serializers import (
 )
 
 from django.db.models import F, Q
-
-
-# class AllArticleListView(generics.ListAPIView):
-#     """Список всех постов сайта"""
-#
-#     queryset = Article.objects.all()
-#     serializer_class = ArticleBaseSerializer
-#     # TODO: сортировка по дате создания
 
 
 class ArticleListCreateView(generics.ListCreateAPIView):
@@ -49,7 +40,6 @@ class ArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
     """Изменение | удаление поста"""
 
     queryset = Article.objects.all()
-    serializer_class = ArticleUpdateSerializer
     http_method_names = ["get", "put", "delete"]
     permission_classes = (IsAuthenticated, ArticlePermission)
 
@@ -76,8 +66,6 @@ class ArticleVisibleView(generics.UpdateAPIView):
     http_method_names = ["put"]
     permission_classes = (IsAuthenticated, ArticlePermission)
 
-    # def get_queryset(self):
-    #     return Article.objects.filter(company_id__owner_id=self.request.user.id)
     def get_queryset(self):
         return Article.objects.filter(
             Q(

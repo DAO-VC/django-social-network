@@ -9,3 +9,5 @@ class ArticleFilter(rest_framework.FilterSet):
         fields = {
             "name": ("exact",),
         }
+
+    # TODO : изменить на базовую фильтрацию

@@ -6,13 +6,6 @@ from profiles.models import Startup
 from vacancy.models import WorkTeam
 
 
-# class ArticlePermission(permissions.BasePermission):
-#     def has_object_permission(self, request, view, obj: Article):
-#         if obj.company_id.owner.id != request.user.id:
-#             return False
-#         return True
-
-
 class ArticlePermission(permissions.BasePermission):
     def has_permission(self, request, view):
         obj = Article.objects.filter(id=view.kwargs["pk"]).first()

@@ -52,7 +52,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         match profile:
             case "professional":
                 user.profile = "professional"
-        code = send_verification_mail(email=validated_data.get("email"))
+        code = send_verification_mail(email=email)
         user.code = code
         user.save()
         return user

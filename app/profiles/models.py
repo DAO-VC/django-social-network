@@ -26,35 +26,35 @@ class Startup(models.Model):
 
     class CurrentStage(models.TextChoices):
         PROJECT_START = "projectStart", "Старт проекта"
-        WORKING_ON_THE_PRODUCT = "workingOnTheProduct", "Работа над продуктом"
+        WORKING_ON_THE_PRODUCT = "workingOnTheProject", "Работа над продуктом"
         ENTERING_THE_MARKET = "enteringTheMarket", "Выход на рынок"
         GROWTH_AND_SCALING = "growthAndScaling", "Рост и масштабирование"
 
-    class CountryChoices(models.TextChoices):
-        NORTHERN_AMERICA = "Northern America", "Северная Америка"
-        CENTRAL_AMERICA_AND_CARIBBEAN = (
-            "Central America & Caribbean",
-            "Центральная Америка и Карибы",
-        )
-        SOUTH_AMERICA = "South America", "Южная Америка"
-        NORDICS_AND_BALTICS = "Nordics & Baltics", "Северо-Балтийск"
-        WESTERN_EUROPE = "Western Europe", "Западная Европа"
-        SOUTHERN_EUROPE = "Southern Europe", "Южная Европа"
-        EASTERN_EUROPE_AND_RUSSIA = (
-            "Eastern Europe & Russia",
-            "Восточная Европа и Россия",
-        )
-        NORTHERN_AFRICA_AND_MIDDLE_EAST = (
-            "Northern Africa & Middle East",
-            "Северная Африка и Ближний Восток",
-        )
-        AFRICA = "Africa", "Африка"
-        ASIA = "Asia", "Азия"
-        WORLDWIDE = "Worldwide", "Мировой"
-        AUSTRALIA_NEW_ZEALAND_OCEANIA = (
-            "Australia, New Zealand & Oceania",
-            "Австралия, Новая зеландия и Океания",
-        )
+    # class CountryChoices(models.TextChoices):
+    #     NORTHERN_AMERICA = "Northern America", "Северная Америка"
+    #     CENTRAL_AMERICA_AND_CARIBBEAN = (
+    #         "Central America & Caribbean",
+    #         "Центральная Америка и Карибы",
+    #     )
+    #     SOUTH_AMERICA = "South America", "Южная Америка"
+    #     NORDICS_AND_BALTICS = "Nordics & Baltics", "Северо-Балтийск"
+    #     WESTERN_EUROPE = "Western Europe", "Западная Европа"
+    #     SOUTHERN_EUROPE = "Southern Europe", "Южная Европа"
+    #     EASTERN_EUROPE_AND_RUSSIA = (
+    #         "Eastern Europe & Russia",
+    #         "Восточная Европа и Россия",
+    #     )
+    #     NORTHERN_AFRICA_AND_MIDDLE_EAST = (
+    #         "Northern Africa & Middle East",
+    #         "Северная Африка и Ближний Восток",
+    #     )
+    #     AFRICA = "Africa", "Африка"
+    #     ASIA = "Asia", "Азия"
+    #     WORLDWIDE = "Worldwide", "Мировой"
+    #     AUSTRALIA_NEW_ZEALAND_OCEANIA = (
+    #         "Australia, New Zealand & Oceania",
+    #         "Австралия, Новая зеландия и Океания",
+    #     )
 
     owner = models.ForeignKey(User, models.CASCADE)
     name = models.CharField("Название", max_length=32)
@@ -82,8 +82,13 @@ class Startup(models.Model):
     )
     is_registered = models.BooleanField(verbose_name="Уже зарегистрирована")
 
-    registration_country = models.CharField(
-        "Статус", choices=CountryChoices.choices, max_length=50, null=True, blank=True
+    registration_country = models.ForeignKey(
+        "SaleRegions",
+        models.CASCADE,
+        verbose_name="Страна регистрации",
+        null=True,
+        blank=True,
+        related_name="core_region",
     )
     headquartered = models.CharField(
         "Штаб-квартира", max_length=32, null=True, blank=True
@@ -95,7 +100,9 @@ class Startup(models.Model):
         related_name="sale_regions",
     )
     stage = models.CharField("Стадия", choices=StageChoices.choices, max_length=32)
-    profit = models.IntegerField(default=0, verbose_name="Профит")
+    profit = models.IntegerField(
+        default=0, verbose_name="Профит", null=True, blank=True
+    )
     required_founding = models.IntegerField(
         default=0, verbose_name="Требуемое финансирование", null=True, blank=True
     )
@@ -206,8 +213,6 @@ class Professional(models.Model):
         "Industries", verbose_name="Интересы", blank=True, related_name="prof_interest"
     )
     salary = models.TextField(verbose_name="Зарплата", null=True, blank=True)
-
-    # resume = models.ForeignKey("Resume", models.CASCADE,null=True, blank=True,related_name="prof_resume")
 
     class Meta:
         verbose_name = "Профессионал"
