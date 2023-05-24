@@ -7,6 +7,7 @@ from rest_framework.exceptions import ValidationError
 import django.contrib.auth.password_validation as validators
 from core.utils import send_verification_mail
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.exceptions import ParseError
 
 USER_MODEL = get_user_model()
 
@@ -54,7 +55,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         match profile:
             case "professional":
                 user.profile = "professional"
-        code = send_verification_mail(email=email)
+        try:
+            code = send_verification_mail(email=email)
+        except Exception:
+            user.delete()
+            raise ParseError("Sorry ,please try again")
         user.code = code
         user.save()
         return user

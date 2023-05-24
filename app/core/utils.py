@@ -29,7 +29,7 @@ def send_emails(recipient_email: str, message_url: str):
 
 def generate_activation_code():
     """Генерация кода проверки"""
-    return int("".join([str(random.randint(0, 10)) for _ in range(6)]))
+    return int("".join([str(random.randint(0, 9)) for _ in range(6)]))
 
 
 def send_verification_mail(email):
