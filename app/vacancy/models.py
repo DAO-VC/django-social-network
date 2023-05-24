@@ -65,3 +65,21 @@ class Candidate(models.Model):
             "professional_id",
             "vacancy_id",
         )
+
+
+class WorkTeam(models.Model):
+
+    candidate_id = models.ForeignKey(Candidate, models.CASCADE)
+    articles_and_news_management = models.BooleanField(
+        verbose_name="Изменение статей и новостей", default=False
+    )
+    performers_management = models.BooleanField(
+        verbose_name="Возможность выдавать права", default=False
+    )
+    company_management = models.BooleanField(
+        verbose_name="Изменение компании", default=False
+    )
+    vacancy_management = models.BooleanField(
+        verbose_name="Изменение статей", default=False
+    )
+    position = models.CharField("Позиция", max_length=32, blank=True, null=True)

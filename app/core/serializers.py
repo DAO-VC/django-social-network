@@ -40,6 +40,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         validated_data.pop("password_repeat")
         profile = self.context.get("view").kwargs.get("profile_value")
         email = validated_data.pop("email").lower()
+        if USER_MODEL.objects.filter(email=email).exists():
+            raise serializers.ValidationError("Not unique email")
         user = USER_MODEL.objects.create_user(email=email, **validated_data)
         match profile:
             case "startup":

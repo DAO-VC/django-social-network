@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
@@ -15,7 +16,7 @@ from profiles.models import (
     SaleRegions,
     BusinessType,
 )
-from profiles.permissions import OnboardingPermission
+from profiles.permissions import OnboardingPermission, UpdateStartupPermission
 
 from profiles.serializers import (
     StartupBaseSerializer,
@@ -72,12 +73,12 @@ class InvestorCreateView(generics.CreateAPIView):
 class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
     """Изменение стартапа"""
 
-    queryset = Startup.objects.all()
-    serializer_class = StartupUpdateSerializer
+    # queryset = Startup.objects.all()
+    # serializer_class = StartupUpdateSerializer
     http_method_names = ["get", "put"]
     permission_classes = (
         IsAuthenticated,
-        UpdatePermission,
+        UpdateStartupPermission,
     )
 
     def get_serializer_class(self):
@@ -86,7 +87,18 @@ class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
         return StartupUpdateSerializer
 
     def get_object(self):
-        obj = Startup.objects.filter(owner__id=self.request.user.id).first()
+        # obj = Startup.objects.filter(owner__id=self.request.user.id).first()
+        # return obj
+
+        obj = Startup.objects.filter(
+            Q(
+                work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            )
+            | Q(owner=self.request.user.id)
+        ).first()
+        self.check_object_permissions(self.request, obj)
         return obj
 
 

@@ -1,4 +1,8 @@
 from rest_framework import permissions
+from rest_framework.exceptions import NotFound
+
+from profiles.models import Startup
+from vacancy.models import WorkTeam
 
 
 class OnboardingPermission(permissions.BasePermission):
@@ -6,3 +10,20 @@ class OnboardingPermission(permissions.BasePermission):
         if request.user.is_onboarding:
             return False
         return True
+
+
+class UpdateStartupPermission(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj: Startup):
+        if not obj:
+            raise NotFound("Object don't exist")
+        if obj.owner.id == request.user.id:
+            return True
+        if request.user.id in [
+            item.candidate_id.professional_id.owner.id for item in obj.work_team.all()
+        ]:
+            work_obj: WorkTeam = obj.work_team.filter(
+                candidate_id__professional_id__owner_id=request.user.id
+            ).first()
+            if work_obj.company_management:
+                return True
+        return False
