@@ -82,14 +82,14 @@ class Startup(models.Model):
     )
     is_registered = models.BooleanField(verbose_name="Уже зарегистрирована")
 
-    # registration_country = models.ForeignKey(
-    #     "SaleRegions",
-    #     models.CASCADE,
-    #     verbose_name="Страна регистрации",
-    #     null=True,
-    #     blank=True,
-    #     related_name="core_region",
-    # )
+    registration_country = models.ForeignKey(
+        "SaleRegions",
+        models.CASCADE,
+        verbose_name="Страна регистрации",
+        null=True,
+        blank=True,
+        related_name="core_region",
+    )
     headquartered = models.CharField(
         "Штаб-квартира", max_length=32, null=True, blank=True
     )
