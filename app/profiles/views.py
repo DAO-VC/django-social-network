@@ -73,8 +73,6 @@ class InvestorCreateView(generics.CreateAPIView):
 class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
     """Изменение стартапа"""
 
-    # queryset = Startup.objects.all()
-    # serializer_class = StartupUpdateSerializer
     http_method_names = ["get", "put"]
     permission_classes = (
         IsAuthenticated,
@@ -87,9 +85,6 @@ class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
         return StartupUpdateSerializer
 
     def get_object(self):
-        # obj = Startup.objects.filter(owner__id=self.request.user.id).first()
-        # return obj
-
         obj = Startup.objects.filter(
             Q(
                 work_team__candidate_id__professional_id__owner__in=[
@@ -161,26 +156,6 @@ class RegionsListView(generics.ListAPIView):
 
     queryset = SaleRegions.objects.all()
     serializer_class = SaleRegionSerializer
-
-
-# class ResumeListCreateView(generics.ListCreateAPIView):
-#     """Список всех резюме профессионала | создание резюме"""
-#
-#     queryset = Resume.objects.all()
-#     serializer_class = ResumeCreateSerializer
-#     permission_classes = (IsAuthenticated, ProfessionalCreatePermission)
-#
-#     def get_queryset(self):
-#         return Resume.objects.filter(professional_id__owner=self.request.user.id)
-#
-#
-# class ResumeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-#     """Получение | удаление | обновление резюме"""
-#
-#     queryset = Resume.objects.all()
-#     serializer_class = ResumeUpdateSerializer
-#     http_method_names = ["get", "put", "delete"]
-#     permission_classes = [ResumePermission]
 
 
 class AllStartupListView(generics.ListAPIView):

@@ -15,42 +15,56 @@ from profiles.models import (
 
 
 class IndustriesSerializer(serializers.ModelSerializer):
+    """Сериализатор индустрии"""
+
     class Meta:
         model = Industries
         fields = "__all__"
 
 
 class AchievementSerializer(serializers.ModelSerializer):
+    """Сериализатор достижения"""
+
     class Meta:
         model = Achievements
         fields = "__all__"
 
 
 class PurposeSerializer(serializers.ModelSerializer):
+    """Сериализатор цели"""
+
     class Meta:
         model = Purpose
         fields = "__all__"
 
 
 class LinkSerializer(serializers.ModelSerializer):
+    """Сериализатор социальной сети"""
+
     class Meta:
         model = Links
         fields = "__all__"
 
 
 class SaleRegionSerializer(serializers.ModelSerializer):
+    """Сериализатор региона продажи"""
+
     class Meta:
         model = SaleRegions
         fields = "__all__"
 
 
 class BusinessTypeSerializer(serializers.ModelSerializer):
+    """Сериализатор бизнес типа"""
+
     class Meta:
         model = BusinessType
         fields = "__all__"
 
 
 class StartupBaseSerializer(serializers.ModelSerializer):
+    """Сериализатор создания стартапа"""
+
     achievements = AchievementSerializer()
     purpose = PurposeSerializer()
     social_links = LinkSerializer()
@@ -96,6 +110,8 @@ class StartupBaseSerializer(serializers.ModelSerializer):
 
 
 class ProfessionalBaseSerializer(serializers.ModelSerializer):
+    """Сериализатор создания профессионала"""
+
     owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
     class Meta:
@@ -123,6 +139,8 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
 
 
 class InvestorBaseSerializer(serializers.ModelSerializer):
+    """Сериализатор создания инвестора"""
+
     owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
     social_links = LinkSerializer()
 
@@ -151,6 +169,8 @@ class InvestorBaseSerializer(serializers.ModelSerializer):
 
 
 class StartupUpdateSerializer(serializers.ModelSerializer):
+    """Сериализатор изменения стартапа"""
+
     achievements = AchievementSerializer()
     purpose = PurposeSerializer()
     social_links = LinkSerializer()
@@ -195,6 +215,8 @@ class StartupUpdateSerializer(serializers.ModelSerializer):
 
 
 class ProfessionalUpdateSerializer(serializers.ModelSerializer):
+    """Сериализатор изменения профессионала"""
+
     owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
     class Meta:
@@ -215,6 +237,8 @@ class ProfessionalUpdateSerializer(serializers.ModelSerializer):
 
 
 class InvestorUpdateSerializer(serializers.ModelSerializer):
+    """Сериализатор изменения инвестора"""
+
     owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
     social_links = LinkSerializer()
 
@@ -272,6 +296,8 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
 
 
 class StartupSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор  стартапа"""
+
     logo = ImageSerializer(read_only=True)
     background = ImageSerializer(read_only=True)
     pitch_presentation = FileSerializer(read_only=True)
@@ -286,6 +312,8 @@ class StartupSerializer(serializers.ModelSerializer):
 
 
 class ProfessionalSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор профессионала"""
+
     photo = ImageSerializer(read_only=True)
     cv = FileSerializer(read_only=True)
 
@@ -295,6 +323,8 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 
 
 class InvestorSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор инвестора"""
+
     photo = ImageSerializer(read_only=True)
     cv = FileSerializer(read_only=True)
     social_links = LinkSerializer()
