@@ -58,7 +58,7 @@ class StartupBaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Startup
-        fields = "__all__"
+        exclude = ("work_team",)
 
     def create(self, validated_data):
         achievement = validated_data.pop("achievements")
