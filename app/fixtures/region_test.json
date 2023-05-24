@@ -3,70 +3,91 @@
     "model": "profiles.saleregions",
     "pk": 1,
     "fields": {
-      "name": "Europe Union"
+      "name": "All world"
     }
   },
   {
     "model": "profiles.saleregions",
     "pk": 2,
     "fields": {
-      "name": "Great Britain"
+      "name": "Northern America"
     }
   },
   {
     "model": "profiles.saleregions",
     "pk": 3,
     "fields": {
-      "name": "CIS"
+      "name": "Central America & Caribbean"
     }
   },
   {
     "model": "profiles.saleregions",
     "pk": 4,
     "fields": {
-      "name": "Middle East"
+      "name": "South America"
     }
   },
   {
     "model": "profiles.saleregions",
     "pk": 5,
     "fields": {
-      "name": "North Africa"
+      "name": "Nordics & Baltics"
     }
   },
   {
     "model": "profiles.saleregions",
     "pk": 6,
     "fields": {
-      "name": "Asia"
+      "name": "Western Europe"
     }
   },
   {
     "model": "profiles.saleregions",
     "pk": 7,
     "fields": {
-      "name": "Pacific"
+      "name": "Southern Europe"
     }
   },
   {
     "model": "profiles.saleregions",
     "pk": 8,
     "fields": {
-      "name": "Australia"
+      "name": "Eastern Europe & Russia"
     }
   },
   {
     "model": "profiles.saleregions",
     "pk": 9,
     "fields": {
-      "name": "South America"
+      "name": "Northern Africa & Middle East"
     }
   },
   {
     "model": "profiles.saleregions",
     "pk": 10,
     "fields": {
-      "name": "North America"
+      "name": "Africa"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 11,
+    "fields": {
+      "name": "Asia"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 12,
+    "fields": {
+      "name": "Worldwide"
+    }
+  },
+  {
+    "model": "profiles.saleregions",
+    "pk": 13,
+    "fields": {
+      "name": "Australia, New Zealand & Oceania"
     }
   }
 ]
