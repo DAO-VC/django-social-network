@@ -156,6 +156,8 @@ class Startup(models.Model):
 
 
 class Investor(models.Model):
+    """Модель сущности инвестор"""
+
     owner = models.ForeignKey(User, models.CASCADE)
     name = models.CharField("Имя", max_length=32)
     lastName = models.CharField("Фамилия", max_length=32)
@@ -189,6 +191,8 @@ class Investor(models.Model):
 
 
 class Professional(models.Model):
+    """модель сущности профессионал"""
+
     owner = models.ForeignKey(User, models.CASCADE)
     name = models.CharField("Имя", max_length=32)
     lastName = models.CharField("Фамилия", max_length=32)
@@ -223,6 +227,8 @@ class Professional(models.Model):
 
 
 class Industries(models.Model):
+    """Модель индустрии"""
+
     class IndustriesType(models.TextChoices):
         BLOCKCHAIN = "blockchain", "Блокчейн"
         OTHER = "other", "Остальное"
@@ -235,6 +241,8 @@ class Industries(models.Model):
 
 
 class Achievements(models.Model):
+    """Модель достижения"""
+
     accelerator = models.TextField(verbose_name="Акселератор", null=True, blank=True)
     conference = models.TextField(verbose_name="Конференция", null=True, blank=True)
     hackathon = models.TextField(verbose_name="Хакатон", null=True, blank=True)
@@ -244,11 +252,15 @@ class Achievements(models.Model):
 
 
 class Purpose(models.Model):
+    """Модель цель"""
+
     problem = models.TextField(verbose_name="Акселератор", null=True, blank=True)
     decision = models.TextField(verbose_name="Конференция", null=True, blank=True)
 
 
 class Links(models.Model):
+    """Модель социальные сети"""
+
     app_store = models.CharField("Аппстор", max_length=32, null=True, blank=True)
     google_play = models.CharField("Гуглплэй", max_length=32, null=True, blank=True)
     twitter = models.CharField("Твиттер", max_length=32, null=True, blank=True)
@@ -262,6 +274,8 @@ class Links(models.Model):
 
 
 class SaleRegions(models.Model):
+    """Модель регионы продажи"""
+
     name = models.CharField("Название", max_length=32)
 
     def __str__(self):
@@ -269,6 +283,8 @@ class SaleRegions(models.Model):
 
 
 class BusinessType(models.Model):
+    """Модель бизнес типы"""
+
     title = models.CharField("Название", max_length=32)
     full_title = models.CharField("Полное название", max_length=32)
     description = models.TextField("Описание")

@@ -1,17 +1,16 @@
 from django.db import models
-from image.validators import (
-    validate_file_size,
-    validate_image_size,
-)
 
 
 class Image(models.Model):
+    """Модель изображения"""
+
     image = models.FileField(
         "Background",
         upload_to="images/",
-        # validators=[validate_image_size],
     )
 
 
 class File(models.Model):
+    """Модель файла"""
+
     pdf = models.FileField(upload_to="files/")

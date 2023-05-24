@@ -4,6 +4,8 @@ from .models import Image, File
 
 
 class ImageBaseSerializer(serializers.ModelSerializer):
+    """Сериализатор изображения"""
+
     class Meta:
         model = Image
         fields = [
@@ -13,6 +15,8 @@ class ImageBaseSerializer(serializers.ModelSerializer):
 
 
 class FileBaseSerializer(serializers.ModelSerializer):
+    """Сериализатор файка"""
+
     class Meta:
         model = File
         fields = [
@@ -22,6 +26,8 @@ class FileBaseSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    """Сериализатор изображения + парсинг"""
+
     name = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
 
@@ -39,6 +45,8 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class FileSerializer(serializers.ModelSerializer):
+    """Сериализатор файла + парсинг"""
+
     name = serializers.SerializerMethodField()
     pdf = serializers.SerializerMethodField()
 
