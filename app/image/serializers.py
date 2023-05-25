@@ -15,7 +15,7 @@ class ImageBaseSerializer(serializers.ModelSerializer):
 
 
 class FileBaseSerializer(serializers.ModelSerializer):
-    """Сериализатор файка"""
+    """Сериализатор файла"""
 
     class Meta:
         model = File
