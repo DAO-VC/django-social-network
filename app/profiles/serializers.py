@@ -176,9 +176,11 @@ class StartupUpdateSerializer(serializers.ModelSerializer):
     social_links = LinkSerializer()
     owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
+    # registration_country = serializers.SlugRelatedField(read_only=True, slug_field="id")
+
     class Meta:
         model = Startup
-        fields = "__all__"
+        exclude = ("work_team",)
 
     def update(self, instance: Startup, validated_data):
         if "achievements" in validated_data:

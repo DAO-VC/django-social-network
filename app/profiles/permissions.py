@@ -14,9 +14,7 @@ class OnboardingPermission(permissions.BasePermission):
 
 class UpdateStartupPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj: Startup):
-        if request.method == "POST":
-            # if not obj:
-            #     raise NotFound("Object don't exist")
+        if request.method == "PUT":
             if obj.owner.id == request.user.id:
                 return True
             if request.user.id in [
