@@ -8,7 +8,7 @@ from rest_framework.exceptions import ValidationError
 import django.contrib.auth.password_validation as validators
 from core.utils import send_verification_mail
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework.exceptions import ParseError
+
 
 USER_MODEL = get_user_model()
 
@@ -151,9 +151,10 @@ class UserCodeUpdateSerializer(serializers.ModelSerializer):
     """Сериализатор отправки нового  проверочного кода"""
 
     def update(self, instance, validated_data):
-        code = send_verification_mail(email=instance.email)
-        instance.code = code
-        instance.save()
+        with transaction.atomic():
+            code = send_verification_mail(email=instance.email)
+            instance.code = code
+            instance.save()
         return instance
 
     class Meta:

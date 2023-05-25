@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from image.serializers import ImageSerializer, FileSerializer
@@ -92,19 +93,20 @@ class StartupBaseSerializer(serializers.ModelSerializer):
         purpose_obj = Purpose.objects.create(**purpose)
         social_links_obj = Links.objects.create(**social_links)
         owner = self.context["request"].user
-        startup = Startup.objects.create(
-            **validated_data,
-            achievements=achievement_obj,
-            purpose=purpose_obj,
-            social_links=social_links_obj,
-            owner=owner,
-        )
+        with transaction.atomic():
+            startup = Startup.objects.create(
+                **validated_data,
+                achievements=achievement_obj,
+                purpose=purpose_obj,
+                social_links=social_links_obj,
+                owner=owner,
+            )
 
-        startup.industries.set(industries)
-        startup.regions.set(regions)
-        startup.business_type.set(business_type)
-        owner.is_onboarding = True
-        owner.save()
+            startup.industries.set(industries)
+            startup.regions.set(regions)
+            startup.business_type.set(business_type)
+            owner.is_onboarding = True
+            owner.save()
         # TODO : добавить транзакции
         return startup
 
@@ -126,14 +128,14 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
         # if len(skills) < 1:
         #     raise ValidationError("interest : minimum  one interest")
         owner = self.context["request"].user
+        with transaction.atomic():
+            professional = Professional.objects.create(**validated_data, owner=owner)
 
-        professional = Professional.objects.create(**validated_data, owner=owner)
+            professional.skills.set(skills)
+            # professional.interest.set(interest)
 
-        professional.skills.set(skills)
-        # professional.interest.set(interest)
-
-        owner.is_onboarding = True
-        owner.save()
+            owner.is_onboarding = True
+            owner.save()
 
         return professional
 
@@ -155,15 +157,15 @@ class InvestorBaseSerializer(serializers.ModelSerializer):
         owner = self.context["request"].user
         social_links = validated_data.pop("social_links")
         social_links_obj = Links.objects.create(**social_links)
+        with transaction.atomic():
+            investor = Investor.objects.create(
+                **validated_data, owner=owner, social_links=social_links_obj
+            )
 
-        investor = Investor.objects.create(
-            **validated_data, owner=owner, social_links=social_links_obj
-        )
+            investor.interest.set(interest)
 
-        investor.interest.set(interest)
-
-        owner.is_onboarding = True
-        owner.save()
+            owner.is_onboarding = True
+            owner.save()
 
         return investor
 
