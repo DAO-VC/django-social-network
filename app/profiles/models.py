@@ -262,16 +262,16 @@ class Purpose(models.Model):
 class Links(models.Model):
     """Модель социальные сети"""
 
-    app_store = models.CharField("Аппстор", max_length=32, null=True, blank=True)
-    google_play = models.CharField("Гуглплэй", max_length=32, null=True, blank=True)
-    twitter = models.CharField("Твиттер", max_length=32, null=True, blank=True)
-    telegram = models.CharField("Телеграм", max_length=32, null=True, blank=True)
-    youtube = models.CharField("Ютуб", max_length=32, null=True, blank=True)
-    discord = models.CharField("Дискорд", max_length=32, null=True, blank=True)
-    facebook = models.CharField("Фэйсбук", max_length=32, null=True, blank=True)
-    instagram = models.CharField("Инстаграм", max_length=32, null=True, blank=True)
-    linkedin = models.CharField("Линкедин", max_length=32, null=True, blank=True)
-    medium = models.CharField("Медиум", max_length=32, null=True, blank=True)
+    app_store = models.TextField("Аппстор", null=True, blank=True)
+    google_play = models.TextField("Гуглплэй", null=True, blank=True)
+    twitter = models.TextField("Твиттер", null=True, blank=True)
+    telegram = models.TextField("Телеграм", null=True, blank=True)
+    youtube = models.TextField("Ютуб", null=True, blank=True)
+    discord = models.TextField("Дискорд", null=True, blank=True)
+    facebook = models.TextField("Фэйсбук", null=True, blank=True)
+    instagram = models.TextField("Инстаграм", null=True, blank=True)
+    linkedin = models.TextField("Линкедин", null=True, blank=True)
+    medium = models.TextField("Медиум", null=True, blank=True)
 
 
 class SaleRegions(models.Model):
