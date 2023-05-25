@@ -63,7 +63,7 @@ class Startup(models.Model):
     short_description = models.TextField(verbose_name="Описание", null=True, blank=True)
     logo = models.ForeignKey(
         Image,
-        models.CASCADE,
+        models.SET_NULL,
         verbose_name="Логотип",
         null=True,
         blank=True,
@@ -71,7 +71,7 @@ class Startup(models.Model):
     )
     background = models.ForeignKey(
         Image,
-        models.CASCADE,
+        models.SET_NULL,
         verbose_name="Бэкграунд",
         null=True,
         blank=True,
@@ -84,7 +84,7 @@ class Startup(models.Model):
 
     registration_country = models.ForeignKey(
         "SaleRegions",
-        models.CASCADE,
+        models.SET_NULL,
         verbose_name="Страна регистрации",
         null=True,
         blank=True,
@@ -119,7 +119,7 @@ class Startup(models.Model):
         "Стадия разработки", choices=CurrentStage.choices, max_length=32
     )
     purpose = models.ForeignKey(
-        "Purpose", models.CASCADE, verbose_name="Цель", null=True, blank=True
+        "Purpose", models.SET_NULL, verbose_name="Цель", null=True, blank=True
     )
     business_model = models.CharField(
         "Бизнес модель",
@@ -133,10 +133,14 @@ class Startup(models.Model):
         File, models.CASCADE, verbose_name="Файл презентации", null=True, blank=True
     )
     achievements = models.ForeignKey(
-        "Achievements", models.CASCADE, verbose_name="Достижения"
+        "Achievements",
+        models.SET_NULL,
+        verbose_name="Достижения",
+        null=True,
+        blank=True,
     )
     social_links = models.ForeignKey(
-        "Links", models.CASCADE, verbose_name="Социальные сети", null=True, blank=True
+        "Links", models.SET_NULL, verbose_name="Социальные сети", null=True, blank=True
     )
 
     detailed_description = models.TextField(
@@ -167,7 +171,7 @@ class Investor(models.Model):
     )
     about = models.TextField(verbose_name="Обо мне", null=True, blank=True)
     photo = models.ForeignKey(
-        Image, models.CASCADE, verbose_name="Фото", null=True, blank=True
+        Image, models.SET_NULL, verbose_name="Фото", null=True, blank=True
     )
     interest = models.ManyToManyField(
         "Industries",
@@ -176,10 +180,10 @@ class Investor(models.Model):
         related_name="invest_interest",
     )
     cv = models.ForeignKey(
-        File, models.CASCADE, verbose_name="Файл презентации", null=True, blank=True
+        File, models.SET_NULL, verbose_name="Файл презентации", null=True, blank=True
     )
     social_links = models.ForeignKey(
-        "Links", models.CASCADE, verbose_name="Социальные сети", null=True, blank=True
+        "Links", models.SET_NULL, verbose_name="Социальные сети", null=True, blank=True
     )
 
     class Meta:
@@ -202,10 +206,10 @@ class Professional(models.Model):
     )
     about = models.TextField(verbose_name="Обо мне", null=True, blank=True)
     photo = models.ForeignKey(
-        Image, models.CASCADE, verbose_name="Фото", null=True, blank=True
+        Image, models.SET_NULL, verbose_name="Фото", null=True, blank=True
     )
     cv = models.ForeignKey(
-        File, models.CASCADE, verbose_name="Файл презентации", null=True, blank=True
+        File, models.SET_NULL, verbose_name="Файл презентации", null=True, blank=True
     )
 
     # TODO: вопрос о формате файла ( они разные в стартапе и здесь)
