@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from django.db.utils import IntegrityError
@@ -38,9 +39,9 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
         skills = validated_data.pop("skills")
         if len(skills) < 1:
             raise ValidationError("Минимум один скил")
-
-        vacancy = Vacancy.objects.create(**validated_data, company_id=company_id)
-        vacancy.skills.set(skills)
+        with transaction.atomic():
+            vacancy = Vacancy.objects.create(**validated_data, company_id=company_id)
+            vacancy.skills.set(skills)
 
         return vacancy
 
@@ -103,9 +104,9 @@ class OfferCreateSerializer(serializers.ModelSerializer):
         industries = validated_data.pop("industries")
         if len(industries) < 1:
             raise ValidationError("Минимум одина индустрия")
-
-        resume = Offer.objects.create(**validated_data, investor_id=investor)
-        resume.industries.set(industries)
+        with transaction.atomic():
+            resume = Offer.objects.create(**validated_data, investor_id=investor)
+            resume.industries.set(industries)
 
         return resume
 
@@ -188,11 +189,12 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
 
         if work_team_obj in startup.work_team.all():
             raise ValidationError("This candidate already in startups team")
-        startup.work_team.add(work_team_obj)
-        startup.save()
-        instance.base_status = Candidate.BaseStatus.VIEWED
-        instance.accept_status = Candidate.AcceptStatus.IN_THE_TEAM
-        instance.save()
+        with transaction.atomic():
+            startup.work_team.add(work_team_obj)
+            startup.save()
+            instance.base_status = Candidate.BaseStatus.VIEWED
+            instance.accept_status = Candidate.AcceptStatus.IN_THE_TEAM
+            instance.save()
         # TODO : нужно переводить в статус скрыта
         return instance
 
@@ -209,8 +211,9 @@ class StartupAcceptRetrieveCandidate(serializers.ModelSerializer):
         fields = ["professional_id", "vacancy_id", "base_status", "accept_status"]
 
     def update(self, instance: Candidate, validated_data):
-        instance.accept_status = Candidate.AcceptStatus.ACCEPT
-        instance.save()
+        with transaction.atomic():
+            instance.accept_status = Candidate.AcceptStatus.ACCEPT
+            instance.save()
         return instance
 
 
