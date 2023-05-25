@@ -122,15 +122,15 @@ class ProfessionalBaseSerializer(serializers.ModelSerializer):
         skills = validated_data.pop("skills")
         if len(skills) < 1:
             raise ValidationError("skills : minimum  one skill")
-        interest = validated_data.pop("interest")
-        if len(skills) < 1:
-            raise ValidationError("interest : minimum  one interest")
+        # interest = validated_data.pop("interest")
+        # if len(skills) < 1:
+        #     raise ValidationError("interest : minimum  one interest")
         owner = self.context["request"].user
 
         professional = Professional.objects.create(**validated_data, owner=owner)
 
         professional.skills.set(skills)
-        professional.interest.set(interest)
+        # professional.interest.set(interest)
 
         owner.is_onboarding = True
         owner.save()
@@ -231,9 +231,9 @@ class ProfessionalUpdateSerializer(serializers.ModelSerializer):
         if len(skills) > 0:
             instance.skills.set(skills)
 
-        interest = validated_data.pop("interest")
-        if len(interest) > 0:
-            instance.interest.set(interest)
+        # interest = validated_data.pop("interest")
+        # if len(interest) > 0:
+        #     instance.interest.set(interest)
 
         return super().update(instance, validated_data)
 

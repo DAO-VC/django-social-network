@@ -191,7 +191,7 @@ class Investor(models.Model):
 
 
 class Professional(models.Model):
-    """модель сущности профессионал"""
+    """Модель сущности профессионал"""
 
     owner = models.ForeignKey(User, models.CASCADE)
     name = models.CharField("Имя", max_length=32)
@@ -210,12 +210,13 @@ class Professional(models.Model):
 
     # TODO: вопрос о формате файла ( они разные в стартапе и здесь)
     # TODO: Добавить интересы
+    speciality = models.CharField("Специальность", max_length=32, null=True, blank=True)
     skills = models.ManyToManyField(
         "Industries", verbose_name="Скилы", blank=True, related_name="skills"
     )
-    interest = models.ManyToManyField(
-        "Industries", verbose_name="Интересы", blank=True, related_name="prof_interest"
-    )
+    # interest = models.ManyToManyField(
+    #     "Industries", verbose_name="Интересы", blank=True, related_name="prof_interest"
+    # )
     salary = models.TextField(verbose_name="Зарплата", null=True, blank=True)
 
     class Meta:
