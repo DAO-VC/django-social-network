@@ -58,7 +58,7 @@ class Startup(models.Model):
 
     owner = models.ForeignKey(User, models.CASCADE)
     name = models.CharField("Название", max_length=32)
-    url = models.CharField("Урл", max_length=32, null=True, blank=True)
+    url = models.TextField("Урл", null=True, blank=True)
     foundation_year = models.IntegerField(null=True, blank=True)
     short_description = models.TextField(verbose_name="Описание", null=True, blank=True)
     logo = models.ForeignKey(
