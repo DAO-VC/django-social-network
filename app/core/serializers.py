@@ -1,4 +1,5 @@
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.db import transaction
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
@@ -45,23 +46,24 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         email = validated_data.pop("email").lower()
         if USER_MODEL.objects.filter(email=email).exists():
             raise serializers.ValidationError("Not unique email")
-        user = USER_MODEL.objects.create_user(email=email, **validated_data)
-        match profile:
-            case "startup":
-                user.profile = "startup"
-        match profile:
-            case "investor":
-                user.profile = "investor"
-        match profile:
-            case "professional":
-                user.profile = "professional"
-        try:
+        with transaction.atomic():
+            user = USER_MODEL.objects.create_user(email=email, **validated_data)
+            match profile:
+                case "startup":
+                    user.profile = "startup"
+            match profile:
+                case "investor":
+                    user.profile = "investor"
+            match profile:
+                case "professional":
+                    user.profile = "professional"
+
             code = send_verification_mail(email=email)
-        except Exception:
-            user.delete()
-            raise ParseError("Sorry ,please try again")
-        user.code = code
-        user.save()
+            # except Exception:
+            #     user.delete()
+            #     raise ParseError("Sorry ,please try again")
+            user.code = code
+            user.save()
         return user
 
 
