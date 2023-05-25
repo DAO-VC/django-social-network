@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 
 from articles.models import Article
@@ -30,8 +31,8 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
             )
             | Q(owner=self.context["request"].user)
         ).first()
-
-        article = Article.objects.create(**validated_data, company_id=company_id)
+        with transaction.atomic():
+            article = Article.objects.create(**validated_data, company_id=company_id)
         return article
 
 
