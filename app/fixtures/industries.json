@@ -80,17 +80,10 @@
       "type": "other"
     }
   },
+
   {
     "model": "profiles.industries",
     "pk": 11,
-    "fields": {
-      "title": "Cryptocurrencies",
-      "type": "other"
-    }
-  },
-  {
-    "model": "profiles.industries",
-    "pk": 12,
     "fields": {
       "title": "Cyber",
       "type": "other"
@@ -98,7 +91,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 13,
+    "pk": 12,
     "fields": {
       "title": "Security",
       "type": "other"
@@ -106,7 +99,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 14,
+    "pk": 13,
     "fields": {
       "title": "E-commerce & Online Marketplaces",
       "type": "other"
@@ -114,7 +107,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 16,
+    "pk": 14,
     "fields": {
       "title": "Education",
       "type": "other"
@@ -122,7 +115,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 17,
+    "pk": 15,
     "fields": {
       "title": "Enterprise Software",
       "type": "other"
@@ -130,7 +123,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 18,
+    "pk": 16,
     "fields": {
       "title": "Finance & Insurance",
       "type": "other"
@@ -138,7 +131,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 19,
+    "pk": 17,
     "fields": {
       "title": "Food & Nutrition",
       "type": "other"
@@ -146,7 +139,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 20,
+    "pk": 18,
     "fields": {
       "title": "Gaming",
       "type": "other"
@@ -154,7 +147,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 21,
+    "pk": 19,
     "fields": {
       "title": "Health & Wellbeing",
       "type": "other"
@@ -162,7 +155,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 22,
+    "pk": 20,
     "fields": {
       "title": "Industrial",
       "type": "other"
@@ -170,7 +163,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 23,
+    "pk": 21,
     "fields": {
       "title": "Manufacturing & Materials",
       "type": "other"
@@ -178,7 +171,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 24,
+    "pk": 22,
     "fields": {
       "title": "Marketing & AdTech",
       "type": "other"
@@ -186,7 +179,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 25,
+    "pk": 23,
     "fields": {
       "title": "Medtech & Pharma",
       "type": "other"
@@ -194,7 +187,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 26,
+    "pk": 24,
     "fields": {
       "title": "Mobile Hardware",
       "type": "other"
@@ -202,7 +195,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 27,
+    "pk": 25,
     "fields": {
       "title": "Mobile Software",
       "type": "other"
@@ -210,7 +203,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 28,
+    "pk": 26,
     "fields": {
       "title": "Music & Entertainment",
       "type": "other"
@@ -218,7 +211,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 29,
+    "pk": 27,
     "fields": {
       "title": "On-demand Services",
       "type": "other"
@@ -226,7 +219,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 30,
+    "pk": 28,
     "fields": {
       "title": "Property & Construction Tech",
       "type": "other"
@@ -234,7 +227,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 31,
+    "pk": 29,
     "fields": {
       "title": "Robotics",
       "type": "other"
@@ -242,7 +235,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 32,
+    "pk": 30,
     "fields": {
       "title": "Social Entrepreneurship",
       "type": "other"
@@ -250,7 +243,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 33,
+    "pk": 31,
     "fields": {
       "title": "Social Media & Messaging",
       "type": "other"
@@ -258,7 +251,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 34,
+    "pk": 32,
     "fields": {
       "title": "Cryptocurrencies",
       "type": "blockchain"
@@ -266,7 +259,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 35,
+    "pk": 33,
     "fields": {
       "title": "NTF",
       "type": "blockchain"
@@ -274,7 +267,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 36,
+    "pk": 34,
     "fields": {
       "title": "DeFi",
       "type": "blockchain"
@@ -282,7 +275,7 @@
   },
   {
     "model": "profiles.industries",
-    "pk": 37,
+    "pk": 35,
     "fields": {
       "title": "GameFi",
       "type": "blockchain"

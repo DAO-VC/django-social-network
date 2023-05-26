@@ -71,7 +71,7 @@ class InvestorCreateView(generics.CreateAPIView):
 
 
 class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """Изменение стартапа"""
+    """Получение | Изменение стартапа"""
 
     http_method_names = ["get", "put"]
     permission_classes = (
