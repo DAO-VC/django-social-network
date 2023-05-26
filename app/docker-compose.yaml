@@ -10,6 +10,8 @@ services:
         condition: service_completed_successfully
       postgres:
         condition: service_healthy
+    volumes:
+      - media_data:/usr/src/app/media
 
 
   migration:
@@ -48,3 +50,4 @@ services:
 
 volumes:
   postgres_data:
+  media_data:
