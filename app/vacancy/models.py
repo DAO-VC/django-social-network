@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django_extensions.db.fields import CreationDateTimeField
+
 from profiles.models import Startup, Industries, Investor, Professional
 
 
@@ -14,9 +16,7 @@ class Vacancy(models.Model):
     skills = models.ManyToManyField(
         Industries, verbose_name="Скилы", blank=True, related_name="vacancy_skills"
     )
-    created_at = models.DateTimeField(
-        default=timezone.now, verbose_name="Дата создания"
-    )
+    created_at = CreationDateTimeField(verbose_name="Дата создания")
     # TODO: обязательные поля
 
 

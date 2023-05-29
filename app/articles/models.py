@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django_extensions.db.fields import CreationDateTimeField
 
 from image.models import Image
 from profiles.models import Startup
@@ -16,9 +17,9 @@ class Article(models.Model):
     )
     is_visible = models.BooleanField(verbose_name="Видим")
     view_count = models.IntegerField(default=0)
-    created_at = models.DateTimeField(
-        default=timezone.now, verbose_name="Дата создания"
-    )
+    created_at = CreationDateTimeField(verbose_name="Дата создания")
+
+    # TODO заменить поле на CreationDateTimeField из django-extensions
     # TODO : tags ??
     # TODO: обязательные поля
 

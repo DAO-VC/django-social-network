@@ -21,6 +21,7 @@ psycopg2-binary = "^2.9.6"
 django-cors-headers = "^3.14.0"
 djangorestframework-simplejwt = "^5.2.2"
 django-filter = "^23.2"
+django-extensions = "^3.2.1"
 
 
 [build-system]
