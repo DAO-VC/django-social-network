@@ -43,6 +43,19 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
         model = Article
         fields = "__all__"
 
+    def update(self, instance, validated_data):
+        from image.tasks import cleaner
+
+        if instance.image:
+            object_image_id = instance.image.id
+            new_image_id = validated_data.get("image")
+            if new_image_id:
+                new_image_id = new_image_id.id
+
+            cleaner.delay(object_image_id, new_image_id)
+
+        return super().update(instance, validated_data)
+
 
 class ArticleUpdateVisionSerializer(serializers.ModelSerializer):
     class Meta:

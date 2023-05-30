@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django_extensions.db.fields import CreationDateTimeField
 
 from image.models import Image

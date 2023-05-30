@@ -90,6 +90,3 @@ class WorkTeam(models.Model):
         verbose_name="Изменение статей", default=False
     )
     position = models.CharField("Позиция", max_length=32, blank=True, null=True)
-
-
-# test

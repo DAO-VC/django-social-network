@@ -13,6 +13,7 @@ from profiles.models import (
     Professional,
     Investor,
 )
+from image.tasks import cleaner, cleaner_file
 
 
 class IndustriesSerializer(serializers.ModelSerializer):
@@ -215,6 +216,30 @@ class StartupUpdateSerializer(serializers.ModelSerializer):
         if len(business_type) > 0:
             instance.business_type.set(business_type)
 
+        if instance.logo:
+            object_logo_id = instance.logo.id
+            new_logo_id = validated_data.get("logo")
+            if new_logo_id:
+                new_logo_id = new_logo_id.id
+
+            cleaner.delay(object_logo_id, new_logo_id)
+
+        if instance.background:
+            object_background_id = instance.background.id
+            new_background_id = validated_data.get("background")
+            if new_background_id:
+                new_background_id = new_background_id.id
+
+            cleaner.delay(object_background_id, new_background_id)
+
+        if instance.pitch_presentation:
+            object_pitch_presentation_id = instance.pitch_presentation.id
+            new_pitch_presentation_id = validated_data.get("pitch_presentation")
+            if new_pitch_presentation_id:
+                new_pitch_presentation_id = new_pitch_presentation_id.id
+
+            cleaner_file.delay(object_pitch_presentation_id, new_pitch_presentation_id)
+
         return super().update(instance, validated_data)
 
 
@@ -233,9 +258,21 @@ class ProfessionalUpdateSerializer(serializers.ModelSerializer):
         if len(skills) > 0:
             instance.skills.set(skills)
 
-        # interest = validated_data.pop("interest")
-        # if len(interest) > 0:
-        #     instance.interest.set(interest)
+        if instance.photo:
+            object_photo_id = instance.photo.id
+            new_photo_id = validated_data.get("photo")
+            if new_photo_id:
+                new_photo_id = new_photo_id.id
+
+            cleaner.delay(object_photo_id, new_photo_id)
+
+        if instance.cv:
+            object_cv_id = instance.cv.id
+            new_cv_id = validated_data.get("cv")
+            if new_cv_id:
+                new_cv_id = new_cv_id.id
+
+            cleaner_file.delay(object_cv_id, new_cv_id)
 
         return super().update(instance, validated_data)
 
@@ -260,6 +297,22 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
             social_links_instance = instance.social_links
             social_links_data = validated_data.pop("social_links")
             social_links_serializer.update(social_links_instance, social_links_data)
+
+        if instance.photo:
+            object_photo_id = instance.photo.id
+            new_photo_id = validated_data.get("photo")
+            if new_photo_id:
+                new_photo_id = new_photo_id.id
+
+            cleaner.delay(object_photo_id, new_photo_id)
+
+        if instance.cv:
+            object_cv_id = instance.cv.id
+            new_cv_id = validated_data.get("cv")
+            if new_cv_id:
+                new_cv_id = new_cv_id.id
+
+            cleaner_file.delay(object_cv_id, new_cv_id)
 
         return super().update(instance, validated_data)
 
