@@ -16,8 +16,9 @@ class Article(models.Model):
         Image, models.SET_NULL, verbose_name="Фото", null=True, blank=True
     )
     is_visible = models.BooleanField(verbose_name="Видим")
-    view_count = models.IntegerField(default=0)
+    view_count = models.IntegerField(default=0, null=True, blank=True)
     created_at = CreationDateTimeField(verbose_name="Дата создания")
+    tags = models.ManyToManyField("Tag", related_name="article_tags")
 
     # TODO заменить поле на CreationDateTimeField из django-extensions
     # TODO : tags ??
@@ -25,3 +26,10 @@ class Article(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Tag(models.Model):
+    title = models.CharField("Заголовок", max_length=32)
+
+    def __str__(self):
+        return self.title

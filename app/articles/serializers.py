@@ -1,7 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 
-from articles.models import Article
+from articles.models import Article, Tag
 from image.serializers import ImageSerializer
 from profiles.models import Startup
 from django.db.models import Q
@@ -17,6 +17,11 @@ class ArticleBaseSerializer(serializers.ModelSerializer):
 
 class ArticleCreateSerializer(serializers.ModelSerializer):
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    tags = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
+    update_tags = serializers.ListField(
+        child=serializers.CharField(max_length=30), write_only=True
+    )
+    view_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Article
@@ -31,17 +36,37 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
             )
             | Q(owner=self.context["request"].user)
         ).first()
+        tag_titles = validated_data.pop("update_tags")
         with transaction.atomic():
             article = Article.objects.create(**validated_data, company_id=company_id)
+            tags = []
+            for title in tag_titles:
+                tag, created = Tag.objects.get_or_create(title=title)
+                tags.append(tag)
+            article.tags.set(tags)
         return article
 
 
 class ArticleUpdateSerializer(serializers.ModelSerializer):
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    tags = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
+    update_tags = serializers.ListField(
+        child=serializers.CharField(max_length=30), write_only=True
+    )
+    view_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Article
         fields = "__all__"
+
+    def update(self, instance, validated_data):
+        tag_titles = validated_data.pop("update_tags")
+        tags = []
+        for title in tag_titles:
+            tag, created = Tag.objects.get_or_create(title=title)
+            tags.append(tag)
+        instance.tags.set(tags)
+        return super().update(instance, validated_data)
 
 
 class ArticleUpdateVisionSerializer(serializers.ModelSerializer):
