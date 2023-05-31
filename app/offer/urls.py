@@ -6,7 +6,12 @@ from offer.views import (
     AllOffersList,
     AllOffersRetrieve,
     OfferVisibleRetrieveView,
+    StartupCandidateCreateView,
+    ListAllOfferCandidates,
+    OfferRetrieveStartupCandidates,
+    OfferStartupCandidates,
 )
+
 
 urlpatterns = [
     path(
@@ -24,10 +29,30 @@ urlpatterns = [
         OfferVisibleRetrieveView.as_view(),
         name="visible_retrieve_offer",
     ),
+    path(
+        "main/offers/startups/",
+        OfferStartupCandidates.as_view(),
+        name="all_startups_to_investor",
+    ),
+    path(
+        "main/offers/startups/<int:pk>",
+        OfferRetrieveStartupCandidates.as_view(),
+        name="retrieve_delete_startup_to_offer",
+    ),
+    path(
+        "main/offers/<int:pk>/startups/",
+        ListAllOfferCandidates.as_view(),
+        name="all_startups_to_offer",
+    ),
     path("common/offers/", AllOffersList.as_view(), name="all_offers"),
     path(
         "common/offers/<int:pk>/",
         AllOffersRetrieve.as_view(),
         name="all_detail_offers",
+    ),
+    path(
+        "common/offers/<int:pk>/apply",
+        StartupCandidateCreateView.as_view(),
+        name="apply_startup_to_offer",
     ),
 ]

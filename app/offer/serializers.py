@@ -1,9 +1,10 @@
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
-from offer.models import Offer
-from profiles.models import Investor
+from django.db.utils import IntegrityError
+from offer.models import Offer, CandidateStartup
+from profiles.models import Investor, Startup
 
 
 class OfferBaseSerializer(serializers.ModelSerializer):
@@ -20,6 +21,7 @@ class OfferCreateSerializer(serializers.ModelSerializer):
     """Сериализатор создания офера"""
 
     investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    is_visible = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Offer
@@ -34,7 +36,9 @@ class OfferCreateSerializer(serializers.ModelSerializer):
         if len(industries) < 1:
             raise ValidationError("Минимум одина индустрия")
         with transaction.atomic():
-            offer = Offer.objects.create(**validated_data, investor_id=investor)
+            offer = Offer.objects.create(
+                **validated_data, investor_id=investor, is_visible=True
+            )
             offer.industries.set(industries)
 
         return offer
@@ -76,3 +80,27 @@ class OfferVisibleSerializer(serializers.ModelSerializer):
             instance.is_visible = True
         instance.save()
         return instance
+
+
+class CandidateStartupBaseSerializer(serializers.ModelSerializer):
+    startup_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    offer_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    accept_status = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = CandidateStartup
+        fields = "__all__"
+
+    def create(self, validated_data):
+        offer = get_object_or_404(Offer, pk=self.context.get("view").kwargs.get("pk"))
+        startup = get_object_or_404(Startup, owner=self.context["request"].user)
+        try:
+            startup_candidate = CandidateStartup.objects.create(
+                offer_id=offer,
+                startup_id=startup,
+                accept_status=CandidateStartup.AcceptStatus.PENDING_FOR_APPROVAL,
+            )
+        except IntegrityError:
+            raise ValidationError("Вы уже подались на эту вакансию")
+
+        return startup_candidate

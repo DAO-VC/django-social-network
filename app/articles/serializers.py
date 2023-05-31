@@ -22,6 +22,7 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
         child=serializers.CharField(max_length=30), write_only=True
     )
     view_count = serializers.IntegerField(read_only=True)
+    is_visible = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Article
@@ -38,7 +39,9 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
         ).first()
         tag_titles = validated_data.pop("update_tags")
         with transaction.atomic():
-            article = Article.objects.create(**validated_data, company_id=company_id)
+            article = Article.objects.create(
+                **validated_data, company_id=company_id, is_visible=True
+            )
             tags = []
             for title in tag_titles:
                 tag, created = Tag.objects.get_or_create(title=title)
@@ -54,6 +57,7 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
         child=serializers.CharField(max_length=30), write_only=True
     )
     view_count = serializers.IntegerField(read_only=True)
+    is_visible = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Article

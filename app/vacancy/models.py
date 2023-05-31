@@ -44,9 +44,7 @@ class Candidate(models.Model):
     accept_status = models.CharField(
         "Статус", choices=AcceptStatus.choices, max_length=50, null=True, blank=True
     )
-    created_at = models.DateTimeField(
-        default=timezone.now, verbose_name="Дата создания"
-    )
+    created_at = CreationDateTimeField(verbose_name="Дата создания")
 
     class Meta:
         unique_together = (

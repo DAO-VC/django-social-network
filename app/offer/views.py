@@ -1,12 +1,15 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-
-from offer.models import Offer
+from rest_framework import filters
+from core.permissions import StartupCreatePermission
+from offer.models import Offer, CandidateStartup
 from offer.serializers import (
     OfferUpdateSerializer,
     OfferCreateSerializer,
     OfferBaseSerializer,
     OfferVisibleSerializer,
+    CandidateStartupBaseSerializer,
 )
 
 
@@ -24,10 +27,13 @@ class OfferListCreateView(generics.ListCreateAPIView):
 class OfferRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     """Получение | удаление | обновление офера"""
 
-    queryset = Offer.objects.all()
     serializer_class = OfferUpdateSerializer
     http_method_names = ["get", "put", "delete"]
+
     # permission_classes = [IsAuthenticated, OfferPermission]
+
+    def get_queryset(self):
+        return Offer.objects.filter(investor_id__owner=self.request.user.id)
 
 
 class AllOffersList(generics.ListAPIView):
@@ -40,7 +46,7 @@ class AllOffersList(generics.ListAPIView):
 
 
 class AllOffersRetrieve(generics.RetrieveAPIView):
-    """Детальный вывод ооффера платформы по id"""
+    """Детальный вывод оффера платформы по id"""
 
     serializer_class = OfferBaseSerializer
 
@@ -54,3 +60,53 @@ class OfferVisibleRetrieveView(generics.UpdateAPIView):
     queryset = Offer.objects.all()
     serializer_class = OfferVisibleSerializer
     http_method_names = ["put"]
+
+
+class StartupCandidateCreateView(generics.CreateAPIView):
+    """Подача заявки на оффер стартапом"""
+
+    queryset = CandidateStartup
+    serializer_class = CandidateStartupBaseSerializer
+    permission_classes = (IsAuthenticated, StartupCreatePermission)
+
+
+class ListAllOfferCandidates(generics.ListAPIView):
+    """Получение списка всех кандидатов на оффер инвестора"""
+
+    serializer_class = CandidateStartupBaseSerializer
+    # permission_classes = (IsAuthenticated, ListAllVacancyCandidatesPermission)
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["id", "accept_status"]
+    ordering_fields = ["accept_status", "created_at"]
+
+    def get_queryset(self):
+        return CandidateStartup.objects.filter(offer_id=self.kwargs["pk"])
+
+
+class OfferStartupCandidates(generics.ListAPIView):
+    """Список всех кандидатов инвестора"""
+
+    serializer_class = CandidateStartupBaseSerializer
+    # permission_classes = (IsAuthenticated, StartupCandidatesPermission)
+
+    def get_queryset(self):
+        return CandidateStartup.objects.filter(
+            offer_id__investor_id__owner=self.request.user
+        )
+
+
+class OfferRetrieveStartupCandidates(generics.RetrieveDestroyAPIView):
+    """Получение | удаление кандидата на оффер"""
+
+    serializer_class = CandidateStartupBaseSerializer
+
+    # permission_classes = (IsAuthenticated, StartupCandidatesPermission)
+
+    def get_queryset(self):
+        return CandidateStartup.objects.filter(
+            offer_id__investor_id__owner=self.request.user
+        )
