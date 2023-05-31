@@ -30,6 +30,7 @@ urlpatterns = [
     path("files/", include("image.urls")),
     path("", include("vacancy.urls")),
     path("", include("articles.urls")),
+    path("", include("offer.urls")),
 ]
 
 if settings.DEBUG:

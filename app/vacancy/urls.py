@@ -3,8 +3,6 @@ from django.urls import path
 from vacancy.views import (
     VacancyListCreateView,
     VacancyRetrieveView,
-    OfferListCreateView,
-    OfferRetrieveUpdateDeleteView,
     VacancyAllView,
     VacancyAllDetailView,
     CandidateCreateView,
@@ -33,16 +31,6 @@ urlpatterns = [
         "main/vacancies/<int:pk>/visible/",
         VacancyVisibleRetrieveView.as_view(),
         name="visible_retrieve_vacancy",
-    ),
-    path(
-        "main/offers/",
-        OfferListCreateView.as_view(),
-        name="list_create_offer",
-    ),
-    path(
-        "main/offers/<int:pk>/",
-        OfferRetrieveUpdateDeleteView.as_view(),
-        name="retrieve_offer",
     ),
     path("common/vacancies/", VacancyAllView.as_view(), name="all_vacancy"),
     path(

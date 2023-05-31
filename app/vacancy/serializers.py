@@ -4,7 +4,7 @@ from rest_framework import serializers
 from django.db.utils import IntegrityError
 from profiles.models import Startup, Investor, Professional
 from profiles.serializers import ProfessionalSerializer
-from vacancy.models import Vacancy, Offer, Candidate, WorkTeam
+from vacancy.models import Vacancy, Candidate, WorkTeam
 from rest_framework.exceptions import ValidationError
 from django.db.models import Q
 
@@ -85,44 +85,6 @@ class VacancyVisibleSerializer(serializers.ModelSerializer):
             instance.is_visible = True
         instance.save()
         return instance
-
-
-class OfferCreateSerializer(serializers.ModelSerializer):
-    """Сериализатор создания офера"""
-
-    investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
-
-    class Meta:
-        model = Offer
-        fields = "__all__"
-
-    def create(self, validated_data):
-        investor: Investor = Investor.objects.filter(
-            owner=self.context["request"].user
-        ).first()
-
-        industries = validated_data.pop("industries")
-        if len(industries) < 1:
-            raise ValidationError("Минимум одина индустрия")
-        with transaction.atomic():
-            resume = Offer.objects.create(**validated_data, investor_id=investor)
-            resume.industries.set(industries)
-
-        return resume
-
-
-class OfferUpdateSerializer(serializers.ModelSerializer):
-    """Сериализатор обновления офера"""
-
-    class Meta:
-        model = Offer
-        exclude = ("investor_id",)
-
-    def update(self, instance, validated_data):
-        industries = validated_data.pop("industries")
-        if len(industries) > 0:
-            instance.industries.set(industries)
-        return super().update(instance, validated_data)
 
 
 class CandidateCreateSerializer(serializers.ModelSerializer):

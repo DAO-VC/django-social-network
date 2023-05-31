@@ -20,24 +20,6 @@ class Vacancy(models.Model):
     # TODO: обязательные поля
 
 
-class Offer(models.Model):
-    """Сущность офера инвестора"""
-
-    investor_id = models.ForeignKey(Investor, models.CASCADE)
-    amount = models.IntegerField(verbose_name="Кол-во инвестиций")
-    industries = models.ManyToManyField(
-        Industries,
-        verbose_name="Индустрии",
-        blank=True,
-        related_name="offer_industries",
-    )
-    details = models.TextField("Детали")
-    # TODO: article?
-    created_at = models.DateTimeField(
-        default=timezone.now, verbose_name="Дата создания"
-    )
-
-
 class Candidate(models.Model):
     """Сущность кандидата на вакансию стартапа"""
 

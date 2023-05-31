@@ -50,13 +50,14 @@ INSTALLED_APPS = [
     "versatileimagefield",
     "corsheaders",
     "rest_framework_simplejwt",
+    "django_filters",
     # Локальные модули
     "core",
     "profiles",
     "image",
     "vacancy",
     "articles",
-    "django_filters",
+    "offer",
 ]
 
 MIDDLEWARE = [
@@ -88,7 +89,6 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = "main.wsgi.application"
 
 # Database
@@ -97,7 +97,6 @@ WSGI_APPLICATION = "main.wsgi.application"
 DATABASES = {
     "default": env.db(),
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

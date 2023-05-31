@@ -3,14 +3,14 @@ from rest_framework import permissions
 from rest_framework.exceptions import AuthenticationFailed
 
 from profiles.models import Startup
-from vacancy.models import Offer, Vacancy, Candidate, WorkTeam
+from vacancy.models import Vacancy, Candidate, WorkTeam
 
 
-class OfferPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj: Offer):
-        if obj.investor_id.owner.id != request.user.id:
-            return False
-        return True
+# class OfferPermission(permissions.BasePermission):
+#     def has_object_permission(self, request, view, obj: Offer):
+#         if obj.investor_id.owner.id != request.user.id:
+#             return False
+#         return True
 
 
 class VacancyOwnerPermission(permissions.BasePermission):

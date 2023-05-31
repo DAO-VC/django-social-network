@@ -2,13 +2,11 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from core.permissions import (
-    InvestorCreatePermission,
     ProfessionalCreatePermission,
 )
 from profiles.models import Startup
-from vacancy.models import Vacancy, Offer, Candidate
+from vacancy.models import Vacancy, Candidate
 from vacancy.permissions import (
-    OfferPermission,
     VacancyOwnerPermission,
     ListAllVacancyCandidatesPermission,
     ProfessionalMyApplicationsPermission,
@@ -20,8 +18,6 @@ from vacancy.permissions import (
 from vacancy.serializers import (
     VacancyCreateSerializer,
     VacancyUpdateSerializer,
-    OfferCreateSerializer,
-    OfferUpdateSerializer,
     VacancyBaseSerializer,
     CandidateCreateSerializer,
     CandidateBaseSerializer,
@@ -68,25 +64,6 @@ class VacancyVisibleRetrieveView(generics.UpdateAPIView):
     serializer_class = VacancyVisibleSerializer
     http_method_names = ["put"]
     permission_classes = (IsAuthenticated, VacancyOwnerPermission)
-
-
-class OfferListCreateView(generics.ListCreateAPIView):
-    """Список всех оферов инвестора | создание офера"""
-
-    serializer_class = OfferCreateSerializer
-    permission_classes = (IsAuthenticated, InvestorCreatePermission)
-
-    def get_queryset(self):
-        return Offer.objects.filter(investor_id__owner=self.request.user.id)
-
-
-class OfferRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """Получение | удаление | обновление офера"""
-
-    queryset = Offer.objects.all()
-    serializer_class = OfferUpdateSerializer
-    http_method_names = ["get", "put", "delete"]
-    permission_classes = [IsAuthenticated, OfferPermission]
 
 
 class VacancyAllView(generics.ListAPIView):
