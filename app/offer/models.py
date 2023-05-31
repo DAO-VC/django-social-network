@@ -16,5 +16,6 @@ class Offer(models.Model):
         related_name="offer_industries",
     )
     details = models.TextField("Детали")
+    is_visible = models.BooleanField(verbose_name="Активен")
     # TODO: article?
     created_at = CreationDateTimeField(verbose_name="Дата создания")

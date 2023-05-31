@@ -6,6 +6,16 @@ from offer.models import Offer
 from profiles.models import Investor
 
 
+class OfferBaseSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор оффера"""
+
+    investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+
+    class Meta:
+        model = Offer
+        fields = "__all__"
+
+
 class OfferCreateSerializer(serializers.ModelSerializer):
     """Сериализатор создания офера"""
 
@@ -42,3 +52,27 @@ class OfferUpdateSerializer(serializers.ModelSerializer):
         if len(industries) > 0:
             instance.industries.set(industries)
         return super().update(instance, validated_data)
+
+
+class OfferVisibleSerializer(serializers.ModelSerializer):
+    """Сериализатор изменения видимости оффера"""
+
+    class Meta:
+        model = Offer
+        fields = "__all__"
+        read_only_fields = (
+            "investor_id",
+            "amount",
+            "industries",
+            "is_visible",
+            "details",
+            "created_at",
+        )
+
+    def update(self, instance: Offer, validated_data):
+        if instance.is_visible:
+            instance.is_visible = False
+        else:
+            instance.is_visible = True
+        instance.save()
+        return instance
