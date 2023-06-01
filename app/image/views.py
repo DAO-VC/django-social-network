@@ -1,5 +1,5 @@
 from .models import Image, File
-from .serializers import FileSerializer, ImageBaseSerializer, FileBaseSerializer
+from .serializers import ImageBaseSerializer, FileBaseSerializer
 from rest_flex_fields.views import FlexFieldsModelViewSet
 from rest_framework import viewsets
 

@@ -1,8 +1,6 @@
 from django.db import models
-from django.utils import timezone
 from django_extensions.db.fields import CreationDateTimeField
-
-from profiles.models import Startup, Industries, Investor, Professional
+from profiles.models import Startup, Industries, Professional
 
 
 class Vacancy(models.Model):
@@ -70,6 +68,3 @@ class WorkTeam(models.Model):
         verbose_name="Изменение статей", default=False
     )
     position = models.CharField("Позиция", max_length=32, blank=True, null=True)
-
-
-# test

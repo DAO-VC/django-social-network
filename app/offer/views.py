@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
 from core.permissions import StartupCreatePermission, InvestorCreatePermission
 from offer.models import Offer, CandidateStartup
-from offer.permissions import OfferVisiblePermission, OfferStartupCandidates
+from offer.permissions import OfferVisiblePermission, OfferStartupCandidatesPermission
 from offer.serializers import (
     OfferUpdateSerializer,
     OfferCreateSerializer,
@@ -96,7 +96,7 @@ class OfferStartupCandidates(generics.ListAPIView):
 
     serializer_class = CandidateStartupBaseSerializer
 
-    permission_classes = (OfferStartupCandidates,)
+    permission_classes = (OfferStartupCandidatesPermission,)
 
     def get_queryset(self):
         return CandidateStartup.objects.filter(
@@ -109,7 +109,7 @@ class OfferRetrieveStartupCandidates(generics.RetrieveDestroyAPIView):
 
     serializer_class = CandidateStartupBaseSerializer
 
-    permission_classes = (OfferStartupCandidates,)
+    permission_classes = (OfferStartupCandidatesPermission,)
 
     def get_queryset(self):
         return CandidateStartup.objects.filter(
@@ -122,7 +122,7 @@ class ConfirmOfferView(generics.UpdateAPIView):
 
     serializer_class = ConfirmOfferSerializer
     http_method_names = ["put"]
-    permission_classes = (OfferStartupCandidates,)
+    permission_classes = (OfferStartupCandidatesPermission,)
 
     def get_queryset(self):
         return CandidateStartup.objects.filter(
@@ -134,7 +134,7 @@ class InvestorConfirmedStartupsList(generics.ListAPIView):
     """Список всех инвестируемых стартапом проектов"""
 
     serializer_class = CandidateStartupBaseSerializer
-    permission_classes = (OfferStartupCandidates,)
+    permission_classes = (OfferStartupCandidatesPermission,)
 
     def get_queryset(self):
         return CandidateStartup.objects.filter(

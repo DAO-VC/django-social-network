@@ -9,7 +9,7 @@ class OfferVisiblePermission(permissions.BasePermission):
         return False
 
 
-class OfferStartupCandidates(permissions.BasePermission):
+class OfferStartupCandidatesPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj: CandidateStartup):
         if obj.offer_id.investor_id.id == request.user.id:
             return True

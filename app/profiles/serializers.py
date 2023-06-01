@@ -300,7 +300,7 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
 
 
 class StartupSerializer(serializers.ModelSerializer):
-    """Базовый сериализатор  стартапа"""
+    """Базовый сериализатор стартапа"""
 
     logo = ImageSerializer(read_only=True)
     background = ImageSerializer(read_only=True)

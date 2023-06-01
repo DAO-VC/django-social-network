@@ -212,7 +212,7 @@ class Professional(models.Model):
         File, models.SET_NULL, verbose_name="Файл презентации", null=True, blank=True
     )
 
-    # TODO: вопрос о формате файла ( они разные в стартапе и здесь)
+    # TODO: вопрос о формате файла (они разные в стартапе и здесь)
     # TODO: Добавить интересы
     speciality = models.CharField("Специальность", max_length=32, null=True, blank=True)
     skills = models.ManyToManyField(

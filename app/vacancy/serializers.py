@@ -2,7 +2,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from django.db.utils import IntegrityError
-from profiles.models import Startup, Investor, Professional
+from profiles.models import Startup, Professional
 from profiles.serializers import ProfessionalSerializer
 from vacancy.models import Vacancy, Candidate, WorkTeam
 from rest_framework.exceptions import ValidationError
