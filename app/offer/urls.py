@@ -13,6 +13,7 @@ from offer.views import (
     ConfirmOfferView,
     InvestorConfirmedStartupsList,
     StartupConfirmedList,
+    InvestorAllOffers,
 )
 
 
@@ -38,7 +39,7 @@ urlpatterns = [
         name="all_startups_to_investor",
     ),
     path(
-        "main/offers/startups/<int:pk>",
+        "main/offers/startups/<int:pk>/",
         OfferRetrieveStartupCandidates.as_view(),
         name="retrieve_delete_startup_to_offer",
     ),
@@ -64,12 +65,17 @@ urlpatterns = [
         name="all_detail_offers",
     ),
     path(
-        "common/offers/<int:pk>/apply",
+        "common/investor/<int:pk>/offers/",
+        InvestorAllOffers.as_view(),
+        name="all_offers_to_investor",
+    ),
+    path(
+        "common/offers/<int:pk>/apply/",
         StartupCandidateCreateView.as_view(),
         name="apply_startup_to_offer",
     ),
     path(
-        "main/startup/investors",
+        "main/startup/investors/",
         StartupConfirmedList.as_view(),
         name="all_startup_investors_list",
     ),

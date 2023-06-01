@@ -17,6 +17,7 @@ from vacancy.views import (
     ListAllVacancyCandidates,
     StartupAcceptCandidate,
     ProfessionalWorkView,
+    StartupAllVacancies,
 )
 
 urlpatterns = [
@@ -38,6 +39,11 @@ urlpatterns = [
         "common/vacancies/<int:pk>/",
         VacancyAllDetailView.as_view(),
         name="all_detail_vacancy",
+    ),
+    path(
+        "common/startup/<int:pk>/vacancies",
+        StartupAllVacancies.as_view(),
+        name="all_vacancies_to_startup",
     ),
     path(
         "common/vacancies/<int:pk>/apply/",

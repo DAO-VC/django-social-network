@@ -232,3 +232,13 @@ class ProfessionalWorkView(generics.ListAPIView):
         return Startup.objects.filter(
             work_team__candidate_id__professional_id__owner=self.request.user.id
         )
+
+
+class StartupAllVacancies(generics.ListAPIView):
+    """Список всех вакансий стартапа по id"""
+
+    serializer_class = VacancyBaseSerializer
+    # permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
+
+    def get_queryset(self):
+        return Vacancy.objects.filter(company_id=self.kwargs["pk"])

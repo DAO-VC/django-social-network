@@ -91,3 +91,14 @@ class AllArticleRetrieveView(generics.RetrieveAPIView):
         instance.view_count = F("view_count") + 1
         instance.save()
         return super().retrieve(request, *args, **kwargs)
+
+
+class StartupAllArticles(generics.ListAPIView):
+    """Список всех статей стартапа по id"""
+
+    serializer_class = ArticleBaseSerializer
+
+    # permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
+
+    def get_queryset(self):
+        return Article.objects.filter(company_id=self.kwargs["pk"])

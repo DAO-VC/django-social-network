@@ -149,3 +149,13 @@ class StartupConfirmedList(generics.ListAPIView):
             startup_id__owner=self.request.user,
             accept_status=CandidateStartup.AcceptStatus.ACCEPT,
         )
+
+
+class InvestorAllOffers(generics.ListAPIView):
+    """Список всех офферов инвестора по id"""
+
+    serializer_class = OfferBaseSerializer
+    # permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
+
+    def get_queryset(self):
+        return Offer.objects.filter(investor_id=self.kwargs["pk"])
