@@ -83,6 +83,8 @@ class OfferVisibleSerializer(serializers.ModelSerializer):
 
 
 class CandidateStartupBaseSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор кандидата на оффер"""
+
     startup_id = serializers.PrimaryKeyRelatedField(read_only=True)
     offer_id = serializers.PrimaryKeyRelatedField(read_only=True)
     accept_status = serializers.CharField(read_only=True)
@@ -93,6 +95,8 @@ class CandidateStartupBaseSerializer(serializers.ModelSerializer):
 
 
 class CandidateStartupCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор создания кандидата на оффер"""
+
     startup_id = serializers.PrimaryKeyRelatedField(read_only=True)
     offer_id = serializers.PrimaryKeyRelatedField(read_only=True)
     accept_status = serializers.CharField(read_only=True)
@@ -117,6 +121,8 @@ class CandidateStartupCreateSerializer(serializers.ModelSerializer):
 
 
 class ConfirmOfferSerializer(serializers.ModelSerializer):
+    """Сериализатор подтверждения кандидата на оффер"""
+
     class Meta:
         model = CandidateStartup
         fields = "__all__"

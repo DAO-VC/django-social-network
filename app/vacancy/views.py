@@ -226,7 +226,10 @@ class ListAllVacancyCandidates(generics.ListAPIView):
 
 
 class ProfessionalWorkView(generics.ListAPIView):
+    """Отображение рабочего стартапа профессионала"""
+
     serializer_class = StartupSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Startup.objects.filter(
@@ -238,7 +241,8 @@ class StartupAllVacancies(generics.ListAPIView):
     """Список всех вакансий стартапа по id"""
 
     serializer_class = VacancyBaseSerializer
-    # permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
+
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Vacancy.objects.filter(company_id=self.kwargs["pk"])

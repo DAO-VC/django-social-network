@@ -8,6 +8,8 @@ from django.db.models import Q
 
 
 class ArticleBaseSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор статьи"""
+
     image = ImageSerializer(read_only=True)
 
     class Meta:
@@ -16,6 +18,8 @@ class ArticleBaseSerializer(serializers.ModelSerializer):
 
 
 class ArticleCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор создания статьи"""
+
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
     tags = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
     update_tags = serializers.ListField(
@@ -51,6 +55,8 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
 
 
 class ArticleUpdateSerializer(serializers.ModelSerializer):
+    """Сериализатор обновления статьи"""
+
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
     tags = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
     update_tags = serializers.ListField(
@@ -74,6 +80,8 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
 
 
 class ArticleUpdateVisionSerializer(serializers.ModelSerializer):
+    """Сериализатор изменения видимости статьи"""
+
     class Meta:
         model = Article
         fields = "__all__"

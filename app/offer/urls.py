@@ -34,19 +34,19 @@ urlpatterns = [
         name="visible_retrieve_offer",
     ),
     path(
-        "main/offers/startups/",
+        "main/offers/candidates/",
         OfferStartupCandidates.as_view(),
-        name="all_startups_to_investor",
+        name="all_startups_candidates_to_investor",
     ),
     path(
-        "main/offers/startups/<int:pk>/",
+        "main/offers/candidates/<int:pk>/",
         OfferRetrieveStartupCandidates.as_view(),
-        name="retrieve_delete_startup_to_offer",
+        name="retrieve_delete_startup_candidate_to_offer",
     ),
     path(
-        "main/offers/<int:pk>/startups/",
+        "main/offers/<int:pk>/candidates/",
         ListAllOfferCandidates.as_view(),
-        name="all_startups_to_offer",
+        name="all_startups_candidates_to_offer",
     ),
     path(
         "main/offers/<int:pk>/confirm/",

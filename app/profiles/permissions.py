@@ -1,6 +1,4 @@
 from rest_framework import permissions
-from rest_framework.exceptions import NotFound
-
 from profiles.models import Startup
 from vacancy.models import WorkTeam
 

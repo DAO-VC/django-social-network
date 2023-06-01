@@ -99,6 +99,6 @@ class StartupAllArticles(generics.ListAPIView):
     serializer_class = ArticleBaseSerializer
 
     # permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
-
+    # TODO: решить пермишены
     def get_queryset(self):
         return Article.objects.filter(company_id=self.kwargs["pk"])
