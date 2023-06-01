@@ -5,6 +5,7 @@ from core.permissions import (
     ProfessionalCreatePermission,
 )
 from profiles.models import Startup
+from profiles.serializers import StartupSerializer
 from vacancy.models import Vacancy, Candidate
 from vacancy.permissions import (
     VacancyOwnerPermission,
@@ -222,3 +223,12 @@ class ListAllVacancyCandidates(generics.ListAPIView):
 
     def get_queryset(self):
         return Candidate.objects.filter(vacancy_id=self.kwargs["pk"])
+
+
+class ProfessionalWorkView(generics.ListAPIView):
+    serializer_class = StartupSerializer
+
+    def get_queryset(self):
+        return Startup.objects.filter(
+            work_team__candidate_id__professional_id__owner=self.request.user.id
+        )

@@ -16,6 +16,7 @@ from vacancy.views import (
     VacancyVisibleRetrieveView,
     ListAllVacancyCandidates,
     StartupAcceptCandidate,
+    ProfessionalWorkView,
 )
 
 urlpatterns = [
@@ -62,6 +63,11 @@ urlpatterns = [
         "main/professional/applications/",
         ProfessionalMyApplicationsListView.as_view(),
         name="all_applications_professional",
+    ),
+    path(
+        "main/professional/my_works/",
+        ProfessionalWorkView.as_view(),
+        name="work_professional",
     ),
     path(
         "main/professional/applications/<int:pk>/",

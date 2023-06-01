@@ -88,7 +88,7 @@ class VacancyVisibleSerializer(serializers.ModelSerializer):
 
 
 class CandidateCreateSerializer(serializers.ModelSerializer):
-    """Сериализатор подачи заявки кандидата на вакансию -> Созадние кандидата"""
+    """Сериализатор подачи заявки кандидата на вакансию -> Создание кандидата"""
 
     professional_id = serializers.PrimaryKeyRelatedField(read_only=True)
     vacancy_id = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -162,7 +162,7 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
 
 
 class StartupAcceptRetrieveCandidate(serializers.ModelSerializer):
-    """Сериализатор изменения статуса цандидаты на ACCEPT"""
+    """Сериализатор изменения статуса кандидата на ACCEPT"""
 
     professional_id = ProfessionalSerializer(read_only=True)
     vacancy_id = VacancyBaseSerializer(read_only=True)

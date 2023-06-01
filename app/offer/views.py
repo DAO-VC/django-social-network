@@ -137,3 +137,15 @@ class InvestorConfirmedStartupsList(generics.ListAPIView):
             offer_id__investor_id__owner=self.request.user,
             accept_status=CandidateStartup.AcceptStatus.ACCEPT,
         )
+
+
+class StartupConfirmedList(generics.ListAPIView):
+    """Список всех инвесторов стартапа"""
+
+    serializer_class = CandidateStartupBaseSerializer
+
+    def get_queryset(self):
+        return CandidateStartup.objects.filter(
+            startup_id__owner=self.request.user,
+            accept_status=CandidateStartup.AcceptStatus.ACCEPT,
+        )
