@@ -6,13 +6,6 @@ from profiles.models import Startup
 from vacancy.models import Vacancy, Candidate, WorkTeam
 
 
-# class OfferPermission(permissions.BasePermission):
-#     def has_object_permission(self, request, view, obj: Offer):
-#         if obj.investor_id.owner.id != request.user.id:
-#             return False
-#         return True
-
-
 class VacancyOwnerPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         obj = Vacancy.objects.filter(id=view.kwargs["pk"]).first()
@@ -33,13 +26,6 @@ class VacancyOwnerPermission(permissions.BasePermission):
             if work_obj.vacancy_management:
                 return True
         return False
-
-
-class WorkTeamOwnerPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj: WorkTeam):
-        if obj.candidate_id.vacancy_id.company_id.owner.id != request.user.id:
-            return False
-        return True
 
 
 class ListAllVacancyCandidatesPermission(permissions.BasePermission):
