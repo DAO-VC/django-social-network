@@ -11,6 +11,7 @@ class ArticleBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор статьи"""
 
     image = ImageSerializer(read_only=True)
+    is_visible = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Article
