@@ -91,6 +91,16 @@ class CandidateStartupBaseSerializer(serializers.ModelSerializer):
         model = CandidateStartup
         fields = "__all__"
 
+
+class CandidateStartupCreateSerializer(serializers.ModelSerializer):
+    startup_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    offer_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    accept_status = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = CandidateStartup
+        fields = "__all__"
+
     def create(self, validated_data):
         offer = get_object_or_404(Offer, pk=self.context.get("view").kwargs.get("pk"))
         startup = get_object_or_404(Startup, owner=self.context["request"].user)
@@ -104,3 +114,20 @@ class CandidateStartupBaseSerializer(serializers.ModelSerializer):
             raise ValidationError("Вы уже подались на эту вакансию")
 
         return startup_candidate
+
+
+class ConfirmOfferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CandidateStartup
+        fields = "__all__"
+        read_only_fields = (
+            "startup_id",
+            "offer_id",
+            "accept_status",
+            "created_at",
+        )
+
+    def update(self, instance: CandidateStartup, validated_data):
+        instance.accept_status = CandidateStartup.AcceptStatus.ACCEPT
+        instance.save()
+        return super().update(instance, validated_data)

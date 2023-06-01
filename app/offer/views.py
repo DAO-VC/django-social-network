@@ -9,6 +9,8 @@ from offer.serializers import (
     OfferCreateSerializer,
     OfferBaseSerializer,
     OfferVisibleSerializer,
+    ConfirmOfferSerializer,
+    CandidateStartupCreateSerializer,
     CandidateStartupBaseSerializer,
 )
 
@@ -66,7 +68,7 @@ class StartupCandidateCreateView(generics.CreateAPIView):
     """Подача заявки на оффер стартапом"""
 
     queryset = CandidateStartup
-    serializer_class = CandidateStartupBaseSerializer
+    serializer_class = CandidateStartupCreateSerializer
     permission_classes = (IsAuthenticated, StartupCreatePermission)
 
 
@@ -91,6 +93,7 @@ class OfferStartupCandidates(generics.ListAPIView):
     """Список всех кандидатов инвестора"""
 
     serializer_class = CandidateStartupBaseSerializer
+
     # permission_classes = (IsAuthenticated, StartupCandidatesPermission)
 
     def get_queryset(self):
@@ -109,4 +112,28 @@ class OfferRetrieveStartupCandidates(generics.RetrieveDestroyAPIView):
     def get_queryset(self):
         return CandidateStartup.objects.filter(
             offer_id__investor_id__owner=self.request.user
+        )
+
+
+class ConfirmOfferView(generics.UpdateAPIView):
+    """Изменение статуса стартап-кандидата на ACCEPT"""
+
+    serializer_class = ConfirmOfferSerializer
+    http_method_names = ["put"]
+
+    def get_queryset(self):
+        return CandidateStartup.objects.filter(
+            offer_id__investor_id__owner=self.request.user
+        )
+
+
+class InvestorConfirmedStartupsList(generics.ListAPIView):
+    """Список всех инвестируемых стартапом проектов"""
+
+    serializer_class = CandidateStartupBaseSerializer
+
+    def get_queryset(self):
+        return CandidateStartup.objects.filter(
+            offer_id__investor_id__owner=self.request.user,
+            accept_status=CandidateStartup.AcceptStatus.ACCEPT,
         )
