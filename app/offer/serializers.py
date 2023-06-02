@@ -5,12 +5,14 @@ from rest_framework.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from offer.models import Offer, CandidateStartup
 from profiles.models import Investor, Startup
+from profiles.serializers import InvestorSerializer, StartupSerializer
 
 
 class OfferBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор оффера"""
 
-    investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    # investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    investor_id = InvestorSerializer(read_only=True)
 
     class Meta:
         model = Offer
@@ -85,8 +87,10 @@ class OfferVisibleSerializer(serializers.ModelSerializer):
 class CandidateStartupBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор кандидата на оффер"""
 
-    startup_id = serializers.PrimaryKeyRelatedField(read_only=True)
-    offer_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    # startup_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    startup_id = StartupSerializer(read_only=True)
+    # offer_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    offer_id = OfferBaseSerializer(read_only=True)
     accept_status = serializers.CharField(read_only=True)
 
     class Meta:
