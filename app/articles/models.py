@@ -16,7 +16,9 @@ class Article(models.Model):
     is_visible = models.BooleanField(verbose_name="Видим")
     view_count = models.IntegerField(default=0, null=True, blank=True)
     created_at = CreationDateTimeField(verbose_name="Дата создания")
-    tags = models.ManyToManyField("Tag", related_name="article_tags")
+    tags = models.ManyToManyField(
+        "Tag", related_name="article_tags", null=True, blank=True
+    )
 
     # TODO заменить поле на CreationDateTimeField из django-extensions
     # TODO : tags ??
