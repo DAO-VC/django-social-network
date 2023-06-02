@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.db.utils import IntegrityError
-from offer.models import Offer, CandidateStartup
+from offer.models import Offer, CandidateStartup, ConfirmedOffer
 from profiles.models import Investor, Startup
 from profiles.serializers import InvestorSerializer, StartupSerializer
 
@@ -140,4 +140,24 @@ class ConfirmOfferSerializer(serializers.ModelSerializer):
     def update(self, instance: CandidateStartup, validated_data):
         instance.accept_status = CandidateStartup.AcceptStatus.ACCEPT
         instance.save()
+        new_confirmed_offer = ConfirmedOffer(
+            startup_id=instance.startup_id, investor_id=instance.offer_id.investor_id
+        )
+        new_confirmed_offer.save()
         return super().update(instance, validated_data)
+
+
+class ConfirmedOfferInvestorSerializer(serializers.ModelSerializer):
+    startup_id = StartupSerializer(read_only=True)
+
+    class Meta:
+        model = ConfirmedOffer
+        fields = "__all__"
+
+
+class ConfirmedOfferStartupSerializer(serializers.ModelSerializer):
+    investor_id = InvestorSerializer(read_only=True)
+
+    class Meta:
+        model = ConfirmedOffer
+        fields = "__all__"

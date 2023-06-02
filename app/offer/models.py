@@ -39,3 +39,14 @@ class CandidateStartup(models.Model):
             "startup_id",
             "offer_id",
         )
+
+
+class ConfirmedOffer(models.Model):
+    startup_id = models.ForeignKey(Startup, models.CASCADE)
+    investor_id = models.ForeignKey(Investor, models.CASCADE)
+
+    class Meta:
+        unique_together = (
+            "startup_id",
+            "investor_id",
+        )

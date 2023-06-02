@@ -14,8 +14,8 @@ from offer.views import (
     InvestorConfirmedStartupsList,
     StartupConfirmedList,
     InvestorAllOffers,
+    StartupConfirmedRetrieveDeleteView,
 )
-
 
 urlpatterns = [
     path(
@@ -57,6 +57,11 @@ urlpatterns = [
         "main/confirmed_offers/",
         InvestorConfirmedStartupsList.as_view(),
         name="all_confirmed_offers",
+    ),
+    path(
+        "main/confirmed_offers/<int:pk>",
+        StartupConfirmedRetrieveDeleteView.as_view(),
+        name="retrieve_delete_confirmed_offer",
     ),
     path("common/offers/", AllOffersList.as_view(), name="all_offers"),
     path(

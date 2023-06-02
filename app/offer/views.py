@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
 from core.permissions import StartupCreatePermission, InvestorCreatePermission
-from offer.models import Offer, CandidateStartup
+from offer.models import Offer, CandidateStartup, ConfirmedOffer
 from offer.permissions import OfferVisiblePermission, OfferStartupCandidatesPermission
 from offer.serializers import (
     OfferUpdateSerializer,
@@ -13,6 +13,8 @@ from offer.serializers import (
     ConfirmOfferSerializer,
     CandidateStartupCreateSerializer,
     CandidateStartupBaseSerializer,
+    ConfirmedOfferInvestorSerializer,
+    ConfirmedOfferStartupSerializer,
 )
 
 
@@ -131,28 +133,37 @@ class ConfirmOfferView(generics.UpdateAPIView):
 
 
 class InvestorConfirmedStartupsList(generics.ListAPIView):
-    """Список всех инвестируемых стартапом проектов"""
+    """Список всех инвестируемых проектов инвестора"""
 
-    serializer_class = CandidateStartupBaseSerializer
+    serializer_class = ConfirmedOfferInvestorSerializer
     permission_classes = (OfferStartupCandidatesPermission,)
 
     def get_queryset(self):
-        return CandidateStartup.objects.filter(
-            offer_id__investor_id__owner=self.request.user,
-            accept_status=CandidateStartup.AcceptStatus.ACCEPT,
+        return ConfirmedOffer.objects.filter(
+            investor_id__owner=self.request.user,
         )
 
 
 class StartupConfirmedList(generics.ListAPIView):
     """Список всех инвесторов стартапа"""
 
-    serializer_class = CandidateStartupBaseSerializer
+    serializer_class = ConfirmedOfferStartupSerializer
     permission_classes = (IsAuthenticated, StartupCreatePermission)
 
     def get_queryset(self):
-        return CandidateStartup.objects.filter(
+        return ConfirmedOffer.objects.filter(
             startup_id__owner=self.request.user,
-            accept_status=CandidateStartup.AcceptStatus.ACCEPT,
+        )
+
+
+class StartupConfirmedRetrieveDeleteView(generics.RetrieveDestroyAPIView):
+    """Детальный просмотр | удаление подтвержденного стартапа"""
+
+    serializer_class = ConfirmedOfferInvestorSerializer
+
+    def get_queryset(self):
+        return ConfirmedOffer.objects.filter(
+            investor_id__owner=self.request.user,
         )
 
 
