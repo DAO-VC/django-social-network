@@ -1,4 +1,6 @@
-from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, filters
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from articles.filters import ArticleFilter
 from articles.models import Article
@@ -17,6 +19,16 @@ class ArticleListCreateView(generics.ListCreateAPIView):
     """Список всех постов стартапа | создание поста"""
 
     permission_classes = (IsAuthenticated, ArticleBasePermission)
+    pagination_class = LimitOffsetPagination
+    filter_backends = (
+        DjangoFilterBackend,
+        filters.OrderingFilter,
+        filters.SearchFilter,
+    )
+
+    filterset_fields = ("company_id",)
+    ordering_fields = ("created_at", "view_count")
+    search_fields = ("name",)
 
     def get_serializer_class(self):
         if self.request.method == "GET":
@@ -53,7 +65,17 @@ class ArticleParamView(generics.ListAPIView):
     """Список всех статей | Поиск по названию поста"""
 
     serializer_class = ArticleBaseSerializer
-    filterset_class = ArticleFilter
+    pagination_class = LimitOffsetPagination
+
+    filter_backends = (
+        DjangoFilterBackend,
+        filters.OrderingFilter,
+        filters.SearchFilter,
+    )
+
+    filterset_fields = ("company_id",)
+    ordering_fields = ("created_at", "view_count")
+    search_fields = ("name",)
 
     def get_queryset(self):
         return Article.objects.filter(is_visible=True)
