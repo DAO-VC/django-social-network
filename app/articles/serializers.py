@@ -1,10 +1,10 @@
 from django.db import transaction
 from rest_framework import serializers
-
 from articles.models import Article, Tag
 from image.serializers import ImageSerializer
-from profiles.models import Startup
 from django.db.models import Q
+
+from profiles.models.startup import Startup
 
 
 class ArticleBaseSerializer(serializers.ModelSerializer):

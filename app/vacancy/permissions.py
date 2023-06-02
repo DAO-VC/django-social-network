@@ -2,8 +2,10 @@ from django.db.models import Q
 from rest_framework import permissions
 from rest_framework.exceptions import AuthenticationFailed
 
-from profiles.models import Startup
-from vacancy.models import Vacancy, Candidate, WorkTeam
+from profiles.models.startup import Startup
+from vacancy.models.candidate import Candidate
+from vacancy.models.vacancy import Vacancy
+from vacancy.models.workteam import WorkTeam
 
 
 class VacancyOwnerPermission(permissions.BasePermission):

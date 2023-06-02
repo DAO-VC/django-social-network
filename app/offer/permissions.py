@@ -1,5 +1,7 @@
 from rest_framework import permissions
-from offer.models import Offer, CandidateStartup
+
+from offer.models.offer import Offer
+from offer.models.offer_candidate import CandidateStartup
 
 
 class OfferVisiblePermission(permissions.BasePermission):

@@ -1,20 +1,22 @@
 from django.urls import path
 
-from offer.views import (
-    OfferListCreateView,
-    OfferRetrieveUpdateDeleteView,
-    AllOffersList,
-    AllOffersRetrieve,
-    OfferVisibleRetrieveView,
-    StartupCandidateCreateView,
-    ListAllOfferCandidates,
-    OfferRetrieveStartupCandidates,
+from offer.views.candidate import (
     OfferStartupCandidates,
+    OfferRetrieveStartupCandidates,
+    ListAllOfferCandidates,
     ConfirmOfferView,
     InvestorConfirmedStartupsList,
-    StartupConfirmedList,
-    InvestorAllOffers,
     StartupConfirmedRetrieveDeleteView,
+    StartupCandidateCreateView,
+    StartupConfirmedList,
+)
+from offer.views.offer import (
+    OfferListCreateView,
+    OfferRetrieveUpdateDeleteView,
+    OfferVisibleRetrieveView,
+    AllOffersList,
+    AllOffersRetrieve,
+    InvestorAllOffers,
 )
 
 urlpatterns = [

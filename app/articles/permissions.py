@@ -2,8 +2,8 @@ from django.db.models import Q
 from rest_framework import permissions
 from rest_framework.exceptions import AuthenticationFailed
 from articles.models import Article
-from profiles.models import Startup
-from vacancy.models import WorkTeam
+from profiles.models.startup import Startup
+from vacancy.models.workteam import WorkTeam
 
 
 class ArticlePermission(permissions.BasePermission):

@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from profiles.models import Startup
+from profiles.models.startup import Startup
 
 
 class StartupCreatePermission(permissions.BasePermission):

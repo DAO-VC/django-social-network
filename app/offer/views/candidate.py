@@ -1,71 +1,20 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import filters
-from core.permissions import StartupCreatePermission, InvestorCreatePermission
-from offer.models import Offer, CandidateStartup, ConfirmedOffer
-from offer.permissions import OfferVisiblePermission, OfferStartupCandidatesPermission
-from offer.serializers import (
-    OfferUpdateSerializer,
-    OfferCreateSerializer,
-    OfferBaseSerializer,
-    OfferVisibleSerializer,
-    ConfirmOfferSerializer,
+
+from core.permissions import StartupCreatePermission
+from offer.models.offer import ConfirmedOffer
+from offer.models.offer_candidate import CandidateStartup
+from offer.permissions import OfferStartupCandidatesPermission
+from offer.serializers.candidate import (
     CandidateStartupCreateSerializer,
     CandidateStartupBaseSerializer,
+)
+from offer.serializers.offer import (
+    ConfirmOfferSerializer,
     ConfirmedOfferInvestorSerializer,
     ConfirmedOfferStartupSerializer,
 )
-
-
-class OfferListCreateView(generics.ListCreateAPIView):
-    """Список всех оферов инвестора | создание офера"""
-
-    serializer_class = OfferCreateSerializer
-
-    permission_classes = (IsAuthenticated, InvestorCreatePermission)
-
-    def get_queryset(self):
-        return Offer.objects.filter(investor_id__owner=self.request.user.id)
-
-
-class OfferRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """Получение | удаление | обновление офера"""
-
-    serializer_class = OfferUpdateSerializer
-    http_method_names = ["get", "put", "delete"]
-
-    permission_classes = (IsAuthenticated,)
-
-    def get_queryset(self):
-        return Offer.objects.filter(investor_id__owner=self.request.user.id)
-
-
-class AllOffersList(generics.ListAPIView):
-    """Список всех офферов платформы"""
-
-    serializer_class = OfferBaseSerializer
-
-    def get_queryset(self):
-        return Offer.objects.filter(is_visible=True)
-
-
-class AllOffersRetrieve(generics.RetrieveAPIView):
-    """Детальный вывод оффера платформы по id"""
-
-    serializer_class = OfferBaseSerializer
-
-    def get_queryset(self):
-        return Offer.objects.filter(is_visible=True)
-
-
-class OfferVisibleRetrieveView(generics.UpdateAPIView):
-    """Изменение видимости оффера"""
-
-    queryset = Offer.objects.all()
-    serializer_class = OfferVisibleSerializer
-    http_method_names = ["put"]
-    permission_classes = (OfferVisiblePermission,)
 
 
 class StartupCandidateCreateView(generics.CreateAPIView):
@@ -165,14 +114,3 @@ class StartupConfirmedRetrieveDeleteView(generics.RetrieveDestroyAPIView):
         return ConfirmedOffer.objects.filter(
             investor_id__owner=self.request.user,
         )
-
-
-class InvestorAllOffers(generics.ListAPIView):
-    """Список всех офферов инвестора по id"""
-
-    serializer_class = OfferBaseSerializer
-
-    # permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
-
-    def get_queryset(self):
-        return Offer.objects.filter(investor_id=self.kwargs["pk"])

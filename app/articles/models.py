@@ -1,7 +1,7 @@
 from django.db import models
 from django_extensions.db.fields import CreationDateTimeField
 from image.models import Image
-from profiles.models import Startup
+from profiles.models.startup import Startup
 
 
 class Article(models.Model):

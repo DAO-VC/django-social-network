@@ -1,6 +1,7 @@
 from rest_framework import permissions
-from profiles.models import Startup
-from vacancy.models import WorkTeam
+
+from profiles.models.startup import Startup
+from vacancy.models.workteam import WorkTeam
 
 
 class OnboardingPermission(permissions.BasePermission):

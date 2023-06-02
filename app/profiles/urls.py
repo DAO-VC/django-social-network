@@ -1,21 +1,27 @@
 from django.urls import path
 
-from profiles.views import (
-    StartUpCreateView,
-    ProfessionalCreateView,
+from profiles.views.investor import (
     InvestorCreateView,
-    StartUpUpdateDetailView,
-    ProfessionalUpdateDetailView,
     InvestorUpdateDetailView,
+    AllInvestorsListView,
+    AllInvestorsRetrieveView,
+)
+from profiles.views.other_views import (
     IndustriesListView,
     RegionsListView,
     BusinessTypeListView,
+)
+from profiles.views.professional import (
+    ProfessionalCreateView,
+    ProfessionalUpdateDetailView,
+    AllProfessionalsListView,
+    AllProfessionalRetrieveView,
+)
+from profiles.views.startup import (
+    StartUpCreateView,
+    StartUpUpdateDetailView,
     AllStartupListView,
     AllStartupRetrieveView,
-    AllProfessionalRetrieveView,
-    AllProfessionalsListView,
-    AllInvestorsListView,
-    AllInvestorsRetrieveView,
 )
 
 urlpatterns = [
@@ -63,16 +69,6 @@ urlpatterns = [
         BusinessTypeListView.as_view(),
         name="business_type_list",
     ),
-    # path(
-    #     "main/resume/",
-    #     ResumeListCreateView.as_view(),
-    #     name="get_create_resume",
-    # ),
-    # path(
-    #     "main/resume/<int:pk>",
-    #     ResumeRetrieveUpdateDeleteView.as_view(),
-    #     name="retrieve_resume",
-    # ),
     path(
         "common/startups/",
         AllStartupListView.as_view(),

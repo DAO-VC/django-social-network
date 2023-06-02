@@ -1,23 +1,27 @@
 from django.urls import path
 
-from vacancy.views import (
-    VacancyListCreateView,
-    VacancyRetrieveView,
-    VacancyAllView,
-    VacancyAllDetailView,
+from vacancy.views.candidate import (
     CandidateCreateView,
     StartupCandidates,
+    ListAllVacancyCandidates,
     StartupRetrieveCandidates,
     ProfessionalMyApplicationsListView,
     ProfessionalMyApplicationsRetrieveView,
     StartupApproveRetrieveCandidate,
+    StartupAcceptCandidate,
+)
+from vacancy.views.vacancy import (
+    VacancyListCreateView,
+    VacancyRetrieveView,
+    VacancyVisibleRetrieveView,
+    VacancyAllView,
+    VacancyAllDetailView,
+    StartupAllVacancies,
+)
+from vacancy.views.workteam import (
+    ProfessionalWorkView,
     StartupWorkTeamList,
     StartupWorkTeamRetrieveDelete,
-    VacancyVisibleRetrieveView,
-    ListAllVacancyCandidates,
-    StartupAcceptCandidate,
-    ProfessionalWorkView,
-    StartupAllVacancies,
 )
 
 urlpatterns = [
