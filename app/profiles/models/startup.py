@@ -113,7 +113,7 @@ class Startup(models.Model):
     )
     market_size = models.TextField(verbose_name="Размер рынка", null=True, blank=True)
     pitch_presentation = models.ForeignKey(
-        File, models.CASCADE, verbose_name="Файл презентации", null=True, blank=True
+        File, models.SET_NULL, verbose_name="Файл презентации", null=True, blank=True
     )
     achievements = models.ForeignKey(
         Achievements,
