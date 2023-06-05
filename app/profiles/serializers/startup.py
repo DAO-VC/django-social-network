@@ -1,7 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
+from image.tasks import cleaner, cleaner_file
 from image.serializers import ImageSerializer, FileSerializer
 from profiles.models.other_models import Achievements, Purpose, Links
 from profiles.models.startup import Startup
@@ -105,6 +105,30 @@ class StartupUpdateSerializer(serializers.ModelSerializer):
         business_type = validated_data.pop("business_type")
         if len(business_type) > 0:
             instance.business_type.set(business_type)
+
+        if instance.logo:
+            object_logo_id = instance.logo.id
+            new_logo_id = validated_data.get("logo")
+            if new_logo_id:
+                new_logo_id = new_logo_id.id
+
+            cleaner.delay(object_logo_id, new_logo_id)
+
+        if instance.background:
+            object_background_id = instance.background.id
+            new_background_id = validated_data.get("background")
+            if new_background_id:
+                new_background_id = new_background_id.id
+
+            cleaner.delay(object_background_id, new_background_id)
+
+        if instance.pitch_presentation:
+            object_pitch_presentation_id = instance.pitch_presentation.id
+            new_pitch_presentation_id = validated_data.get("pitch_presentation")
+            if new_pitch_presentation_id:
+                new_pitch_presentation_id = new_pitch_presentation_id.id
+
+            cleaner_file.delay(object_pitch_presentation_id, new_pitch_presentation_id)
 
         return super().update(instance, validated_data)
 

@@ -1,7 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
+from image.tasks import cleaner, cleaner_file
 from image.serializers import ImageSerializer, FileSerializer
 from profiles.models.investor import Investor
 from profiles.models.other_models import Links
@@ -58,6 +58,22 @@ class InvestorUpdateSerializer(serializers.ModelSerializer):
             social_links_instance = instance.social_links
             social_links_data = validated_data.pop("social_links")
             social_links_serializer.update(social_links_instance, social_links_data)
+
+        if instance.photo:
+            object_photo_id = instance.photo.id
+            new_photo_id = validated_data.get("photo")
+            if new_photo_id:
+                new_photo_id = new_photo_id.id
+
+            cleaner.delay(object_photo_id, new_photo_id)
+
+        if instance.cv:
+            object_cv_id = instance.cv.id
+            new_cv_id = validated_data.get("cv")
+            if new_cv_id:
+                new_cv_id = new_cv_id.id
+
+            cleaner_file.delay(object_cv_id, new_cv_id)
 
         return super().update(instance, validated_data)
 

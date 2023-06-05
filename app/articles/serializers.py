@@ -72,6 +72,19 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def update(self, instance, validated_data):
+        from image.tasks import cleaner
+
+        # delete not using image with celery worker
+
+        if instance.image:
+            object_image_id = instance.image.id
+            new_image_id = validated_data.get("image")
+            if new_image_id:
+                new_image_id = new_image_id.id
+
+            cleaner.delay(object_image_id, new_image_id)
+
+        # tags block
         tag_titles = validated_data.pop("update_tags")
         tags = []
         for title in tag_titles:

@@ -5,6 +5,7 @@ services:
     build: .
     ports:
       - "127.0.0.1:8000:8000"
+    command: sh -c "poetry run python -u manage.py runserver 0.0.0.0:8000"
     depends_on:
       migration:
         condition: service_completed_successfully
@@ -22,8 +23,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-#    entrypoint: poetry run python manage.py migrate
-    entrypoint : |
+    #    entrypoint: poetry run python manage.py migrate
+    entrypoint: |
       sh -c "poetry run python manage.py migrate && 
       poetry run python manage.py loaddata fixtures/bussines.json &&
       poetry run python manage.py loaddata fixtures/industries.json &&
@@ -47,6 +48,34 @@ services:
       retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  worker:
+    restart: always
+    build: .
+    depends_on:
+      - redis
+      - app
+    command: [ "poetry", "run", "celery", "-A", "main", "worker" ]
+    #    command: celery -A main worker -l info
+
+
+
+  flower:
+    restart: always
+    build: .
+    ports:
+      - "5555:5555"
+    depends_on:
+      - worker
+      - redis
+    command: [ "poetry", "run", "celery", "-A", "main" ,"flower" ]
+  #    command: [ "celery", "-A", "main" ,"flower" ]
+
 
 volumes:
   postgres_data:

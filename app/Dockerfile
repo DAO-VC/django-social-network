@@ -12,4 +12,4 @@ RUN poetry install
 
 COPY . ./
 
-ENTRYPOINT poetry run python -u manage.py runserver 0.0.0.0:8000
+#ENTRYPOINT poetry run python -u manage.py runserver 0.0.0.0:8000
