@@ -35,7 +35,7 @@ class User(AbstractUser):
     objects = UserManager()
     profile = models.CharField("Профиль", choices=UserProfile.choices, max_length=12)
     permissions = models.ForeignKey(
-        "vacancy.WorkTeam", models.CASCADE, null=True, blank=True
+        "vacancy.WorkTeam", models.SET_NULL, null=True, blank=True
     )
 
     class Meta:
