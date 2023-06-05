@@ -58,8 +58,6 @@ services:
   worker:
     restart: always
     build: .
-    volumes:
-      - ./:/usr/src/app
     depends_on:
       - redis
       - app
@@ -74,8 +72,6 @@ services:
   flower:
     restart: always
     build: .
-    volumes:
-      - ./:/usr/src/app
     ports:
       - "5555:5555"
     depends_on:
