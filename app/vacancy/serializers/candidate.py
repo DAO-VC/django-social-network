@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.db.utils import IntegrityError
+
+from core.models import User
 from profiles.models.professional import Professional
 from profiles.models.startup import Startup
 from profiles.serializers.professional import ProfessionalSerializer
@@ -70,18 +72,22 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
     def update(self, instance: Candidate, validated_data):
         startup = Startup.objects.filter(id=instance.vacancy_id.company_id.id).first()
         position = instance.vacancy_id.position
-        work_team_obj = WorkTeam.objects.create(
-            candidate_id=instance, position=position
-        )
-
-        if work_team_obj in startup.work_team.all():
+        try:
+            work_team_obj = WorkTeam.objects.create(
+                candidate_id=instance, startup_id=startup, position=position
+            )
+        except IntegrityError:
             raise ValidationError("This candidate already in startups team")
+
         with transaction.atomic():
             startup.work_team.add(work_team_obj)
             startup.save()
             instance.base_status = Candidate.BaseStatus.VIEWED
             instance.accept_status = Candidate.AcceptStatus.IN_THE_TEAM
             instance.save()
+            user = User.objects.get(id=instance.professional_id.owner.id)
+            user.permissions = work_team_obj
+            user.save()
         # TODO : нужно переводить в статус скрыта
         return instance
 
