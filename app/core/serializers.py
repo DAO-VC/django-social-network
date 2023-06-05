@@ -9,6 +9,7 @@ import django.contrib.auth.password_validation as validators
 from core.utils import send_verification_mail
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from vacancy.serializers.workteam import WorkTeamBaseSerializer
 
 USER_MODEL = get_user_model()
 
@@ -69,6 +70,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 class UserBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор пользователя"""
+
+    permissions = WorkTeamBaseSerializer(read_only=True)
 
     class Meta:
         model = USER_MODEL

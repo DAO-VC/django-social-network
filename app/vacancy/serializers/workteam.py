@@ -7,7 +7,7 @@ from vacancy.serializers.candidate import CandidateBaseSerializer
 class WorkTeamBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор участника команды"""
 
-    candidate_id = CandidateBaseSerializer(read_only=True)
+    # candidate_id = CandidateBaseSerializer(read_only=True)
 
     class Meta:
         model = WorkTeam
