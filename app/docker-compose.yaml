@@ -63,7 +63,14 @@ services:
     command: [ "poetry", "run", "celery", "-A", "main", "worker" ]
     #    command: celery -A main worker -l info
 
-
+  beat:
+    restart: always
+    build: .
+    depends_on:
+      - redis
+      - app
+      - worker
+    command: [ "poetry", "run", "celery", "-A", "main", "beat", "-l","info" ]
 
   flower:
     restart: always

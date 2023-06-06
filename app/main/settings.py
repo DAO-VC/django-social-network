@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Внешние модули
     "rest_framework",
     "drf_spectacular",
+    "django_extensions",
     "versatileimagefield",
     "corsheaders",
     "rest_framework_simplejwt",
