@@ -4,7 +4,11 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from articles.filters import ArticleFilter
 from articles.models import Article
-from articles.permissions import ArticlePermission, ArticleBasePermission
+from articles.permissions import (
+    ArticlePermission,
+    ArticleBasePermission,
+    RetrieveArticlePermission,
+)
 from articles.serializers import (
     ArticleCreateSerializer,
     ArticleUpdateSerializer,
@@ -48,17 +52,17 @@ class ArticleListCreateView(generics.ListCreateAPIView):
         return obj
 
 
-class ArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
-    """Изменение | удаление поста"""
-
-    queryset = Article.objects.all()
-    http_method_names = ["get", "put", "delete"]
-    permission_classes = (IsAuthenticated, ArticlePermission)
-
-    def get_serializer_class(self):
-        if self.request.method == "GET":
-            return ArticleBaseSerializer
-        return ArticleUpdateSerializer
+# class ArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
+#     """Изменение | удаление поста"""
+#
+#     queryset = Article.objects.all()
+#     http_method_names = ["get", "put", "delete"]
+#     permission_classes = (IsAuthenticated, ArticlePermission)
+#
+#     def get_serializer_class(self):
+#         if self.request.method == "GET":
+#             return ArticleBaseSerializer
+#         return ArticleUpdateSerializer
 
 
 class ArticleParamView(generics.ListAPIView):
@@ -81,32 +85,36 @@ class ArticleParamView(generics.ListAPIView):
         return Article.objects.filter(is_visible=True)
 
 
-class ArticleVisibleView(generics.UpdateAPIView):
-    """Обновление видимости статьи стартапом"""
+# class ArticleVisibleView(generics.UpdateAPIView):
+#     """Обновление видимости статьи стартапом"""
+#
+#     serializer_class = ArticleUpdateVisionSerializer
+#     http_method_names = ["put"]
+#     permission_classes = (IsAuthenticated, ArticlePermission)
+#
+#     def get_queryset(self):
+#         return Article.objects.filter(
+#             Q(
+#                 company_id__work_team__candidate_id__professional_id__owner__in=[
+#                     self.request.user.id
+#                 ]
+#             )
+#             | Q(company_id__owner=self.request.user.id)
+#         )
 
-    serializer_class = ArticleUpdateVisionSerializer
-    http_method_names = ["put"]
-    permission_classes = (IsAuthenticated, ArticlePermission)
 
-    def get_queryset(self):
-        return Article.objects.filter(
-            Q(
-                company_id__work_team__candidate_id__professional_id__owner__in=[
-                    self.request.user.id
-                ]
-            )
-            | Q(company_id__owner=self.request.user.id)
-        )
-
-
-class AllArticleRetrieveView(generics.RetrieveAPIView):
+class AllArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
     """Список всех статей по id"""
 
-    serializer_class = ArticleBaseSerializer
+    queryset = Article.objects.all()
     filterset_class = ArticleFilter
+    permission_classes = (RetrieveArticlePermission,)
+    http_method_names = ["get", "put", "delete"]
 
-    def get_queryset(self):
-        return Article.objects.filter(is_visible=True)
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return ArticleBaseSerializer
+        return ArticleUpdateSerializer
 
     def retrieve(self, request, *args, **kwargs):
         instance: Article = self.get_object()
@@ -124,3 +132,12 @@ class StartupAllArticles(generics.ListAPIView):
     # TODO: решить пермишены
     def get_queryset(self):
         return Article.objects.filter(company_id=self.kwargs["pk"])
+
+
+class ArticleVisibleView(generics.UpdateAPIView):
+    """Обновление видимости статьи стартапом"""
+
+    queryset = Article.objects.all()
+    serializer_class = ArticleUpdateVisionSerializer
+    http_method_names = ["put"]
+    permission_classes = (RetrieveArticlePermission,)

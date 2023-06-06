@@ -2,7 +2,7 @@ from django.urls import path
 
 from articles.views import (
     ArticleListCreateView,
-    ArticleRetrieveView,
+    # ArticleRetrieveView,
     ArticleParamView,
     ArticleVisibleView,
     AllArticleRetrieveView,
@@ -22,13 +22,13 @@ urlpatterns = [
         StartupAllArticles.as_view(),
         name="all_articles_to_startup_id",
     ),
+    # path(
+    #     "main/articles/<int:pk>/",
+    #     ArticleRetrieveView.as_view(),
+    #     name="retrieve_article",
+    # ),
     path(
-        "main/articles/<int:pk>/",
-        ArticleRetrieveView.as_view(),
-        name="retrieve_article",
-    ),
-    path(
-        "main/articles/<int:pk>/visible/",
+        "common/articles/<int:pk>/visible/",
         ArticleVisibleView.as_view(),
         name="change_visible_article",
     ),
