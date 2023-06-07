@@ -112,7 +112,7 @@ urlpatterns = [
         name="add/remove_candidate_to_favorite",
     ),
     path(
-        "main/startup/candidates/",
+        "main/startup/favorites/",
         StartupFavoriteCandidates.as_view(),
         name="all_favorite_candidates",
     ),

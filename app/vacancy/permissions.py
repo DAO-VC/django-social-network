@@ -44,13 +44,6 @@ class ProfessionalMyApplicationsPermission(permissions.BasePermission):
         return True
 
 
-class StartupCandidatesPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj: Candidate):
-        if obj.vacancy_id.company_id.owner.id != request.user.id:
-            return False
-        return True
-
-
 class StartupWorkTeamPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj: Startup):
         if not obj:
@@ -111,3 +104,62 @@ class VacancyGetCreatePermission(permissions.BasePermission):
                 if work_obj.vacancy_management:
                     return True
             return False
+
+
+class StartupCandidatesPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        obj = Vacancy.objects.filter(id=view.kwargs["pk"]).first()
+        if obj.vacancy_id.company_id.owner.id == request.user.id:
+            return True
+        if request.user.id in [
+            item.candidate_id.professional_id.owner.id
+            for item in obj.vacancy_id.company_id.work_team.all()
+        ]:
+            startup = Startup.objects.filter(id=obj.vacancy_id.company_id.id).first()
+            work_obj: WorkTeam = startup.work_team.filter(
+                candidate_id__professional_id__owner_id=request.user.id
+            ).first()
+            if work_obj.vacancy_management:
+                return True
+        return False
+
+
+class StartupCandidateFavoriteRetrievePermission(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if obj.vacancy_id.company_id.owner.id == request.user.id:
+            return True
+        if request.user.id in [
+            item.candidate_id.professional_id.owner.id
+            for item in obj.vacancy_id.company_id.work_team.all()
+        ]:
+            startup = Startup.objects.filter(id=obj.vacancy_id.company_id.id).first()
+            work_obj: WorkTeam = startup.work_team.filter(
+                candidate_id__professional_id__owner_id=request.user.id
+            ).first()
+            if work_obj.vacancy_management:
+                return True
+        return False
+
+
+class StartupCandidateFavoriteListPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        startup = Startup.objects.filter(
+            Q(work_team__candidate_id__professional_id__owner__in=[request.user.id])
+            | Q(owner=request.user.id)
+        ).first()
+
+        if not startup:
+            raise AuthenticationFailed("permisson: You do not have access to this role")
+
+        if startup.owner.id == request.user.id:
+            return True
+        if request.user.id in [
+            item.candidate_id.professional_id.owner.id
+            for item in startup.work_team.all()
+        ]:
+            work_obj: WorkTeam = startup.work_team.filter(
+                candidate_id__professional_id__owner_id=request.user.id
+            ).first()
+            if work_obj.performers_management:
+                return True
+        return False

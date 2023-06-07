@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
@@ -5,16 +6,16 @@ from rest_framework.permissions import IsAuthenticated
 from core.permissions import ProfessionalCreatePermission
 from vacancy.models.candidate import Candidate
 from vacancy.permissions import (
-    StartupCandidatesPermission,
-    ListAllVacancyCandidatesPermission,
     ProfessionalMyApplicationsPermission,
+    VacancyOwnerPermission,
+    StartupCandidateFavoriteRetrievePermission,
+    StartupCandidateFavoriteListPermission,
 )
 from vacancy.serializers.candidate import (
     CandidateCreateSerializer,
     CandidateBaseSerializer,
     StartupApproveCandidateSerializer,
     CandidateFavoriteSerializer,
-    # StartupAcceptRetrieveCandidate,
 )
 
 
@@ -43,21 +44,35 @@ class StartupRetrieveCandidates(generics.RetrieveDestroyAPIView):
     """Получение | удаление кандидата стартапа"""
 
     serializer_class = CandidateBaseSerializer
-    permission_classes = (IsAuthenticated, StartupCandidatesPermission)
+    permission_classes = (IsAuthenticated, StartupCandidateFavoriteRetrievePermission)
 
     def get_queryset(self):
-        return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
+        return Candidate.objects.filter(
+            Q(vacancy_id__company_id__owner=self.request.user)
+            | Q(
+                vacancy_id__company_id__work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            )
+        )
 
 
-class StartupApproveRetrieveCandidate(generics.RetrieveUpdateAPIView):
+class StartupApproveRetrieveCandidate(generics.UpdateAPIView):
     """Добавление кандидата в команду стартапа"""
 
     serializer_class = StartupApproveCandidateSerializer
     http_method_names = ["put"]
-    permission_classes = (IsAuthenticated, ListAllVacancyCandidatesPermission)
+    permission_classes = (IsAuthenticated, StartupCandidateFavoriteRetrievePermission)
 
     def get_queryset(self):
-        return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
+        return Candidate.objects.filter(
+            Q(vacancy_id__company_id__owner=self.request.user)
+            | Q(
+                vacancy_id__company_id__work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            )
+        )
 
 
 # class StartupAcceptCandidate(generics.UpdateAPIView):
@@ -75,7 +90,7 @@ class ListAllVacancyCandidates(generics.ListAPIView):
     """Получение списка всех кандидатов на вакансию стартапа"""
 
     serializer_class = CandidateBaseSerializer
-    permission_classes = (IsAuthenticated, ListAllVacancyCandidatesPermission)
+    permission_classes = (IsAuthenticated, VacancyOwnerPermission)
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
@@ -112,20 +127,34 @@ class ProfessionalMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
 class CandidateFavoriteRetrieveView(generics.UpdateAPIView):
     """Добавление | удаление кандидата в фавориты"""
 
-    queryset = Candidate.objects.all()
     serializer_class = CandidateFavoriteSerializer
     http_method_names = ["put"]
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (StartupCandidateFavoriteRetrievePermission,)
+
+    def get_queryset(self):
+        return Candidate.objects.filter(
+            Q(vacancy_id__company_id__owner=self.request.user)
+            | Q(
+                vacancy_id__company_id__work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            )
+        )
 
 
 class StartupFavoriteCandidates(generics.ListAPIView):
     """Список всех фаворитов кандидатов стартапа"""
 
     serializer_class = CandidateBaseSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, StartupCandidateFavoriteListPermission)
 
     def get_queryset(self):
         return Candidate.objects.filter(
-            vacancy_id__company_id__owner=self.request.user,
+            Q(vacancy_id__company_id__owner=self.request.user)
+            | Q(
+                vacancy_id__company_id__work_team__candidate_id__professional_id__owner__in=[
+                    self.request.user.id
+                ]
+            ),
             is_favorite=True,
         )
