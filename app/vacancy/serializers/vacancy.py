@@ -70,10 +70,15 @@ class VacancyVisibleSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "company_id",
             "position",
+            "salary",
+            "salary_type",
+            "work_schedude",
+            "place",
+            "skills",
+            "description",
             "requirements",
             "is_visible",
-            "salary",
-            "skills",
+            "created_at",
         )
 
     def update(self, instance: Vacancy, validated_data):

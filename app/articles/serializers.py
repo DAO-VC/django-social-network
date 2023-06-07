@@ -111,10 +111,7 @@ class ArticleUpdateVisionSerializer(serializers.ModelSerializer):
         ]
 
     def update(self, instance: Article, validated_data):
-        if instance.is_visible:
-            instance.is_visible = False
-        else:
-            instance.is_visible = True
+        instance.change_visible()
 
         instance.save()
         return instance

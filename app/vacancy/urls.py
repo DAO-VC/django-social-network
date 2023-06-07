@@ -2,13 +2,15 @@ from django.urls import path
 
 from vacancy.views.candidate import (
     CandidateCreateView,
-    StartupCandidates,
+    # StartupCandidates,
     ListAllVacancyCandidates,
     StartupRetrieveCandidates,
     ProfessionalMyApplicationsListView,
     ProfessionalMyApplicationsRetrieveView,
     StartupApproveRetrieveCandidate,
-    StartupAcceptCandidate,
+    CandidateFavoriteRetrieveView,
+    StartupFavoriteCandidates,
+    # StartupAcceptCandidate,
 )
 from vacancy.views.vacancy import (
     VacancyListCreateView,
@@ -54,11 +56,11 @@ urlpatterns = [
         CandidateCreateView.as_view(),
         name="apply_candidate",
     ),
-    path(
-        "main/startup/candidates/",
-        StartupCandidates.as_view(),
-        name="all_startup_candidates",
-    ),
+    # path(
+    #     "main/startup/candidates/",
+    #     StartupCandidates.as_view(),
+    #     name="all_startup_candidates",
+    # ),
     path(
         "main/vacancies/<int:pk>/candidates/",
         ListAllVacancyCandidates.as_view(),
@@ -85,15 +87,15 @@ urlpatterns = [
         name="retrieve_applications_professional",
     ),
     path(
-        "main/startup/candidates/<int:pk>/approve/",
-        StartupApproveRetrieveCandidate.as_view(),
-        name="approve_startup_candidates",
-    ),
-    path(
         "main/startup/candidates/<int:pk>/accept/",
-        StartupAcceptCandidate.as_view(),
+        StartupApproveRetrieveCandidate.as_view(),
         name="accept_startup_candidates",
     ),
+    # path(
+    #     "main/startup/candidates/<int:pk>/accept/",
+    #     StartupAcceptCandidate.as_view(),
+    #     name="accept_startup_candidates",
+    # ),
     path(
         "main/startup/my_team/",
         StartupWorkTeamList.as_view(),
@@ -103,5 +105,15 @@ urlpatterns = [
         "main/startup/my_team/<int:pk>/",
         StartupWorkTeamRetrieveDelete.as_view(),
         name="retrieve_startup_work_team",
+    ),
+    path(
+        "main/startup/candidates/<int:pk>/favorite/",
+        CandidateFavoriteRetrieveView.as_view(),
+        name="add/remove_candidate_to_favorite",
+    ),
+    path(
+        "main/startup/candidates/",
+        StartupFavoriteCandidates.as_view(),
+        name="all_favorite_candidates",
     ),
 ]

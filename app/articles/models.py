@@ -25,6 +25,12 @@ class Article(models.Model):
     def __str__(self):
         return self.name
 
+    def change_visible(self):
+        if self.is_visible:
+            self.is_visible = False
+        else:
+            self.is_visible = True
+
 
 class Tag(models.Model):
     title = models.CharField("Заголовок", max_length=32)

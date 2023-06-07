@@ -21,6 +21,7 @@ class CandidateCreateSerializer(serializers.ModelSerializer):
     vacancy_id = serializers.PrimaryKeyRelatedField(read_only=True)
     accept_status = serializers.CharField(read_only=True)
     base_status = serializers.CharField(read_only=True)
+    is_favorite = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Candidate
@@ -39,6 +40,7 @@ class CandidateCreateSerializer(serializers.ModelSerializer):
                 professional_id=professional,
                 accept_status=Candidate.AcceptStatus.PENDING_FOR_APPROVAL,
                 base_status=Candidate.BaseStatus.NEW,
+                is_favorite=False,
             )
         except IntegrityError:
             raise ValidationError("Вы уже подались на эту вакансию")
@@ -92,19 +94,40 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
         return instance
 
 
-class StartupAcceptRetrieveCandidate(serializers.ModelSerializer):
-    """Сериализатор изменения статуса кандидата на ACCEPT"""
+# class StartupAcceptRetrieveCandidate(serializers.ModelSerializer):
+#     """Сериализатор изменения статуса кандидата на ACCEPT"""
+#
+#     professional_id = ProfessionalSerializer(read_only=True)
+#     vacancy_id = VacancyBaseSerializer(read_only=True)
+#
+#     class Meta:
+#         model = Candidate
+#
+#         fields = ["professional_id", "vacancy_id", "base_status", "accept_status"]
+#
+#     def update(self, instance: Candidate, validated_data):
+#         with transaction.atomic():
+#             instance.accept_status = Candidate.AcceptStatus.ACCEPT
+#             instance.save()
+#         return instance
 
-    professional_id = ProfessionalSerializer(read_only=True)
-    vacancy_id = VacancyBaseSerializer(read_only=True)
+
+class CandidateFavoriteSerializer(serializers.ModelSerializer):
+    """Сериализатор изменения видимости вакансии"""
 
     class Meta:
         model = Candidate
-
-        fields = ["professional_id", "vacancy_id", "base_status", "accept_status"]
+        fields = "__all__"
+        read_only_fields = (
+            "professional_id",
+            "vacancy_id",
+            "base_status",
+            "accept_status",
+            "is_favorite",
+            "created_at",
+        )
 
     def update(self, instance: Candidate, validated_data):
-        with transaction.atomic():
-            instance.accept_status = Candidate.AcceptStatus.ACCEPT
-            instance.save()
-        return instance
+        instance.change_favorite()
+        instance.save()
+        return super().update(instance, validated_data)
