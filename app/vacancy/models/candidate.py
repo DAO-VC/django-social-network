@@ -29,6 +29,7 @@ class Candidate(models.Model):
     accept_status = models.CharField(
         "Статус", choices=AcceptStatus.choices, max_length=50, null=True, blank=True
     )
+    is_favorite = models.BooleanField(verbose_name="В избранных")
     created_at = CreationDateTimeField(verbose_name="Дата создания")
 
     class Meta:
@@ -36,3 +37,9 @@ class Candidate(models.Model):
             "professional_id",
             "vacancy_id",
         )
+
+    def change_favorite(self):
+        if self.is_favorite:
+            self.is_favorite = False
+        else:
+            self.is_favorite = True

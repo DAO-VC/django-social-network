@@ -13,7 +13,8 @@ from vacancy.serializers.candidate import (
     CandidateCreateSerializer,
     CandidateBaseSerializer,
     StartupApproveCandidateSerializer,
-    StartupAcceptRetrieveCandidate,
+    CandidateFavoriteSerializer,
+    # StartupAcceptRetrieveCandidate,
 )
 
 
@@ -25,17 +26,17 @@ class CandidateCreateView(generics.CreateAPIView):
     permission_classes = (IsAuthenticated, ProfessionalCreatePermission)
 
 
-class StartupCandidates(generics.ListAPIView):
-    """Список всех подтвержденных кандидатов стартапа"""
-
-    serializer_class = CandidateBaseSerializer
-    permission_classes = (IsAuthenticated, StartupCandidatesPermission)
-
-    def get_queryset(self):
-        return Candidate.objects.filter(
-            vacancy_id__company_id__owner=self.request.user,
-            accept_status=Candidate.AcceptStatus.ACCEPT,
-        )
+# class StartupCandidates(generics.ListAPIView):
+#     """Список всех подтвержденных кандидатов стартапа"""
+#
+#     serializer_class = CandidateBaseSerializer
+#     permission_classes = (IsAuthenticated, StartupCandidatesPermission)
+#
+#     def get_queryset(self):
+#         return Candidate.objects.filter(
+#             vacancy_id__company_id__owner=self.request.user,
+#             accept_status=Candidate.AcceptStatus.ACCEPT,
+#         )
 
 
 class StartupRetrieveCandidates(generics.RetrieveDestroyAPIView):
@@ -59,15 +60,15 @@ class StartupApproveRetrieveCandidate(generics.RetrieveUpdateAPIView):
         return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
 
 
-class StartupAcceptCandidate(generics.UpdateAPIView):
-    """Добавление кандидата в список кандидатов стартапа"""
-
-    serializer_class = StartupAcceptRetrieveCandidate
-    http_method_names = ["put"]
-    permission_classes = (IsAuthenticated, ListAllVacancyCandidatesPermission)
-
-    def get_queryset(self):
-        return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
+# class StartupAcceptCandidate(generics.UpdateAPIView):
+#     """Добавление кандидата в список кандидатов стартапа"""
+#
+#     serializer_class = StartupAcceptRetrieveCandidate
+#     http_method_names = ["put"]
+#     permission_classes = (IsAuthenticated, ListAllVacancyCandidatesPermission)
+#
+#     def get_queryset(self):
+#         return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
 
 
 class ListAllVacancyCandidates(generics.ListAPIView):
@@ -106,3 +107,25 @@ class ProfessionalMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
 
     def get_queryset(self):
         return Candidate.objects.filter(professional_id__owner_id=self.request.user.id)
+
+
+class CandidateFavoriteRetrieveView(generics.UpdateAPIView):
+    """Добавление | удаление кандидата в фавориты"""
+
+    queryset = Candidate.objects.all()
+    serializer_class = CandidateFavoriteSerializer
+    http_method_names = ["put"]
+    permission_classes = (IsAuthenticated,)
+
+
+class StartupFavoriteCandidates(generics.ListAPIView):
+    """Список всех фаворитов кандидатов стартапа"""
+
+    serializer_class = CandidateBaseSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Candidate.objects.filter(
+            vacancy_id__company_id__owner=self.request.user,
+            is_favorite=True,
+        )
