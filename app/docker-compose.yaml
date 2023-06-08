@@ -82,9 +82,9 @@ services:
     depends_on:
       - worker
       - redis
-    command: [ "poetry", "run", "celery", "-A", "main" ,"flower" ]
+    command: [ "poetry", "run", "celery", "-A", "main" ,"flower","--","url_prefix","=","flowerdashboard" ]
   #    command: [ "celery", "-A", "main" ,"flower" ]
-
+#--url_prefix=flower
 
 volumes:
   postgres_data:
