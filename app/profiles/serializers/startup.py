@@ -147,3 +147,9 @@ class StartupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Startup
         fields = "__all__"
+
+
+class StartupToArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Startup
+        fields = ["id", "owner", "name"]

@@ -5,6 +5,7 @@ from image.serializers import ImageSerializer
 from django.db.models import Q
 
 from profiles.models.startup import Startup
+from profiles.serializers.startup import StartupToArticleSerializer
 
 
 class ArticleBaseSerializer(serializers.ModelSerializer):
@@ -13,6 +14,7 @@ class ArticleBaseSerializer(serializers.ModelSerializer):
     image = ImageSerializer(read_only=True)
     is_visible = serializers.BooleanField(read_only=True)
     tags = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
+    company_id = StartupToArticleSerializer()
 
     class Meta:
         model = Article
