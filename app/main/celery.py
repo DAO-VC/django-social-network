@@ -7,10 +7,13 @@ app = Celery("main")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
-
 app.conf.beat_schedule = {
     "tags_clean": {
         "task": "articles.tasks.tags_cleaner",
         "schedule": crontab(hour=7, minute=30, day_of_week=1),
+    },
+    "images_clean": {
+        "task": "articles.tasks.full_image_clean",
+        "schedule": crontab(minute="*/1"),
     },
 }
