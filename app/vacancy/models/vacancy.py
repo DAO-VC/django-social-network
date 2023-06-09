@@ -47,12 +47,17 @@ class Vacancy(models.Model):
     place = models.CharField(
         "Рабочая локация", choices=WorkPlace.choices, max_length=32
     )
-    skills = models.ManyToManyField(
-        Industries, verbose_name="Скилы", blank=True, related_name="vacancy_skills"
-    )
-    # TODO : скилы будут реализованы как тэги
+    skills = models.ManyToManyField("Skill", related_name="vacancy_skills", blank=True)
+
     description = models.TextField("Описание")
     requirements = models.TextField("Требования")
     is_visible = models.BooleanField(verbose_name="Активен")
     created_at = CreationDateTimeField(verbose_name="Дата создания")
     # TODO: обязательные поля
+
+
+class Skill(models.Model):
+    title = models.CharField("Заголовок", max_length=32)
+
+    def __str__(self):
+        return self.title
