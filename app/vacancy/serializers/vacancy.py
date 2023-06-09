@@ -47,7 +47,9 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
             for title in skills_titles:
                 skill, created = Skill.objects.get_or_create(title=title)
                 update_skills.append(skill)
-            vacancy.skills.set(update_skills)
+        if len(update_skills) < 1:
+            raise ValidationError("Minium one skill")
+        vacancy.skills.set(update_skills)
 
         return vacancy
 
@@ -73,7 +75,9 @@ class VacancyUpdateSerializer(serializers.ModelSerializer):
             for title in skills_titles:
                 skill, created = Skill.objects.get_or_create(title=title)
                 new_skills.append(skill)
-            instance.skills.set(new_skills)
+        if len(new_skills) < 1:
+            raise ValidationError("Minium one skill")
+        instance.skills.set(new_skills)
 
         return super().update(instance, validated_data)
 
