@@ -56,6 +56,11 @@ class StartupRetrieveCandidates(generics.RetrieveDestroyAPIView):
             )
         )
 
+    def perform_destroy(self, instance: Candidate):
+        instance.accept_status = Candidate.AcceptStatus.DECLINE
+        instance.save()
+        return instance
+
 
 class StartupApproveRetrieveCandidate(generics.UpdateAPIView):
     """Добавление кандидата в команду стартапа"""

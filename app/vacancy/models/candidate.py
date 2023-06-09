@@ -13,8 +13,8 @@ class Candidate(models.Model):
         VIEWED = "viewed", "Просмотрен"
 
     class AcceptStatus(models.TextChoices):
+        DECLINE = "decline", "Отклонен"
         PENDING_FOR_APPROVAL = "pendingforapproval", "Подал заявку"
-        ACCEPT = "accept", "Подтвержден"
         IN_THE_TEAM = "intheteam", "В команде"
 
     professional_id = models.ForeignKey(Professional, models.CASCADE)
