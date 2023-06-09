@@ -16,4 +16,8 @@ app.conf.beat_schedule = {
         "task": "articles.tasks.full_image_clean",
         "schedule": crontab(hour=7, minute=30, day_of_week=1),
     },
+    "skills_clean": {
+        "task": "vacancy.tasks.full_skills_clean",
+        "schedule": crontab(hour=7, minute=30, day_of_week=1),
+    },
 }
