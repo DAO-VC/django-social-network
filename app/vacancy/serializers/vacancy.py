@@ -4,7 +4,7 @@ from django.db.models import Q
 from rest_framework.exceptions import ValidationError
 
 from profiles.models.startup import Startup
-from vacancy.models.vacancy import Vacancy
+from vacancy.models.vacancy import Vacancy, Skill
 
 
 class VacancyBaseSerializer(serializers.ModelSerializer):
@@ -18,7 +18,12 @@ class VacancyBaseSerializer(serializers.ModelSerializer):
 class VacancyCreateSerializer(serializers.ModelSerializer):
     """Сериализато создания вакансии"""
 
+    is_visible = serializers.BooleanField(read_only=True)
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    skills = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
+    update_skills = serializers.ListField(
+        child=serializers.CharField(max_length=30), write_only=True
+    )
 
     class Meta:
         model = Vacancy
@@ -34,12 +39,15 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
             | Q(owner=self.context["request"].user)
         ).first()
 
-        skills = validated_data.pop("skills")
-        if len(skills) < 1:
-            raise ValidationError("Минимум один скил")
+        skills_titles = validated_data.pop("update_skills")
+
         with transaction.atomic():
             vacancy = Vacancy.objects.create(**validated_data, company_id=company_id)
-            vacancy.skills.set(skills)
+            update_skills = []
+            for title in skills_titles:
+                skill, created = Skill.objects.get_or_create(title=title)
+                update_skills.append(skill)
+            vacancy.skills.set(update_skills)
 
         return vacancy
 
@@ -47,16 +55,25 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
 class VacancyUpdateSerializer(serializers.ModelSerializer):
     """Сериализатор обновления вакансии"""
 
+    is_visible = serializers.BooleanField(read_only=True)
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    skills = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
+    update_skills = serializers.ListField(
+        child=serializers.CharField(max_length=30), write_only=True
+    )
 
     class Meta:
         model = Vacancy
         fields = "__all__"
 
     def update(self, instance, validated_data):
-        skills = validated_data.pop("skills")
-        if len(skills) > 0:
-            instance.skills.set(skills)
+        skills_titles = validated_data.pop("update_skills")
+        with transaction.atomic():
+            new_skills = []
+            for title in skills_titles:
+                skill, created = Skill.objects.get_or_create(title=title)
+                new_skills.append(skill)
+            instance.skills.set(new_skills)
 
         return super().update(instance, validated_data)
 
