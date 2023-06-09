@@ -19,6 +19,7 @@ class Candidate(models.Model):
 
     professional_id = models.ForeignKey(Professional, models.CASCADE)
     vacancy_id = models.ForeignKey(Vacancy, models.CASCADE)
+    about = models.TextField("Обо мне")
     base_status = models.CharField(
         "Статус просмотра",
         choices=BaseStatus.choices,

@@ -34,6 +34,7 @@ class CandidateCreateSerializer(serializers.ModelSerializer):
         professional = get_object_or_404(
             Professional, owner=self.context["request"].user
         )
+        about = validated_data["about"]
         try:
             candidate = Candidate.objects.create(
                 vacancy_id=vacancy_id,
@@ -41,6 +42,7 @@ class CandidateCreateSerializer(serializers.ModelSerializer):
                 accept_status=Candidate.AcceptStatus.PENDING_FOR_APPROVAL,
                 base_status=Candidate.BaseStatus.NEW,
                 is_favorite=False,
+                about=about,
             )
         except IntegrityError:
             raise ValidationError("Вы уже подались на эту вакансию")
