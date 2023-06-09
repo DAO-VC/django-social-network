@@ -1,5 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from articles.models import Article, Tag
 from image.serializers import ImageSerializer
 from django.db.models import Q
@@ -54,7 +56,9 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
             for title in tag_titles:
                 tag, created = Tag.objects.get_or_create(title=title)
                 tags.append(tag)
-            article.tags.set(tags)
+        if len(tags) < 1:
+            raise ValidationError("Minium one tag")
+        article.tags.set(tags)
         return article
 
 
@@ -89,9 +93,12 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
         # tags block
         tag_titles = validated_data.pop("update_tags")
         tags = []
-        for title in tag_titles:
-            tag, created = Tag.objects.get_or_create(title=title)
-            tags.append(tag)
+        with transaction.atomic():
+            for title in tag_titles:
+                tag, created = Tag.objects.get_or_create(title=title)
+                tags.append(tag)
+        if len(tags) < 1:
+            raise ValidationError("Minium one tag")
         instance.tags.set(tags)
         return super().update(instance, validated_data)
 
