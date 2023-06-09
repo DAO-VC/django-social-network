@@ -129,9 +129,9 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 20,
 }
 AUTH_USER_MODEL = "core.User"
-
 
 # email Broker  settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -141,7 +141,6 @@ EMAIL_PORT = env.str("EMAIL_PORT")
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
-
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "DAO API",
@@ -225,7 +224,6 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
 }
-
 
 # Celery and Redis settings
 REDIS_HOST = "0.0.0.0"
