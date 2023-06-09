@@ -26,18 +26,21 @@ class Vacancy(models.Model):
         MONTHLY = "monthly", "ежемесячно"
         ANNUAL = "annual", "ежегодно"
         PER_PROJECT = "perProject", "за проект"
+        PERCENT = "percent", "процент"
 
     class WorkSchedude(models.TextChoices):
         FULL_TIME = "fullTime", "полная занятость"
         PART_TIME = "partTime", "частичная занятость"
+        PROJECT = "project", "проектная занятость"
 
     class WorkPlace(models.TextChoices):
         OFFICE = "office", "офис"
         REMOTE = "remote", "дистанционная работа"
+        MIXED = "mixed", "смешанный тип работы"
 
     company_id = models.ForeignKey("profiles.Startup", models.CASCADE)
     position = models.CharField("Позиция", max_length=32)
-    salary = models.IntegerField(verbose_name="Зарплата")
+    salary = models.IntegerField(verbose_name="Зарплата", null=True, blank=True)
     salary_type = models.CharField(
         "Вид оплаты", choices=SalaryType.choices, max_length=32
     )
