@@ -82,6 +82,7 @@ class MeUserView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserBaseSerializer
     permission_classes = (IsAuthenticated,)
+    pagination_class = None
 
     def get_queryset(self):
         self.queryset = User.objects.filter(id=self.request.user.pk)
