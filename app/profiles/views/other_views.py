@@ -13,6 +13,7 @@ class IndustriesListView(generics.ListAPIView):
 
     queryset = Industries.objects.all()
     serializer_class = IndustriesSerializer
+    pagination_class = None
 
 
 class BusinessTypeListView(generics.ListAPIView):
