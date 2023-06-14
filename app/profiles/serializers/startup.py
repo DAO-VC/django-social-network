@@ -150,6 +150,8 @@ class StartupSerializer(serializers.ModelSerializer):
 
 
 class StartupToArticleSerializer(serializers.ModelSerializer):
+    logo = ImageSerializer(read_only=True)
+
     class Meta:
         model = Startup
-        fields = ["id", "owner", "name"]
+        fields = ["id", "owner", "name", "logo"]
