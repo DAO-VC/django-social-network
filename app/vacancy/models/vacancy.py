@@ -53,13 +53,22 @@ class Vacancy(models.Model):
     skills = models.ManyToManyField("Skill", related_name="vacancy_skills", blank=True)
 
     description = models.TextField("Описание")
-    requirements = models.TextField("Требования")
+    requirements = models.ManyToManyField(
+        "Requirement", related_name="vacancy_requirements", blank=True
+    )
     is_visible = models.BooleanField(verbose_name="Активен")
     created_at = CreationDateTimeField(verbose_name="Дата создания")
     # TODO: обязательные поля
 
 
 class Skill(models.Model):
+    title = models.CharField("Заголовок", max_length=32)
+
+    def __str__(self):
+        return self.title
+
+
+class Requirement(models.Model):
     title = models.CharField("Заголовок", max_length=32)
 
     def __str__(self):
