@@ -18,7 +18,7 @@ class VacancyBaseSerializer(serializers.ModelSerializer):
 class VacancyCreateSerializer(serializers.ModelSerializer):
     """Сериализато создания вакансии"""
 
-    is_visible = serializers.BooleanField(read_only=True)
+    # is_visible = serializers.BooleanField(read_only=True)
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
     skills = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
     update_skills = serializers.ListField(
