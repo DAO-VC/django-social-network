@@ -72,7 +72,7 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
         child=serializers.CharField(max_length=30), write_only=True
     )
     view_count = serializers.IntegerField(read_only=True)
-    is_visible = serializers.BooleanField(read_only=True)
+    # is_visible = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Article
