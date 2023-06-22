@@ -31,6 +31,8 @@ class ArticlePermission(permissions.BasePermission):
 
 class ArticleBasePermission(permissions.BasePermission):
     def has_permission(self, request, view):
+        if request.method == "GET":
+            return True
         startup = Startup.objects.filter(
             Q(work_team__candidate_id__professional_id__owner__in=[request.user.id])
             | Q(owner=request.user.id)
@@ -50,9 +52,6 @@ class ArticleBasePermission(permissions.BasePermission):
                 if work_obj.articles_and_news_management:
                     return True
             return False
-
-        if request.method == "GET":
-            return True
 
 
 class RetrieveArticlePermission(permissions.BasePermission):
