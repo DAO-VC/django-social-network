@@ -81,6 +81,8 @@ class StartupWorkTeamUpdatePermission(permissions.BasePermission):
 
 class VacancyGetCreatePermission(permissions.BasePermission):
     def has_permission(self, request, view):
+        if request.method == "GET":
+            return True
         startup = Startup.objects.filter(
             Q(work_team__candidate_id__professional_id__owner__in=[request.user.id])
             | Q(owner=request.user.id)
@@ -88,8 +90,6 @@ class VacancyGetCreatePermission(permissions.BasePermission):
 
         if not startup:
             raise AuthenticationFailed("permisson: You do not have access to this role")
-        if request.method == "GET":
-            return True
 
         if request.method == "POST":
             if startup.owner.id == request.user.id:
