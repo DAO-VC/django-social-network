@@ -20,4 +20,8 @@ app.conf.beat_schedule = {
         "task": "vacancy.tasks.full_skills_clean",
         "schedule": crontab(hour=7, minute=30, day_of_week=1),
     },
+    "requirements_clean": {
+        "task": "vacancy.tasks.full_requirements_clean",
+        "schedule": crontab(hour=7, minute=30, day_of_week=1),
+    },
 }
