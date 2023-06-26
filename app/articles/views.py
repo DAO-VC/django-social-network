@@ -141,3 +141,23 @@ class ArticleVisibleView(generics.UpdateAPIView):
     serializer_class = ArticleUpdateVisionSerializer
     http_method_names = ["put"]
     permission_classes = (RetrieveArticlePermission,)
+
+
+# class AllArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
+#     """Список всех статей по id"""
+#
+#     queryset = Article.objects.all()
+#     filterset_class = ArticleFilter
+#     permission_classes = (RetrieveArticlePermission,)
+#     http_method_names = ["get", "put", "delete"]
+#
+#     def get_serializer_class(self):
+#         if self.request.method == "GET":
+#             return ArticleBaseSerializer
+#         return ArticleUpdateSerializer
+#
+#     def retrieve(self, request, *args, **kwargs):
+#         instance: Article = self.get_object()
+#         instance.view_count = F("view_count") + 1
+#         instance.save()
+#         return super().retrieve(request, *args, **kwargs)

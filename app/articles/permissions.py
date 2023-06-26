@@ -56,6 +56,8 @@ class ArticleBasePermission(permissions.BasePermission):
 
 class RetrieveArticlePermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
+        if request.method == "GET":
+            return True
         if request.method == "PUT" or request.method == "DELETE":
             startup: Startup = Startup.objects.get(owner=obj.company_id.owner)
             if startup.owner.id == request.user.id:
@@ -70,5 +72,3 @@ class RetrieveArticlePermission(permissions.BasePermission):
                 if work_obj.articles_and_news_management:
                     return True
             return False
-        if request.method == "GET":
-            return True

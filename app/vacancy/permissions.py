@@ -163,3 +163,23 @@ class StartupCandidateFavoriteListPermission(permissions.BasePermission):
             if work_obj.performers_management:
                 return True
         return False
+
+
+class RetrieveVacancyPermission(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj: Vacancy):
+        if request.method == "GET":
+            return True
+        if request.method == "PUT" or request.method == "DELETE":
+            startup: Startup = Startup.objects.get(owner=obj.company_id.owner)
+            if startup.owner.id == request.user.id:
+                return True
+            if request.user.id in [
+                item.candidate_id.professional_id.owner.id
+                for item in startup.work_team.all()
+            ]:
+                work_obj: WorkTeam = startup.work_team.filter(
+                    candidate_id__professional_id__owner_id=request.user.id
+                ).first()
+                if work_obj.articles_and_news_management:
+                    return True
+            return False

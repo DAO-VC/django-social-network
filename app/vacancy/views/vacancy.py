@@ -4,7 +4,11 @@ from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
 
 from vacancy.models.vacancy import Vacancy
-from vacancy.permissions import VacancyGetCreatePermission, VacancyOwnerPermission
+from vacancy.permissions import (
+    VacancyGetCreatePermission,
+    VacancyOwnerPermission,
+    RetrieveVacancyPermission,
+)
 from vacancy.serializers.vacancy import (
     VacancyCreateSerializer,
     VacancyUpdateSerializer,
@@ -36,7 +40,7 @@ class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancyUpdateSerializer
     http_method_names = ["get", "put", "delete"]
-    permission_classes = (IsAuthenticated, VacancyOwnerPermission)
+    permission_classes = (IsAuthenticated, RetrieveVacancyPermission)
 
 
 class VacancyVisibleRetrieveView(generics.UpdateAPIView):
@@ -59,17 +63,18 @@ class VacancyAllView(generics.ListAPIView):
     ]
     filterset_fields = ["id", "company_id", "salary", "requirements"]
     ordering_fields = ["company_id", "position", "salary", "requirements", "created_at"]
+    search_fields = ("salary", "salary_type", "description", "company_id", "position")
 
     def get_queryset(self):
         return Vacancy.objects.filter(is_visible=True)
 
 
-class VacancyAllDetailView(generics.RetrieveAPIView):
-    """Все вакансии по id"""
-
-    queryset = Vacancy.objects.all()
-    serializer_class = VacancyBaseSerializer
-    http_method_names = ["get"]
+# class VacancyAllDetailView(generics.RetrieveAPIView):
+#     """Все вакансии по id"""
+#
+#     queryset = Vacancy.objects.all()
+#     serializer_class = VacancyBaseSerializer
+#     http_method_names = ["get"]
 
 
 class StartupAllVacancies(generics.ListAPIView):

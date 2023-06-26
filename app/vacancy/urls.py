@@ -17,7 +17,7 @@ from vacancy.views.vacancy import (
     VacancyRetrieveView,
     VacancyVisibleRetrieveView,
     VacancyAllView,
-    VacancyAllDetailView,
+    # VacancyAllDetailView,
     StartupAllVacancies,
 )
 from vacancy.views.workteam import (
@@ -31,7 +31,7 @@ urlpatterns = [
         "main/vacancies/", VacancyListCreateView.as_view(), name="list_create_vacancy"
     ),
     path(
-        "main/vacancies/<int:pk>/",
+        "common/vacancies/<int:pk>/",
         VacancyRetrieveView.as_view(),
         name="retrieve_vacancy",
     ),
@@ -41,11 +41,11 @@ urlpatterns = [
         name="visible_retrieve_vacancy",
     ),
     path("common/vacancies/", VacancyAllView.as_view(), name="all_vacancy"),
-    path(
-        "common/vacancies/<int:pk>/",
-        VacancyAllDetailView.as_view(),
-        name="all_detail_vacancy",
-    ),
+    # path(
+    #     "common/vacancies/<int:pk>/",
+    #     VacancyAllDetailView.as_view(),
+    #     name="all_detail_vacancy",
+    # ),
     path(
         "common/startup/<int:pk>/vacancies",
         StartupAllVacancies.as_view(),
