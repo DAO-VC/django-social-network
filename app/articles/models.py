@@ -21,6 +21,12 @@ class Article(models.Model):
     # TODO заменить поле на CreationDateTimeField из django-extensions
     # TODO : tags ??
     # TODO: обязательные поля
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["-created_at"]),
+            models.Index(fields=["-view_count"]),
+        ]
 
     def __str__(self):
         return self.name

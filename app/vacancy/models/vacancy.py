@@ -58,7 +58,13 @@ class Vacancy(models.Model):
     )
     is_visible = models.BooleanField(verbose_name="Активен")
     created_at = CreationDateTimeField(verbose_name="Дата создания")
+
     # TODO: обязательные поля
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["-created_at"]),
+        ]
 
 
 class Skill(models.Model):
