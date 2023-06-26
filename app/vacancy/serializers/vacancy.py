@@ -25,10 +25,10 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
         many=True, slug_field="title", read_only=True
     )
     update_skills = serializers.ListField(
-        child=serializers.CharField(max_length=30), write_only=True
+        child=serializers.CharField(max_length=50), write_only=True
     )
     update_requirements = serializers.ListField(
-        child=serializers.CharField(max_length=30), write_only=True
+        child=serializers.CharField(max_length=500), write_only=True
     )
 
     class Meta:
@@ -77,10 +77,10 @@ class VacancyUpdateSerializer(serializers.ModelSerializer):
         many=True, slug_field="title", read_only=True
     )
     update_skills = serializers.ListField(
-        child=serializers.CharField(max_length=30), write_only=True
+        child=serializers.CharField(max_length=54), write_only=True
     )
     update_requirements = serializers.ListField(
-        child=serializers.CharField(max_length=30), write_only=True
+        child=serializers.CharField(max_length=500), write_only=True
     )
 
     class Meta:

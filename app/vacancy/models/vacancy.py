@@ -28,7 +28,7 @@ class Vacancy(models.Model):
         PER_PROJECT = "perProject", "за проект"
         PERCENT = "percent", "процент"
 
-    class WorkSchedude(models.TextChoices):
+    class WorkSchedule(models.TextChoices):
         FULL_TIME = "fullTime", "полная занятость"
         PART_TIME = "partTime", "частичная занятость"
         PROJECT = "project", "проектная занятость"
@@ -45,7 +45,7 @@ class Vacancy(models.Model):
         "Вид оплаты", choices=SalaryType.choices, max_length=32
     )
     work_schedude = models.CharField(
-        "Тип занятости", choices=WorkSchedude.choices, max_length=32
+        "Тип занятости", choices=WorkSchedule.choices, max_length=32
     )
     place = models.CharField(
         "Рабочая локация", choices=WorkPlace.choices, max_length=32
@@ -68,14 +68,16 @@ class Vacancy(models.Model):
 
 
 class Skill(models.Model):
-    title = models.CharField("Заголовок", max_length=32)
+    title = models.CharField("Заголовок", max_length=54)
 
     def __str__(self):
         return self.title
 
 
 class Requirement(models.Model):
-    title = models.CharField("Заголовок", max_length=32)
+    title = models.TextField(
+        "Заголовок",
+    )
 
     def __str__(self):
         return self.title
