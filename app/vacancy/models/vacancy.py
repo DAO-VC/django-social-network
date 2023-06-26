@@ -44,7 +44,7 @@ class Vacancy(models.Model):
     salary_type = models.CharField(
         "Вид оплаты", choices=SalaryType.choices, max_length=32
     )
-    work_schedude = models.CharField(
+    work_schedule = models.CharField(
         "Тип занятости", choices=WorkSchedule.choices, max_length=32
     )
     place = models.CharField(
