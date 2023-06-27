@@ -84,8 +84,7 @@ class ArticleParamView(generics.ListAPIView):
     def get_queryset(self):
         # return Article.objects.filter(is_visible=True)
         return (
-            Article.objects.select_related("company_id")
-            .select_related("image")
+            Article.objects.select_related("company_id", "image")
             .prefetch_related("tags")
             .filter(is_visible=True)
         )

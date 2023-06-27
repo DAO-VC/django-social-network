@@ -57,6 +57,18 @@ class AllStartupListView(generics.ListAPIView):
     queryset = Startup.objects.all()
     serializer_class = StartupSerializer
 
+    def get_queryset(self):
+        return Startup.objects.select_related(
+            "owner",
+            "logo",
+            "background",
+            "registration_country",
+            "purpose",
+            "pitch_presentation",
+            "achievements",
+            "social_links",
+        ).prefetch_related("industries", "regions", "business_type", "work_team")
+
 
 class AllStartupRetrieveView(generics.RetrieveAPIView):
     """Детальное получение стартапа"""

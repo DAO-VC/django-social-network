@@ -66,7 +66,10 @@ class VacancyAllView(generics.ListAPIView):
     search_fields = ("salary", "salary_type", "description", "company_id", "position")
 
     def get_queryset(self):
-        return Vacancy.objects.filter(is_visible=True)
+        # return Vacancy.objects.filter(is_visible=True)
+        return Vacancy.objects.select_related(
+            "company_id",
+        ).prefetch_related("skills", "requirements")
 
 
 # class VacancyAllDetailView(generics.RetrieveAPIView):
