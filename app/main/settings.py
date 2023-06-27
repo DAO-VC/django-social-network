@@ -129,6 +129,9 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "DEFAULT_CACHE_RESPONSE_TIMEOUT": 60 * 5,
+    "DEFAULT_CACHE_BACKEND": "django_redis.cache.RedisCache",
+    "DEFAULT_CACHE_ALIAS": "default",
     # "PAGE_SIZE": 20,
 }
 AUTH_USER_MODEL = "core.User"
@@ -236,3 +239,14 @@ CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "my_cache_key_prefix",
+    }
+}

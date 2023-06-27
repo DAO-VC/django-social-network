@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
 from articles.views import (
     ArticleListCreateView,
@@ -11,7 +12,11 @@ from articles.views import (
 
 urlpatterns = [
     path("main/articles/", ArticleListCreateView.as_view(), name="list_create_article"),
-    path("common/articles/", ArticleParamView.as_view(), name="all_articles"),
+    path(
+        "common/articles/",
+        cache_page(20)(ArticleParamView.as_view()),
+        name="all_articles",
+    ),
     path(
         "common/articles/<int:pk>/",
         AllArticleRetrieveView.as_view(),

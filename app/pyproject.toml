@@ -26,6 +26,7 @@ django-cleanup = "^7.0.0"
 celery = "^5.2.7"
 flower = "^1.2.0"
 redis = "^4.5.5"
+django-redis = "^5.3.0"
 
 
 [build-system]
