@@ -7,11 +7,18 @@ from profiles.models.startup import Startup
 class Article(models.Model):
     """Сущность статьи стартапа"""
 
-    company_id = models.ForeignKey(Startup, models.CASCADE)
+    company_id = models.ForeignKey(
+        Startup, models.CASCADE, related_name="article_company"
+    )
     name = models.CharField("Заголовок", max_length=32)
     description = models.TextField("Описание", null=True, blank=True)
     image = models.ForeignKey(
-        Image, models.SET_NULL, verbose_name="Фото", null=True, blank=True
+        Image,
+        models.SET_NULL,
+        verbose_name="Фото",
+        null=True,
+        blank=True,
+        related_name="article_image",
     )
     is_visible = models.BooleanField(verbose_name="Видим")
     view_count = models.IntegerField(default=0, null=True, blank=True)

@@ -82,7 +82,13 @@ class ArticleParamView(generics.ListAPIView):
     search_fields = ("name",)
 
     def get_queryset(self):
-        return Article.objects.filter(is_visible=True)
+        # return Article.objects.filter(is_visible=True)
+        return (
+            Article.objects.select_related("company_id")
+            .select_related("image")
+            .prefetch_related("tags")
+            .filter(is_visible=True)
+        )
 
 
 # class ArticleVisibleView(generics.UpdateAPIView):
