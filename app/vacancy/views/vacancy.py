@@ -24,13 +24,19 @@ class VacancyListCreateView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
 
     def get_queryset(self):
-        return Vacancy.objects.filter(
-            Q(
-                company_id__work_team__candidate_id__professional_id__owner__in=[
-                    self.request.user.id
-                ]
+        return (
+            Vacancy.objects.select_related(
+                "company_id",
             )
-            | Q(company_id__owner=self.request.user.id)
+            .prefetch_related("skills", "requirements")
+            .filter(
+                Q(
+                    company_id__work_team__candidate_id__professional_id__owner__in=[
+                        self.request.user.id
+                    ]
+                )
+                | Q(company_id__owner=self.request.user.id)
+            )
         )
 
 
@@ -66,18 +72,13 @@ class VacancyAllView(generics.ListAPIView):
     search_fields = ("salary", "salary_type", "description", "company_id", "position")
 
     def get_queryset(self):
-        # return Vacancy.objects.filter(is_visible=True)
-        return Vacancy.objects.select_related(
-            "company_id",
-        ).prefetch_related("skills", "requirements")
-
-
-# class VacancyAllDetailView(generics.RetrieveAPIView):
-#     """Все вакансии по id"""
-#
-#     queryset = Vacancy.objects.all()
-#     serializer_class = VacancyBaseSerializer
-#     http_method_names = ["get"]
+        return (
+            Vacancy.objects.select_related(
+                "company_id",
+            )
+            .prefetch_related("skills", "requirements")
+            .all()
+        )
 
 
 class StartupAllVacancies(generics.ListAPIView):
@@ -88,4 +89,10 @@ class StartupAllVacancies(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Vacancy.objects.filter(company_id=self.kwargs["pk"])
+        return (
+            Vacancy.objects.select_related(
+                "company_id",
+            )
+            .prefetch_related("skills", "requirements")
+            .filter(company_id=self.kwargs["pk"])
+        )

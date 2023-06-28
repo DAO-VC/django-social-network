@@ -27,19 +27,6 @@ class CandidateCreateView(generics.CreateAPIView):
     permission_classes = (IsAuthenticated, ProfessionalCreatePermission)
 
 
-# class StartupCandidates(generics.ListAPIView):
-#     """Список всех подтвержденных кандидатов стартапа"""
-#
-#     serializer_class = CandidateBaseSerializer
-#     permission_classes = (IsAuthenticated, StartupCandidatesPermission)
-#
-#     def get_queryset(self):
-#         return Candidate.objects.filter(
-#             vacancy_id__company_id__owner=self.request.user,
-#             accept_status=Candidate.AcceptStatus.ACCEPT,
-#         )
-
-
 class StartupRetrieveCandidates(generics.RetrieveDestroyAPIView):
     """Получение | удаление кандидата стартапа"""
 
@@ -47,7 +34,7 @@ class StartupRetrieveCandidates(generics.RetrieveDestroyAPIView):
     permission_classes = (IsAuthenticated, StartupCandidateFavoriteRetrievePermission)
 
     def get_queryset(self):
-        return Candidate.objects.filter(
+        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
             Q(vacancy_id__company_id__owner=self.request.user)
             | Q(
                 vacancy_id__company_id__work_team__candidate_id__professional_id__owner__in=[
@@ -70,7 +57,7 @@ class StartupApproveRetrieveCandidate(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated, StartupCandidateFavoriteRetrievePermission)
 
     def get_queryset(self):
-        return Candidate.objects.filter(
+        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
             Q(vacancy_id__company_id__owner=self.request.user)
             | Q(
                 vacancy_id__company_id__work_team__candidate_id__professional_id__owner__in=[
@@ -78,17 +65,6 @@ class StartupApproveRetrieveCandidate(generics.UpdateAPIView):
                 ]
             )
         )
-
-
-# class StartupAcceptCandidate(generics.UpdateAPIView):
-#     """Добавление кандидата в список кандидатов стартапа"""
-#
-#     serializer_class = StartupAcceptRetrieveCandidate
-#     http_method_names = ["put"]
-#     permission_classes = (IsAuthenticated, ListAllVacancyCandidatesPermission)
-#
-#     def get_queryset(self):
-#         return Candidate.objects.filter(vacancy_id__company_id__owner=self.request.user)
 
 
 class ListAllVacancyCandidates(generics.ListAPIView):
@@ -105,7 +81,9 @@ class ListAllVacancyCandidates(generics.ListAPIView):
     ordering_fields = ["base_status", "accept_status", "created_at"]
 
     def get_queryset(self):
-        return Candidate.objects.filter(vacancy_id=self.kwargs["pk"])
+        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
+            vacancy_id=self.kwargs["pk"]
+        )
 
 
 class ProfessionalMyApplicationsListView(generics.ListAPIView):
@@ -115,7 +93,9 @@ class ProfessionalMyApplicationsListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, ProfessionalMyApplicationsPermission)
 
     def get_queryset(self):
-        return Candidate.objects.filter(professional_id__owner_id=self.request.user.id)
+        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
+            professional_id__owner_id=self.request.user.id
+        )
 
 
 class ProfessionalMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
@@ -126,7 +106,9 @@ class ProfessionalMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
     permission_classes = (IsAuthenticated, ProfessionalMyApplicationsPermission)
 
     def get_queryset(self):
-        return Candidate.objects.filter(professional_id__owner_id=self.request.user.id)
+        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
+            professional_id__owner_id=self.request.user.id
+        )
 
 
 class CandidateFavoriteRetrieveView(generics.UpdateAPIView):
@@ -137,7 +119,7 @@ class CandidateFavoriteRetrieveView(generics.UpdateAPIView):
     permission_classes = (StartupCandidateFavoriteRetrievePermission,)
 
     def get_queryset(self):
-        return Candidate.objects.filter(
+        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
             Q(vacancy_id__company_id__owner=self.request.user)
             | Q(
                 vacancy_id__company_id__work_team__candidate_id__professional_id__owner__in=[
@@ -154,7 +136,7 @@ class StartupFavoriteCandidates(generics.ListAPIView):
     permission_classes = (IsAuthenticated, StartupCandidateFavoriteListPermission)
 
     def get_queryset(self):
-        return Candidate.objects.filter(
+        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
             Q(vacancy_id__company_id__owner=self.request.user)
             | Q(
                 vacancy_id__company_id__work_team__candidate_id__professional_id__owner__in=[

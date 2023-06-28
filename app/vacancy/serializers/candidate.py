@@ -92,26 +92,7 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
             user = User.objects.get(id=instance.professional_id.owner.id)
             user.permissions = work_team_obj
             user.save()
-        # TODO : нужно переводить в статус скрыта
         return instance
-
-
-# class StartupAcceptRetrieveCandidate(serializers.ModelSerializer):
-#     """Сериализатор изменения статуса кандидата на ACCEPT"""
-#
-#     professional_id = ProfessionalSerializer(read_only=True)
-#     vacancy_id = VacancyBaseSerializer(read_only=True)
-#
-#     class Meta:
-#         model = Candidate
-#
-#         fields = ["professional_id", "vacancy_id", "base_status", "accept_status"]
-#
-#     def update(self, instance: Candidate, validated_data):
-#         with transaction.atomic():
-#             instance.accept_status = Candidate.AcceptStatus.ACCEPT
-#             instance.save()
-#         return instance
 
 
 class CandidateFavoriteSerializer(serializers.ModelSerializer):

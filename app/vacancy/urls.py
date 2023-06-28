@@ -1,8 +1,6 @@
 from django.urls import path
-
 from vacancy.views.candidate import (
     CandidateCreateView,
-    # StartupCandidates,
     ListAllVacancyCandidates,
     StartupRetrieveCandidates,
     ProfessionalMyApplicationsListView,
@@ -10,14 +8,12 @@ from vacancy.views.candidate import (
     StartupApproveRetrieveCandidate,
     CandidateFavoriteRetrieveView,
     StartupFavoriteCandidates,
-    # StartupAcceptCandidate,
 )
 from vacancy.views.vacancy import (
     VacancyListCreateView,
     VacancyRetrieveView,
     VacancyVisibleRetrieveView,
     VacancyAllView,
-    # VacancyAllDetailView,
     StartupAllVacancies,
 )
 from vacancy.views.workteam import (
@@ -41,11 +37,6 @@ urlpatterns = [
         name="visible_retrieve_vacancy",
     ),
     path("common/vacancies/", VacancyAllView.as_view(), name="all_vacancy"),
-    # path(
-    #     "common/vacancies/<int:pk>/",
-    #     VacancyAllDetailView.as_view(),
-    #     name="all_detail_vacancy",
-    # ),
     path(
         "common/startup/<int:pk>/vacancies",
         StartupAllVacancies.as_view(),
@@ -56,11 +47,6 @@ urlpatterns = [
         CandidateCreateView.as_view(),
         name="apply_candidate",
     ),
-    # path(
-    #     "main/startup/candidates/",
-    #     StartupCandidates.as_view(),
-    #     name="all_startup_candidates",
-    # ),
     path(
         "main/vacancies/<int:pk>/candidates/",
         ListAllVacancyCandidates.as_view(),
@@ -91,11 +77,6 @@ urlpatterns = [
         StartupApproveRetrieveCandidate.as_view(),
         name="accept_startup_candidates",
     ),
-    # path(
-    #     "main/startup/candidates/<int:pk>/accept/",
-    #     StartupAcceptCandidate.as_view(),
-    #     name="accept_startup_candidates",
-    # ),
     path(
         "main/startup/my_team/",
         StartupWorkTeamList.as_view(),
