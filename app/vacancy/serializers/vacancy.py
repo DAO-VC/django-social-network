@@ -10,9 +10,15 @@ from vacancy.models.vacancy import Vacancy, Skill, Requirement
 class VacancyBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор вакансии"""
 
+    total_candidates = serializers.SerializerMethodField(read_only=True)
+
+    def get_total_candidates(self, instance):
+        return instance.candidate_vacancy.count()
+
     class Meta:
         model = Vacancy
         fields = "__all__"
+        extra_fields = ["total_candidates"]
 
 
 class VacancyCreateSerializer(serializers.ModelSerializer):

@@ -17,8 +17,12 @@ class Candidate(models.Model):
         PENDING_FOR_APPROVAL = "pendingforapproval", "Подал заявку"
         IN_THE_TEAM = "intheteam", "В команде"
 
-    professional_id = models.ForeignKey(Professional, models.CASCADE)
-    vacancy_id = models.ForeignKey(Vacancy, models.CASCADE)
+    professional_id = models.ForeignKey(
+        Professional, models.CASCADE, related_name="candidate_professional"
+    )
+    vacancy_id = models.ForeignKey(
+        Vacancy, models.CASCADE, related_name="candidate_vacancy"
+    )
     about = models.TextField("Обо мне")
     base_status = models.CharField(
         "Статус просмотра",
