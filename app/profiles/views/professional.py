@@ -45,8 +45,12 @@ class ProfessionalUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
 class AllProfessionalsListView(generics.ListAPIView):
     """Список всех профессионалов сайта"""
 
-    queryset = Professional.objects.all()
     serializer_class = ProfessionalSerializer
+
+    def get_queryset(self):
+        return Professional.objects.select_related(
+            "owner", "photo", "cv"
+        ).prefetch_related("skills")
 
 
 class AllProfessionalRetrieveView(generics.RetrieveAPIView):

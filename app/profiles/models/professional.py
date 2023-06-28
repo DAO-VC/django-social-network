@@ -23,15 +23,10 @@ class Professional(models.Model):
         File, models.SET_NULL, verbose_name="Файл презентации", null=True, blank=True
     )
 
-    # TODO: вопрос о формате файла (они разные в стартапе и здесь)
-    # TODO: Добавить интересы
     speciality = models.CharField("Специальность", max_length=32, null=True, blank=True)
     skills = models.ManyToManyField(
         Industries, verbose_name="Скилы", blank=True, related_name="skills"
     )
-    # interest = models.ManyToManyField(
-    #     "Industries", verbose_name="Интересы", blank=True, related_name="prof_interest"
-    # )
     salary = models.TextField(verbose_name="Зарплата", null=True, blank=True)
 
     class Meta:

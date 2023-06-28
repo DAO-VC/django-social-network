@@ -39,14 +39,28 @@ class StartUpUpdateDetailView(generics.RetrieveUpdateDestroyAPIView):
         return StartupUpdateSerializer
 
     def get_object(self):
-        obj = Startup.objects.filter(
-            Q(
-                work_team__candidate_id__professional_id__owner__in=[
-                    self.request.user.id
-                ]
+        obj = (
+            Startup.objects.select_related(
+                "owner",
+                "logo",
+                "background",
+                "registration_country",
+                "purpose",
+                "pitch_presentation",
+                "achievements",
+                "social_links",
             )
-            | Q(owner=self.request.user.id)
-        ).first()
+            .prefetch_related("industries", "regions", "business_type", "work_team")
+            .filter(
+                Q(
+                    work_team__candidate_id__professional_id__owner__in=[
+                        self.request.user.id
+                    ]
+                )
+                | Q(owner=self.request.user.id)
+            )
+            .first()
+        )
         self.check_object_permissions(self.request, obj)
         return obj
 

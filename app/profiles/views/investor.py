@@ -49,6 +49,11 @@ class AllInvestorsListView(generics.ListAPIView):
     queryset = Investor.objects.all()
     serializer_class = InvestorSerializer
 
+    def get_queryset(self):
+        return Investor.objects.select_related(
+            "owner", "photo", "cv", "social_links"
+        ).prefetch_related("interest")
+
 
 class AllInvestorsRetrieveView(generics.RetrieveAPIView):
     """Детальное получение инвестора"""
