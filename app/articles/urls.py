@@ -3,7 +3,6 @@ from django.views.decorators.cache import cache_page
 
 from articles.views import (
     ArticleListCreateView,
-    # ArticleRetrieveView,
     ArticleParamView,
     ArticleVisibleView,
     AllArticleRetrieveView,
@@ -11,7 +10,11 @@ from articles.views import (
 )
 
 urlpatterns = [
-    path("main/articles/", ArticleListCreateView.as_view(), name="list_create_article"),
+    path(
+        "main/articles/",
+        cache_page(20)(ArticleListCreateView.as_view()),
+        name="list_create_article",
+    ),
     path(
         "common/articles/",
         cache_page(20)(ArticleParamView.as_view()),
@@ -19,7 +22,7 @@ urlpatterns = [
     ),
     path(
         "common/articles/<int:pk>/",
-        AllArticleRetrieveView.as_view(),
+        cache_page(20)(AllArticleRetrieveView.as_view()),
         name="retrieve_all_articles",
     ),
     path(
@@ -27,11 +30,6 @@ urlpatterns = [
         StartupAllArticles.as_view(),
         name="all_articles_to_startup_id",
     ),
-    # path(
-    #     "main/articles/<int:pk>/",
-    #     ArticleRetrieveView.as_view(),
-    #     name="retrieve_article",
-    # ),
     path(
         "common/articles/<int:pk>/visible/",
         ArticleVisibleView.as_view(),
