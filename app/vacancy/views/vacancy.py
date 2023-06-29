@@ -53,6 +53,11 @@ class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
     http_method_names = ["get", "put", "delete"]
     permission_classes = (IsAuthenticated, RetrieveVacancyPermission)
 
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return VacancyBaseSerializer
+        return VacancyUpdateSerializer
+
 
 class VacancyVisibleRetrieveView(generics.UpdateAPIView):
     """Изменение видимости вакансии"""

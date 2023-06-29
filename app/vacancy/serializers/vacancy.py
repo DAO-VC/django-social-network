@@ -4,6 +4,7 @@ from django.db.models import Q
 from rest_framework.exceptions import ValidationError
 
 from profiles.models.startup import Startup
+from profiles.serializers.startup import StartupToArticleSerializer
 from vacancy.models.vacancy import Vacancy, Skill, Requirement
 
 
@@ -11,6 +12,7 @@ class VacancyBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор вакансии"""
 
     total_candidates = serializers.SerializerMethodField(read_only=True)
+    company_id = StartupToArticleSerializer()
 
     def get_total_candidates(self, instance):
         return instance.candidate_vacancy.count()
