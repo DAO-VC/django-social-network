@@ -23,6 +23,11 @@ class VacancyListCreateView(generics.ListCreateAPIView):
     serializer_class = VacancyCreateSerializer
     permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
 
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return VacancyCreateSerializer
+        return VacancyBaseSerializer
+
     def get_queryset(self):
         return (
             Vacancy.objects.select_related(
