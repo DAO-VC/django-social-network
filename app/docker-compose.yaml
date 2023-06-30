@@ -82,7 +82,7 @@ services:
     depends_on:
       - worker
       - redis
-    command: [ "poetry", "run", "celery", "-A", "main" ,"flower", "--url_prefix", "/flowerdashboard/"]
+    command: [ "poetry", "run", "celery", "-A", "main" ,"flower", "--url_prefix=/flowerdashboard/"]
 #    command: sh -c "poetry run celery -A main flower --url-prefix=/flowerdashboard"
   #    command: [ "celery", "-A", "main" ,"flower" ]
 #--url_prefix=flower
