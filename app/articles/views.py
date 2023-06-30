@@ -55,19 +55,6 @@ class ArticleListCreateView(generics.ListCreateAPIView):
         return obj
 
 
-# class ArticleRetrieveView(generics.RetrieveUpdateDestroyAPIView):
-#     """Изменение | удаление поста"""
-#
-#     queryset = Article.objects.all()
-#     http_method_names = ["get", "put", "delete"]
-#     permission_classes = (IsAuthenticated, ArticlePermission)
-#
-#     def get_serializer_class(self):
-#         if self.request.method == "GET":
-#             return ArticleBaseSerializer
-#         return ArticleUpdateSerializer
-
-
 class ArticleParamView(generics.ListAPIView):
     """Список всех статей | Поиск по названию поста"""
 
@@ -85,7 +72,6 @@ class ArticleParamView(generics.ListAPIView):
     search_fields = ("name",)
 
     def get_queryset(self):
-        # return Article.objects.filter(is_visible=True)
         return (
             Article.objects.select_related("company_id", "image")
             .prefetch_related("tags")
@@ -119,7 +105,6 @@ class StartupAllArticles(generics.ListAPIView):
     serializer_class = ArticleBaseSerializer
 
     def get_queryset(self):
-        # return Article.objects.filter(company_id=self.kwargs["pk"])
         return (
             Article.objects.select_related("company_id", "image")
             .prefetch_related("tags")

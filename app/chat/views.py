@@ -10,16 +10,22 @@ from chat.serializers import (
 
 
 class StartNewChat(generics.CreateAPIView):
+    """Представление создания нового чата"""
+
     queryset = Room.objects.all()
     serializer_class = CreateRoomSerializer
 
 
 class RetrieveChat(generics.RetrieveDestroyAPIView):
+    """Детальное представление чата"""
+
     queryset = Room.objects.all()
     serializer_class = RoomDetailSerializer
 
 
 class MyChatsList(generics.ListAPIView):
+    """Список всех чатов пользователя"""
+
     serializer_class = RoomListSerializer
 
     def get_queryset(self):

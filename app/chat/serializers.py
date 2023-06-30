@@ -8,12 +8,16 @@ from core.serializers import UserBaseSerializer
 
 
 class MessageSerializer(serializers.ModelSerializer):
+    """Сериализатор сообщений"""
+
     class Meta:
         model = Message
         exclude = ("room",)
 
 
 class RoomDetailSerializer(serializers.ModelSerializer):
+    """Сериализатор комнаты/чаты"""
+
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     messages = MessageSerializer(many=True, read_only=True)
@@ -24,6 +28,8 @@ class RoomDetailSerializer(serializers.ModelSerializer):
 
 
 class CreateRoomSerializer(serializers.ModelSerializer):
+    """Сериализатор создания чата/комнаты"""
+
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     receiver_id = serializers.IntegerField(write_only=True)
@@ -48,6 +54,8 @@ class CreateRoomSerializer(serializers.ModelSerializer):
 
 
 class RoomListSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор комнаты"""
+
     class Meta:
         model = Room
         fields = [
@@ -58,6 +66,8 @@ class RoomListSerializer(serializers.ModelSerializer):
 
 
 class NotificationSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор уведомления"""
+
     class Meta:
         model = ChatNotification
         fields = "__all__"

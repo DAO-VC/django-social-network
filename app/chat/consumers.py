@@ -9,6 +9,9 @@ from core.models import User
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    """Сущность потребителя для реализации realtime чата.
+    room_name - id созданной комнаты"""
+
     async def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = "chat_%s" % self.room_name
@@ -63,6 +66,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):
+    """Сущность потребителя для реализации уведомлений приложения."""
+
     async def connect(self):
         my_id = self.scope["user"].id
         self.room_group_name = f"notify_{my_id}"
@@ -132,13 +137,9 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
 
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
+    """Сущность потребителя для реализации онлайн статуса пользователя."""
+
     async def connect(self):
-        # self.room_name = self.scope['url_route']['kwargs']['chat_id']
-        # self.room_group_name = 'online_%s' % self.room_name
-        # await self.channel_layer.group_add(
-        #     self.room_group_name,
-        #     self.channel_name
-        # )
         self.room_group_name = "user"
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 

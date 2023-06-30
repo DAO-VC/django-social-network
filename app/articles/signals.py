@@ -8,6 +8,7 @@ from vacancy.models.vacancy import Vacancy
 
 @receiver(post_save, sender=Article)
 def send_create_article(sender, instance: Article, created, **kwargs):
+    """Сигнал уведомления на создание статьи. Рассылка членам команды"""
     if created:
         receivers: list = [
             item.candidate_id.professional_id.owner.id
@@ -25,6 +26,7 @@ def send_create_article(sender, instance: Article, created, **kwargs):
 
 @receiver(post_delete, sender=Article)
 def send_delete_article(sender, instance: Article, **kwargs):
+    """Сигнал уведомления на удаление статьи. Рассылка членам команды"""
     receivers: list = [
         item.candidate_id.professional_id.owner.id
         for item in instance.company_id.work_team.all()
@@ -42,6 +44,7 @@ def send_delete_article(sender, instance: Article, **kwargs):
 
 @receiver(post_save, sender=Vacancy)
 def send_create_vacancy(sender, instance: Vacancy, created, **kwargs):
+    """Сигнал уведомления на создание вакансии. Рассылка членам команды"""
     if created:
 
         receivers: list = [
@@ -62,6 +65,7 @@ def send_create_vacancy(sender, instance: Vacancy, created, **kwargs):
 
 @receiver(post_delete, sender=Vacancy)
 def send_delete_vacancy(sender, instance: Vacancy, **kwargs):
+    """Сигнал уведомления на удаление вакансии. Рассылка членам команды"""
     receivers: list = [
         item.candidate_id.professional_id.owner.id
         for item in instance.company_id.work_team.all()

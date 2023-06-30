@@ -9,6 +9,7 @@ from django.dispatch import receiver
 
 @receiver(post_save, sender=User)
 def send_OnlineStatus(sender, instance: User, created, **kwargs):
+    """Сигнал уведомления online статуса пользователя."""
     if not created:
         channel_layer = get_channel_layer()
         email = instance.email

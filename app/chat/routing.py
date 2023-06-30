@@ -3,9 +3,6 @@ from django.urls import path
 from . import consumers
 from .consumers import NotificationConsumer, OnlineStatusConsumer
 
-# websocket_urlpatterns = [
-#     path('ws/<str:room_id>/', consumers.ChatConsumer.as_asgi()),
-# ]
 websocket_urlpatterns = [
     re_path(r"ws/chat/(?P<room_name>\w+)/$", consumers.ChatConsumer.as_asgi()),
     path("ws/notify/", NotificationConsumer.as_asgi()),

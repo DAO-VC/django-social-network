@@ -5,6 +5,8 @@ from core.models import User
 
 
 class Room(models.Model):
+    """Сущность/модель чат"""
+
     author = models.ForeignKey(
         User, related_name="author_room", on_delete=models.CASCADE
     )
@@ -17,6 +19,8 @@ class Room(models.Model):
 
 
 class Message(models.Model):
+    """Модель сообщения чата"""
+
     author = models.ForeignKey(
         User, related_name="author_messages", on_delete=models.CASCADE
     )
@@ -34,6 +38,8 @@ class Message(models.Model):
 
 
 class ChatNotification(models.Model):
+    """Базовая модель уведомлений приложения"""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reciever")
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="author", null=True

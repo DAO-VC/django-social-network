@@ -9,6 +9,7 @@ from chat.serializers import NotificationSerializer
 
 @receiver(post_save, sender=ChatNotification)
 def send_notification(sender, instance: ChatNotification, created, **kwargs):
+    """Базовый сигнал модели Уведомление"""
     if created:
         channel_layer = get_channel_layer()
         notification_obj = ChatNotification.objects.filter(
@@ -30,6 +31,7 @@ def send_notification(sender, instance: ChatNotification, created, **kwargs):
 
 @receiver(post_save, sender=Room)
 def send_start_room_notification(sender, instance: Room, created, **kwargs):
+    """ "Сигнал создания нового чата"""
     if created:
         author = instance.author
         receiver = instance.receiver
@@ -42,6 +44,7 @@ def send_start_room_notification(sender, instance: Room, created, **kwargs):
 
 @receiver(post_delete, sender=Room)
 def send_close_room_notification(sender, instance: Room, **kwargs):
+    """Сигнал закрытия чата"""
     author = instance.author
     receiver = instance.receiver
     ChatNotification.objects.create(
