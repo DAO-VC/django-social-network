@@ -8,6 +8,7 @@
       "is_superuser": "True",
       "is_active": "True",
       "is_staff": "True",
+      "online":  "True",
       "is_onboarding": "False"
     }
   },
@@ -20,6 +21,7 @@
       "is_superuser": "False",
       "is_active": "True",
       "is_staff": "False",
+      "online":  "True",
       "is_onboarding": "False",
       "profile": "startup"
     }
@@ -33,6 +35,7 @@
       "is_superuser": "False",
       "is_active": "True",
       "is_staff": "False",
+      "online":  "True",
       "is_onboarding": "False",
       "profile": "investor"
     }
@@ -46,6 +49,7 @@
       "is_superuser": "False",
       "is_active": "True",
       "is_staff": "False",
+      "online":  "True",
       "is_onboarding": "False",
       "profile": "professional"
     }

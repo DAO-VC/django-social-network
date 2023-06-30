@@ -31,6 +31,7 @@ urlpatterns = [
     path("", include("vacancy.urls")),
     path("", include("articles.urls")),
     path("", include("offer.urls")),
+    path("", include("chat.urls")),
 ]
 
 if settings.DEBUG:

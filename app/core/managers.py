@@ -15,6 +15,7 @@ class UserManager(BaseUserManager):
         user.is_active = False
         user.is_onboarding = False
         user.phone = phone
+        user.online = False
         user.set_password(password)
         user.save(using=self._db)
 
@@ -28,6 +29,7 @@ class UserManager(BaseUserManager):
         user.is_active = True
         user.is_superuser = True
         user.is_staff = True
+        user.online = False
         user.set_password(user.password)
         user.save(using=self._db)
 

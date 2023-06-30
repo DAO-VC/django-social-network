@@ -29,12 +29,12 @@ SECRET_KEY = "django-insecure-rvk_2*h&u(3lw-ip8p-3q(s4wb85ooil5(lig&&f4)e@^v33t)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = (
-    os.environ.get("ALLOWED_HOSTS").split(",")
-    if os.environ.get("ALLOWED_HOSTS")
-    else []
-)
-
+# ALLOWED_HOSTS = (
+#     os.environ.get("ALLOWED_HOSTS").split(",")
+#     if os.environ.get("ALLOWED_HOSTS")
+#     else []
+# )
+ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Внешние модули
+    "channels",
     "rest_framework",
     "drf_spectacular",
     "django_extensions",
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     "vacancy",
     "articles",
     "offer",
+    "chat",
 ]
 
 MIDDLEWARE = [
@@ -228,6 +230,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
 }
 
+ASGI_APPLICATION = "main.asgi.application"
+
 # Celery and Redis settings
 REDIS_HOST = "0.0.0.0"
 REDIS_PORT = "6379"
@@ -249,4 +253,13 @@ CACHES = {
         },
         "KEY_PREFIX": "my_cache_key_prefix",
     }
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
 }
