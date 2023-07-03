@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.urls import reverse
 
 from profiles.models.investor import Investor
 from profiles.models.other_models import (
@@ -10,6 +11,7 @@ from profiles.models.other_models import (
 )
 from profiles.models.professional import Professional
 from profiles.models.startup import Startup
+from django.utils.safestring import mark_safe
 
 # admin.site.register(Startup)
 admin.site.register(Investor)
@@ -23,10 +25,17 @@ admin.site.register(SaleRegions)
 
 @admin.register(Startup)
 class StartupAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "owner")
+    list_display = ("id", "name", "owner_link")
     search_fields = (
         "name",
         "id",
     )
     list_filter = ("name",)
     ordering = ("id",)
+
+    def owner_link(self, startup: Startup):
+        url = reverse("admin:core_user_change", args=[startup.owner.id])
+        link = '<a href="%s">%s</a>' % (url, startup.owner.id)
+        return mark_safe(link)
+
+    owner_link.short_description = "Owner"

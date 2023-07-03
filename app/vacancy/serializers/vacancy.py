@@ -14,6 +14,9 @@ class VacancyBaseSerializer(serializers.ModelSerializer):
     total_candidates = serializers.SerializerMethodField(read_only=True)
     company_id = StartupToArticleSerializer()
     skills = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
+    requirements = serializers.SlugRelatedField(
+        many=True, slug_field="title", read_only=True
+    )
 
     def get_total_candidates(self, instance):
         return instance.candidate_vacancy.count()
