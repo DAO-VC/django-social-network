@@ -130,7 +130,7 @@ class VacancyVisibleSerializer(serializers.ModelSerializer):
             "position",
             "salary",
             "salary_type",
-            "work_schedude",
+            "work_schedule",
             "place",
             "skills",
             "description",

@@ -8,7 +8,7 @@ from profiles.models.other_models import Industries
 class Professional(models.Model):
     """Модель сущности профессионал"""
 
-    owner = models.ForeignKey(User, models.CASCADE)
+    owner = models.ForeignKey(User, models.CASCADE, verbose_name="Владелец")
     name = models.CharField("Имя", max_length=32)
     lastName = models.CharField("Фамилия", max_length=32)
     email = models.EmailField("Email адрес")

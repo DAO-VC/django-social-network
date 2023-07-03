@@ -9,8 +9,14 @@ class Image(models.Model):
         upload_to="images/",
     )
 
+    def __str__(self):
+        return f"{self.id} - Изображение"
+
 
 class File(models.Model):
     """Модель файла"""
 
     pdf = models.FileField(upload_to="files/")
+
+    def __str__(self):
+        return f"{self.id} - Документ"

@@ -5,8 +5,10 @@ from vacancy.models.candidate import Candidate
 class WorkTeam(models.Model):
     """Сущность - участник команды стартапа"""
 
-    candidate_id = models.ForeignKey(Candidate, models.CASCADE)
-    startup_id = models.ForeignKey("profiles.Startup", models.CASCADE)
+    candidate_id = models.ForeignKey(Candidate, models.CASCADE, verbose_name="Кандидат")
+    startup_id = models.ForeignKey(
+        "profiles.Startup", models.CASCADE, verbose_name="Стартап"
+    )
     articles_and_news_management = models.BooleanField(
         verbose_name="Изменение статей и новостей", default=False
     )
@@ -26,3 +28,7 @@ class WorkTeam(models.Model):
             "startup_id",
             "candidate_id",
         )
+
+    class Meta:
+        verbose_name = "Член команды"
+        verbose_name_plural = "Члены команды"

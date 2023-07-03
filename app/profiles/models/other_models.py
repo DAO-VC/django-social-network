@@ -12,7 +12,7 @@ class Industries(models.Model):
     type = models.CharField(choices=IndustriesType.choices, max_length=25)
 
     def __str__(self):
-        return self.title
+        return f"{self.id} -  {self.title}"
 
 
 class Achievements(models.Model):
@@ -25,12 +25,18 @@ class Achievements(models.Model):
     awards = models.TextField(verbose_name="Награды", null=True, blank=True)
     other = models.TextField(verbose_name="Другое", null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.id} - Достижение"
+
 
 class Purpose(models.Model):
     """Модель цель"""
 
     problem = models.TextField(verbose_name="Акселератор", null=True, blank=True)
     decision = models.TextField(verbose_name="Конференция", null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.id} - Цель"
 
 
 class Links(models.Model):
@@ -47,6 +53,9 @@ class Links(models.Model):
     linkedin = models.TextField("Линкедин", null=True, blank=True)
     medium = models.TextField("Медиум", null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.id} - Urls"
+
 
 class SaleRegions(models.Model):
     """Модель регионы продажи"""
@@ -54,7 +63,7 @@ class SaleRegions(models.Model):
     name = models.CharField("Название", max_length=32)
 
     def __str__(self):
-        return self.name
+        return f"{self.id} - {self.name}"
 
 
 class BusinessType(models.Model):
@@ -65,4 +74,4 @@ class BusinessType(models.Model):
     description = models.TextField("Описание")
 
     def __str__(self):
-        return self.title
+        return f"{self.id} - {self.title}"
