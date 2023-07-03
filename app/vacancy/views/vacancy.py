@@ -51,7 +51,7 @@ class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancyUpdateSerializer
     http_method_names = ["get", "put", "delete"]
-    permission_classes = (IsAuthenticated, RetrieveVacancyPermission)
+    permission_classes = (RetrieveVacancyPermission,)
 
     def get_serializer_class(self):
         if self.request.method == "GET":
