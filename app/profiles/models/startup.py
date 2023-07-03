@@ -39,10 +39,12 @@ class Startup(models.Model):
         ENTERING_THE_MARKET = "enteringTheMarket", "Выход на рынок"
         GROWTH_AND_SCALING = "growthAndScaling", "Рост и масштабирование"
 
-    owner = models.ForeignKey(User, models.CASCADE)
+    owner = models.ForeignKey(User, models.CASCADE, verbose_name="Владелец")
     name = models.CharField("Название", max_length=32)
     url = models.TextField("Урл", null=True, blank=True)
-    foundation_year = models.IntegerField(null=True, blank=True)
+    foundation_year = models.IntegerField(
+        null=True, blank=True, verbose_name="Год основания"
+    )
     short_description = models.TextField(verbose_name="Описание", null=True, blank=True)
     logo = models.ForeignKey(
         Image,
@@ -141,3 +143,6 @@ class Startup(models.Model):
     class Meta:
         verbose_name = "Стартап"
         verbose_name_plural = "Стартапы"
+
+    def __str__(self):
+        return f"{self.id} - {self.name}"

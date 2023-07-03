@@ -11,7 +11,7 @@ from profiles.models.other_models import (
 from profiles.models.professional import Professional
 from profiles.models.startup import Startup
 
-admin.site.register(Startup)
+# admin.site.register(Startup)
 admin.site.register(Investor)
 admin.site.register(Professional)
 admin.site.register(Industries)
@@ -19,3 +19,14 @@ admin.site.register(Achievements)
 admin.site.register(Purpose)
 admin.site.register(Links)
 admin.site.register(SaleRegions)
+
+
+@admin.register(Startup)
+class StartupAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "owner")
+    search_fields = (
+        "name",
+        "id",
+    )
+    list_filter = ("name",)
+    ordering = ("id",)
