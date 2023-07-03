@@ -13,24 +13,40 @@ from profiles.models.professional import Professional
 from profiles.models.startup import Startup
 from django.utils.safestring import mark_safe
 
-# admin.site.register(Startup)
-admin.site.register(Investor)
-# admin.site.register(Professional)
-admin.site.register(Industries)
-admin.site.register(Achievements)
-admin.site.register(Purpose)
-admin.site.register(Links)
-admin.site.register(SaleRegions)
+
+@admin.register(Industries)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "type")
+
+
+@admin.register(Achievements)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ("id",)
+
+
+@admin.register(Links)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ("id",)
+
+
+@admin.register(SaleRegions)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+
+
+@admin.register(Purpose)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ("id",)
 
 
 @admin.register(Startup)
 class StartupAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "owner_link")
     search_fields = (
-        "name",
+        "name__startswith",
         "id",
     )
-    list_filter = ("name",)
+    # list_filter = ("name", "owner")
     ordering = ("id",)
     filter_horizontal = ("work_team", "business_type", "regions", "industries")
 
@@ -39,18 +55,18 @@ class StartupAdmin(admin.ModelAdmin):
         link = '<a href="%s">%s</a>' % (url, startup.owner.id)
         return mark_safe(link)
 
-    owner_link.short_description = "Owner"
+    owner_link.short_description = "Владелец"
 
 
 @admin.register(Professional)
 class ProfessionalAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "email", "owner_link")
     search_fields = (
-        "name",
+        "name__startswith",
         "id",
-        "email",
+        "email__startswith",
     )
-    list_filter = ("name",)
+    # list_filter = ['name', ('owner', admin.RelatedOnlyFieldListFilter)]
     ordering = ("id",)
     filter_horizontal = ("skills",)
 
@@ -59,4 +75,24 @@ class ProfessionalAdmin(admin.ModelAdmin):
         link = '<a href="%s">%s</a>' % (url, professional.owner.id)
         return mark_safe(link)
 
-    owner_link.short_description = "Owner"
+    owner_link.short_description = "Владелец"
+
+
+@admin.register(Investor)
+class InvestorAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "email", "owner_link")
+    search_fields = (
+        "name__startswith",
+        "id",
+        "email__startswith",
+    )
+    # list_filter = ['name', ('owner', admin.RelatedOnlyFieldListFilter)]
+    ordering = ("id",)
+    filter_horizontal = ("interest",)
+
+    def owner_link(self, investor: Investor):
+        url = reverse("admin:core_user_change", args=[investor.owner.id])
+        link = '<a href="%s">%s</a>' % (url, investor.owner.id)
+        return mark_safe(link)
+
+    owner_link.short_description = "Владелец"

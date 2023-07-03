@@ -22,7 +22,9 @@ class Vacancy(models.Model):
         REMOTE = "remote", "дистанционная работа"
         MIXED = "mixed", "смешанный тип работы"
 
-    company_id = models.ForeignKey("profiles.Startup", models.CASCADE)
+    company_id = models.ForeignKey(
+        "profiles.Startup", models.CASCADE, verbose_name="Владелец"
+    )
     position = models.CharField("Позиция", max_length=32)
     salary = models.IntegerField(verbose_name="Зарплата", null=True, blank=True)
     salary_type = models.CharField(
@@ -34,13 +36,18 @@ class Vacancy(models.Model):
     place = models.CharField(
         "Рабочая локация", choices=WorkPlace.choices, max_length=32
     )
-    skills = models.ManyToManyField("Skill", related_name="vacancy_skills", blank=True)
+    skills = models.ManyToManyField(
+        "Skill", related_name="vacancy_skills", blank=True, verbose_name="Навыки"
+    )
 
     description = models.TextField("Описание")
     requirements = models.ManyToManyField(
-        "Requirement", related_name="vacancy_requirements", blank=True
+        "Requirement",
+        related_name="vacancy_requirements",
+        blank=True,
+        verbose_name="Требования",
     )
-    is_visible = models.BooleanField(verbose_name="Активен")
+    is_visible = models.BooleanField(verbose_name="Активна")
     created_at = CreationDateTimeField(verbose_name="Дата создания")
 
     class Meta:
@@ -48,19 +55,36 @@ class Vacancy(models.Model):
         indexes = [
             models.Index(fields=["-created_at"]),
         ]
+        verbose_name = "Вакансия"
+        verbose_name_plural = "Вакансии"
+
+    def __str__(self):
+        return f"{self.id} - Вакансия"
 
 
 class Skill(models.Model):
+    """Модель умения"""
+
     title = models.CharField("Заголовок", max_length=54)
 
     def __str__(self):
-        return self.title
+        return f"{self.id} - {self.title}"
+
+    class Meta:
+        verbose_name = "Умение"
+        verbose_name_plural = "Умения"
 
 
 class Requirement(models.Model):
+    """Модель требования"""
+
     title = models.TextField(
         "Заголовок",
     )
 
     def __str__(self):
-        return self.title
+        return f"{self.id} - {self.title}"
+
+    class Meta:
+        verbose_name = "Требование"
+        verbose_name_plural = "Требования"

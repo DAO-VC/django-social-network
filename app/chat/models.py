@@ -8,30 +8,52 @@ class Room(models.Model):
     """Сущность/модель чат"""
 
     author = models.ForeignKey(
-        User, related_name="author_room", on_delete=models.CASCADE
+        User, related_name="author_room", on_delete=models.CASCADE, verbose_name="Автор"
     )
     receiver = models.ForeignKey(
-        User, related_name="receiver_room", on_delete=models.CASCADE
+        User,
+        related_name="receiver_room",
+        on_delete=models.CASCADE,
+        verbose_name="Участник чата",
     )
     created_at = CreationDateTimeField(
         verbose_name="Дата создания",
     )
+
+    class Meta:
+        verbose_name = "Чат/Комната"
+        verbose_name_plural = "Чаты/Комнаты"
+
+    def __str__(self):
+        return f"{self.id} - Чат"
 
 
 class Message(models.Model):
     """Модель сообщения чата"""
 
     author = models.ForeignKey(
-        User, related_name="author_messages", on_delete=models.CASCADE
+        User,
+        related_name="author_messages",
+        on_delete=models.CASCADE,
+        verbose_name="Автор",
     )
-    room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
-    text = models.CharField(max_length=200, blank=True, null=True)
+    room = models.ForeignKey(
+        Room,
+        related_name="messages",
+        on_delete=models.CASCADE,
+        verbose_name="Чат/комната",
+    )
+    text = models.CharField(
+        max_length=200, blank=True, null=True, verbose_name="Текст сообщения"
+    )
     created_at = CreationDateTimeField(
         verbose_name="Дата создания",
     )
 
     class Meta:
         ordering = ("-created_at",)
+        verbose_name = "Сообщение"
+        verbose_name_plural = "Сообщения"
 
     def __str__(self):
         return self.text + " " + str(self.created_at)
@@ -40,12 +62,25 @@ class Message(models.Model):
 class ChatNotification(models.Model):
     """Базовая модель уведомлений приложения"""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reciever")
-    author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="author", null=True
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="reciever",
+        verbose_name="Получатель уведомления",
     )
-    text = models.TextField(null=True)
-    is_seen = models.BooleanField(default=False)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="author",
+        null=True,
+        verbose_name="Автор(опционально)",
+    )
+    text = models.TextField(null=True, verbose_name="Текст уведомления")
+    is_seen = models.BooleanField(default=False, verbose_name="Просмотрено")
+
+    class Meta:
+        verbose_name = "Уведомление"
+        verbose_name_plural = "Уведомления"
 
     def __str__(self) -> str:
         return self.user.username

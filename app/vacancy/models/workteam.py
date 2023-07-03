@@ -28,7 +28,8 @@ class WorkTeam(models.Model):
             "startup_id",
             "candidate_id",
         )
-
-    class Meta:
         verbose_name = "Член команды"
         verbose_name_plural = "Члены команды"
+
+    def __str__(self):
+        return f"{self.id} - Член команды"

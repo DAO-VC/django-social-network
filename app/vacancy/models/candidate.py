@@ -18,10 +18,16 @@ class Candidate(models.Model):
         IN_THE_TEAM = "intheteam", "В команде"
 
     professional_id = models.ForeignKey(
-        Professional, models.CASCADE, related_name="candidate_professional"
+        Professional,
+        models.CASCADE,
+        related_name="candidate_professional",
+        verbose_name="Профессионал",
     )
     vacancy_id = models.ForeignKey(
-        Vacancy, models.CASCADE, related_name="candidate_vacancy"
+        Vacancy,
+        models.CASCADE,
+        related_name="candidate_vacancy",
+        verbose_name="Вакансия",
     )
     about = models.TextField("Обо мне")
     base_status = models.CharField(
@@ -42,6 +48,11 @@ class Candidate(models.Model):
             "professional_id",
             "vacancy_id",
         )
+        verbose_name = "Кандидат"
+        verbose_name_plural = "Кандидаты"
+
+    def __str__(self):
+        return f"{self.id} - Кандидат"
 
     def change_favorite(self):
         if self.is_favorite:

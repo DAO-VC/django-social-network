@@ -9,7 +9,7 @@ from profiles.models.startup import Startup
 class Offer(models.Model):
     """Сущность оффера инвестора"""
 
-    investor_id = models.ForeignKey(Investor, models.CASCADE)
+    investor_id = models.ForeignKey(Investor, models.CASCADE, verbose_name="Владелец")
     amount = models.IntegerField(verbose_name="Кол-во инвестиций")
     industries = models.ManyToManyField(
         Industries,
@@ -22,8 +22,14 @@ class Offer(models.Model):
     # TODO: article?
     created_at = CreationDateTimeField(verbose_name="Дата создания")
 
+    class Meta:
+        verbose_name = "Офер"
+        verbose_name_plural = "Оферы"
+
 
 class ConfirmedOffer(models.Model):
+    """Сущность подтвержденного офера"""
+
     startup_id = models.ForeignKey(Startup, models.CASCADE)
     investor_id = models.ForeignKey(Investor, models.CASCADE)
 
@@ -32,3 +38,5 @@ class ConfirmedOffer(models.Model):
             "startup_id",
             "investor_id",
         )
+        verbose_name = "Подтвержденный офер"
+        verbose_name_plural = "Подтвержденные оферы"

@@ -8,7 +8,7 @@ from profiles.models.other_models import Industries
 class Investor(models.Model):
     """Модель сущности инвестор"""
 
-    owner = models.ForeignKey(User, models.CASCADE)
+    owner = models.ForeignKey(User, models.CASCADE, verbose_name="Владелец")
     name = models.CharField("Имя", max_length=32)
     lastName = models.CharField("Фамилия", max_length=32)
     email = models.EmailField("Email адрес")
@@ -37,4 +37,4 @@ class Investor(models.Model):
         verbose_name_plural = "Инвесторы"
 
     def __str__(self):
-        return self.name
+        return f"{self.id} - {self.name}"

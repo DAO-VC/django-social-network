@@ -8,7 +8,7 @@ class Article(models.Model):
     """Сущность статьи стартапа"""
 
     company_id = models.ForeignKey(
-        Startup, models.CASCADE, related_name="article_company"
+        Startup, models.CASCADE, related_name="article_company", verbose_name="Владелец"
     )
     name = models.CharField("Заголовок", max_length=32)
     description = models.TextField("Описание", null=True, blank=True)
@@ -25,9 +25,6 @@ class Article(models.Model):
     created_at = CreationDateTimeField(verbose_name="Дата создания")
     tags = models.ManyToManyField("Tag", related_name="article_tags", blank=True)
 
-    # TODO заменить поле на CreationDateTimeField из django-extensions
-    # TODO : tags ??
-    # TODO: обязательные поля
     class Meta:
         ordering = ["-created_at"]
         indexes = [
@@ -35,8 +32,11 @@ class Article(models.Model):
             models.Index(fields=["-view_count"]),
         ]
 
+        verbose_name = "Статья"
+        verbose_name_plural = "Статьи"
+
     def __str__(self):
-        return self.name
+        return f"{self.id} - {self.name}"
 
     def change_visible(self):
         if self.is_visible:
@@ -46,7 +46,13 @@ class Article(models.Model):
 
 
 class Tag(models.Model):
+    """Сущность тега статьи"""
+
     title = models.CharField("Заголовок", max_length=32)
 
     def __str__(self):
-        return self.title
+        return f"{self.id} - {self.title}"
+
+    class Meta:
+        verbose_name = "Тег"
+        verbose_name_plural = "Теги"

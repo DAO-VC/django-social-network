@@ -28,6 +28,7 @@ class User(AbstractUser):
         help_text=_(
             "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
         ),
+        blank=True,
     )
     is_onboarding = models.BooleanField(
         verbose_name="Онбоардинг", null=True, blank=True
@@ -44,4 +45,4 @@ class User(AbstractUser):
         verbose_name_plural = "Пользователи"
 
     def __str__(self):
-        return self.email
+        return f"{self.id} - {self.email}"
