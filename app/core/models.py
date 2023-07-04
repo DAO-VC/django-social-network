@@ -38,7 +38,7 @@ class User(AbstractUser):
     permissions = models.ForeignKey(
         "vacancy.WorkTeam", models.SET_NULL, null=True, blank=True
     )
-    online = models.BooleanField(verbose_name="Онлайн статус")
+    online = models.BooleanField(default=False, verbose_name="Онлайн статус")
 
     class Meta:
         verbose_name = "Пользователь"
