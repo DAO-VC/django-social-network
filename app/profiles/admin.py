@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 
+from image.models import Image
 from profiles.models.investor import Investor
 from profiles.models.other_models import (
     Industries,
@@ -15,33 +16,33 @@ from django.utils.safestring import mark_safe
 
 
 @admin.register(Industries)
-class SkillAdmin(admin.ModelAdmin):
+class IndustriesAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "type")
 
 
 @admin.register(Achievements)
-class SkillAdmin(admin.ModelAdmin):
+class AchievementsAdmin(admin.ModelAdmin):
     list_display = ("id",)
 
 
 @admin.register(Links)
-class SkillAdmin(admin.ModelAdmin):
+class LinksAdmin(admin.ModelAdmin):
     list_display = ("id",)
 
 
 @admin.register(SaleRegions)
-class SkillAdmin(admin.ModelAdmin):
+class SaleRegionsAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
 
 
-@admin.register(Purpose)
-class SkillAdmin(admin.ModelAdmin):
-    list_display = ("id",)
+# @admin.register(Purpose)
+# class PurposeAdmin(admin.ModelAdmin):
+#     list_display = ("id",)
 
 
 @admin.register(Startup)
 class StartupAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "owner_link")
+    list_display = ("id", "name", "owner_link", "image_link")
     search_fields = (
         "name__startswith",
         "id",
@@ -50,12 +51,47 @@ class StartupAdmin(admin.ModelAdmin):
     ordering = ("id",)
     filter_horizontal = ("work_team", "business_type", "regions", "industries")
 
+    fieldsets = (
+        (
+            "User",
+            {
+                "fields": (
+                    "name",
+                    "image_link",
+                ),
+            },
+        ),
+        (
+            "Additional info",
+            {
+                "fields": ("work_team",),
+            },
+        ),
+    )
+    # readonly_fields = ("image_link",)
     def owner_link(self, startup: Startup):
         url = reverse("admin:core_user_change", args=[startup.owner.id])
         link = '<a href="%s">%s</a>' % (url, startup.owner.id)
         return mark_safe(link)
 
     owner_link.short_description = "Владелец"
+
+    def image_link(self, startup: Startup):
+        try:
+            if Image.objects.filter(id=startup.logo.id).exists():
+                subject_object = Image.objects.get(id=startup.logo.id)
+                return mark_safe(
+                    '<img src="%s" style="width: 90px; height:90px;" />'
+                    % subject_object.image.url
+                )
+        except Exception:
+            return "No Image"
+        # else:
+        #     return "No Image"
+
+    # fieldsets = cls. + (
+    #         ('Extra Fields', {'fields': ('image_link',)}),
+    #     )
 
 
 @admin.register(Professional)

@@ -17,7 +17,7 @@ class StartupBaseSerializer(serializers.ModelSerializer):
     """Сериализатор создания стартапа"""
 
     achievements = AchievementSerializer()
-    purpose = PurposeSerializer()
+    # purpose = PurposeSerializer()
     social_links = LinkSerializer()
     owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
@@ -27,7 +27,7 @@ class StartupBaseSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         achievement = validated_data.pop("achievements")
-        purpose = validated_data.pop("purpose")
+        # purpose = validated_data.pop("purpose")
         social_links = validated_data.pop("social_links")
         industries = validated_data.pop("industries")
         if len(industries) < 1:
@@ -40,14 +40,14 @@ class StartupBaseSerializer(serializers.ModelSerializer):
             raise ValidationError("Минимум тип")
 
         achievement_obj = Achievements.objects.create(**achievement)
-        purpose_obj = Purpose.objects.create(**purpose)
+        # purpose_obj = Purpose.objects.create(**purpose)
         social_links_obj = Links.objects.create(**social_links)
         owner = self.context["request"].user
         with transaction.atomic():
             startup = Startup.objects.create(
                 **validated_data,
                 achievements=achievement_obj,
-                purpose=purpose_obj,
+                # purpose=purpose_obj,
                 social_links=social_links_obj,
                 owner=owner,
             )
@@ -65,7 +65,7 @@ class StartupUpdateSerializer(serializers.ModelSerializer):
     """Сериализатор изменения стартапа"""
 
     achievements = AchievementSerializer()
-    purpose = PurposeSerializer()
+    # purpose = PurposeSerializer()
     social_links = LinkSerializer()
     owner = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
@@ -82,11 +82,11 @@ class StartupUpdateSerializer(serializers.ModelSerializer):
             achievement_data = validated_data.pop("achievements")
             achievement_serializer.update(achievement_instance, achievement_data)
 
-        if "purpose" in validated_data:
-            purpose_serializer = self.fields["purpose"]
-            purpose_instance = instance.purpose
-            purpose_data = validated_data.pop("purpose")
-            purpose_serializer.update(purpose_instance, purpose_data)
+        # if "purpose" in validated_data:
+        #     purpose_serializer = self.fields["purpose"]
+        #     purpose_instance = instance.purpose
+        #     purpose_data = validated_data.pop("purpose")
+        #     purpose_serializer.update(purpose_instance, purpose_data)
 
         if "social_links" in validated_data:
             social_links_serializer = self.fields["social_links"]
@@ -140,7 +140,7 @@ class StartupSerializer(serializers.ModelSerializer):
     background = ImageSerializer(read_only=True)
     pitch_presentation = FileSerializer(read_only=True)
     social_links = LinkSerializer()
-    purpose = PurposeSerializer()
+    # purpose = PurposeSerializer()
     achievements = AchievementSerializer()
     registration_country = SaleRegionSerializer(read_only=True)
 

@@ -103,17 +103,17 @@ class Startup(models.Model):
     development_stage = models.CharField(
         "Стадия разработки", choices=CurrentStage.choices, max_length=32
     )
-    purpose = models.ForeignKey(
-        Purpose, models.SET_NULL, verbose_name="Цель", null=True, blank=True
-    )
-    business_model = models.CharField(
-        "Бизнес модель",
-        choices=BusinessTypes.choices,
-        max_length=25,
-        null=True,
-        blank=True,
-    )
-    market_size = models.TextField(verbose_name="Размер рынка", null=True, blank=True)
+    # purpose = models.ForeignKey(
+    #     Purpose, models.SET_NULL, verbose_name="Цель", null=True, blank=True
+    # )
+    # business_model = models.CharField(
+    #     "Бизнес модель",
+    #     choices=BusinessTypes.choices,
+    #     max_length=25,
+    #     null=True,
+    #     blank=True,
+    # )
+    # market_size = models.TextField(verbose_name="Размер рынка", null=True, blank=True)
     pitch_presentation = models.ForeignKey(
         File, models.SET_NULL, verbose_name="Файл презентации", null=True, blank=True
     )
