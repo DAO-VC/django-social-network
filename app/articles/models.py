@@ -48,11 +48,11 @@ class Article(models.Model):
 class Tag(models.Model):
     """Сущность тега статьи"""
 
-    title = models.CharField("Заголовок", max_length=32)
+    title = models.CharField("Заголовок", max_length=52)
 
     def __str__(self):
         return f"{self.id} - {self.title}"
 
     class Meta:
-        verbose_name = "Тег"
-        verbose_name_plural = "Теги"
+        verbose_name = "Scope of Interest"
+        verbose_name_plural = "Scope of Interests"

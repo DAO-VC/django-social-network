@@ -5,21 +5,29 @@ from image.models import Image, File
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
+    def has_module_permission(self, request):
+        return False
+
     def image_tag(self, obj: Image):
         return mark_safe(
-            '<img src="%s" style="width: 45px; height:45px;" />' % obj.image.url
+            '<img src="%s" style="width: 250px; height:250px;" />' % obj.image.url
         )
 
     image_tag.short_description = "Image"
     list_display = ("id", "image", "image_tag")
+    readonly_fields = ("image_tag",)
 
 
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
+    def has_module_permission(self, request):
+        return False
+
     def file_tag(self, obj: File):
         return mark_safe(
-            '<img src="%s" style="width: 45px; height:45px;" />' % obj.pdf.url
+            '<img src="%s" style="width: 250px; height:250px;" />' % obj.pdf.url
         )
 
     file_tag.short_description = "Pdf"
     list_display = ("id", "pdf", "file_tag")
+    readonly_fields = ("file_tag",)

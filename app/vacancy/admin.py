@@ -11,10 +11,16 @@ from vacancy.models.workteam import WorkTeam
 class SkillAdmin(admin.ModelAdmin):
     list_display = ("id", "title")
 
+    def has_module_permission(self, request):
+        return False
+
 
 @admin.register(Requirement)
 class SkillAdmin(admin.ModelAdmin):
     list_display = ("id", "title")
+
+    def has_module_permission(self, request):
+        return False
 
 
 @admin.register(Vacancy)

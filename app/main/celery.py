@@ -11,6 +11,7 @@ app.conf.beat_schedule = {
     "tags_clean": {
         "task": "articles.tasks.tags_cleaner",
         "schedule": crontab(hour=7, minute=30, day_of_week=1),
+        # "schedule": crontab(minute="*/1"),
     },
     "images_clean": {
         "task": "articles.tasks.full_image_clean",

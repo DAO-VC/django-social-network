@@ -23,10 +23,16 @@ class IndustriesAdmin(admin.ModelAdmin):
 class AchievementsAdmin(admin.ModelAdmin):
     list_display = ("id",)
 
+    def has_module_permission(self, request):
+        return False
+
 
 @admin.register(Links)
 class LinksAdmin(admin.ModelAdmin):
     list_display = ("id",)
+
+    def has_module_permission(self, request):
+        return False
 
 
 @admin.register(SaleRegions)
@@ -41,7 +47,11 @@ class SaleRegionsAdmin(admin.ModelAdmin):
 
 @admin.register(Startup)
 class StartupAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "owner_link", "image_link")
+    list_display = (
+        "id",
+        "name",
+        "owner_link",
+    )
     search_fields = (
         "name__startswith",
         "id",
@@ -50,23 +60,6 @@ class StartupAdmin(admin.ModelAdmin):
     ordering = ("id",)
     filter_horizontal = ("work_team", "business_type", "regions", "industries")
 
-    # fieldsets = (
-    #     (
-    #         "User",
-    #         {
-    #             "fields": (
-    #                 "name",
-    #                 "image_link",
-    #             ),
-    #         },
-    #     ),
-    #     (
-    #         "Additional info",
-    #         {
-    #             "fields": ("work_team",),
-    #         },
-    #     ),
-    # )
     # readonly_fields = ("image_link",)
     def owner_link(self, startup: Startup):
         url = reverse("admin:core_user_change", args=[startup.owner.id])
@@ -75,22 +68,16 @@ class StartupAdmin(admin.ModelAdmin):
 
     owner_link.short_description = "Владелец"
 
-    def image_link(self, startup: Startup):
-        try:
-            if Image.objects.filter(id=startup.logo.id).exists():
-                subject_object = Image.objects.get(id=startup.logo.id)
-                return mark_safe(
-                    '<img src="%s" style="width: 90px; height:90px;" />'
-                    % subject_object.image.url
-                )
-        except Exception:
-            return "No Image"
-        # else:
-        #     return "No Image"
-
-    # fieldsets = cls. + (
-    #         ('Extra Fields', {'fields': ('image_link',)}),
-    #     )
+    # def image_link(self, startup: Startup):
+    #     try:
+    #         if Image.objects.filter(id=startup.logo.id).exists():
+    #             subject_object = Image.objects.get(id=startup.logo.id)
+    #             return mark_safe(
+    #                 '<img src="%s" style="width: 90px; height:90px;" />'
+    #                 % subject_object.image.url
+    #             )
+    #     except Exception:
+    #         return "No Image"
 
 
 @admin.register(Professional)

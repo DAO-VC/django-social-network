@@ -13,6 +13,7 @@ class TagsCleaner(object):
         all_using_tags: list = [
             item.id for obj in Article.objects.all() for item in obj.tags.all()
         ]
+        all_using_tags.extend([i for i in range(1, 36)])
         result: set = set(all_tags).difference(set(all_using_tags))
         for item in result:
             Tag.objects.get(id=item).delete()
