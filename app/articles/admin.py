@@ -14,6 +14,11 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(ArticleAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields["image"].disabled = True
+        return form
+
     list_display = ("id", "name", "company_link", "is_visible", "created_at")
     search_fields = (
         "name__startswith",

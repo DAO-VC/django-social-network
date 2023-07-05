@@ -1,7 +1,5 @@
 from django.contrib import admin
 from django.urls import reverse
-
-from image.models import Image
 from profiles.models.investor import Investor
 from profiles.models.other_models import (
     Industries,
@@ -40,13 +38,15 @@ class SaleRegionsAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
 
 
-# @admin.register(Purpose)
-# class PurposeAdmin(admin.ModelAdmin):
-#     list_display = ("id",)
-
-
 @admin.register(Startup)
 class StartupAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(StartupAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields["logo"].disabled = True
+        form.base_fields["background"].disabled = True
+        form.base_fields["pitch_presentation"].disabled = True
+        return form
+
     list_display = (
         "id",
         "name",
@@ -56,11 +56,9 @@ class StartupAdmin(admin.ModelAdmin):
         "name__startswith",
         "id",
     )
-    # list_filter = ("name", "owner")
     ordering = ("id",)
     filter_horizontal = ("work_team", "business_type", "regions", "industries")
 
-    # readonly_fields = ("image_link",)
     def owner_link(self, startup: Startup):
         url = reverse("admin:core_user_change", args=[startup.owner.id])
         link = '<a href="%s">%s</a>' % (url, startup.owner.id)
@@ -82,6 +80,12 @@ class StartupAdmin(admin.ModelAdmin):
 
 @admin.register(Professional)
 class ProfessionalAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(ProfessionalAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields["photo"].disabled = True
+        form.base_fields["cv"].disabled = True
+        return form
+
     list_display = ("id", "name", "email", "owner_link")
     search_fields = (
         "name__startswith",
@@ -102,6 +106,12 @@ class ProfessionalAdmin(admin.ModelAdmin):
 
 @admin.register(Investor)
 class InvestorAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(InvestorAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields["photo"].disabled = True
+        form.base_fields["cv"].disabled = True
+        return form
+
     list_display = ("id", "name", "email", "owner_link")
     search_fields = (
         "name__startswith",
