@@ -6,7 +6,6 @@ from profiles.models.investor import Investor
 from profiles.models.other_models import (
     Industries,
     Achievements,
-    Purpose,
     Links,
     SaleRegions,
 )
@@ -51,23 +50,23 @@ class StartupAdmin(admin.ModelAdmin):
     ordering = ("id",)
     filter_horizontal = ("work_team", "business_type", "regions", "industries")
 
-    fieldsets = (
-        (
-            "User",
-            {
-                "fields": (
-                    "name",
-                    "image_link",
-                ),
-            },
-        ),
-        (
-            "Additional info",
-            {
-                "fields": ("work_team",),
-            },
-        ),
-    )
+    # fieldsets = (
+    #     (
+    #         "User",
+    #         {
+    #             "fields": (
+    #                 "name",
+    #                 "image_link",
+    #             ),
+    #         },
+    #     ),
+    #     (
+    #         "Additional info",
+    #         {
+    #             "fields": ("work_team",),
+    #         },
+    #     ),
+    # )
     # readonly_fields = ("image_link",)
     def owner_link(self, startup: Startup):
         url = reverse("admin:core_user_change", args=[startup.owner.id])
