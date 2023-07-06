@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
+
+from image.models import Image
 from profiles.models.investor import Investor
 from profiles.models.other_models import (
     Industries,
@@ -40,13 +42,23 @@ class SaleRegionsAdmin(admin.ModelAdmin):
 
 @admin.register(Startup)
 class StartupAdmin(admin.ModelAdmin):
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(StartupAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields["logo"].disabled = True
-        form.base_fields["background"].disabled = True
-        form.base_fields["pitch_presentation"].disabled = True
-        return form
-
+    # def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+    #     # print(request.resolver_match.kwargs['object_id'])
+    #
+    #     if db_field.name == "logo":
+    #         kwargs["queryset"] = Image.objects.filter(id=request.resolver_match.kwargs['object_id'])
+    #     return super(StartupAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    # def get_form(self, request, obj=None, **kwargs):
+    #     form = super(StartupAdmin, self).get_form(request, obj, **kwargs)
+    #     # form.base_fields["logo"].disabled = True
+    #     # form.base_fields["logo"].can_change_related = False
+    #     form.base_fields["logo"].queryset = Image.objects.filter(id=obj.logo.id)
+    #
+    #     form.base_fields["background"].disabled = True
+    #     form.base_fields["background"].can_change_related = False
+    #     form.base_fields["pitch_presentation"].disabled = True
+    #     form.base_fields["background"].queryset = None
+    #     return form
     list_display = (
         "id",
         "name",
@@ -58,6 +70,7 @@ class StartupAdmin(admin.ModelAdmin):
     )
     ordering = ("id",)
     filter_horizontal = ("work_team", "business_type", "regions", "industries")
+    autocomplete_fields = ("logo", "background", "pitch_presentation")
 
     def owner_link(self, startup: Startup):
         url = reverse("admin:core_user_change", args=[startup.owner.id])
@@ -80,11 +93,12 @@ class StartupAdmin(admin.ModelAdmin):
 
 @admin.register(Professional)
 class ProfessionalAdmin(admin.ModelAdmin):
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(ProfessionalAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields["photo"].disabled = True
-        form.base_fields["cv"].disabled = True
-        return form
+    # def get_form(self, request, obj=None, **kwargs):
+    #     form = super(ProfessionalAdmin, self).get_form(request, obj, **kwargs)
+    #     # form.base_fields["photo"].disabled = True
+    #     form.base_fields["photo"].disabled = True
+    #     form.base_fields["cv"].disabled = True
+    #     return form
 
     list_display = ("id", "name", "email", "owner_link")
     search_fields = (
@@ -95,6 +109,10 @@ class ProfessionalAdmin(admin.ModelAdmin):
     # list_filter = ['name', ('owner', admin.RelatedOnlyFieldListFilter)]
     ordering = ("id",)
     filter_horizontal = ("skills",)
+    autocomplete_fields = (
+        "photo",
+        "cv",
+    )
 
     def owner_link(self, professional: Professional):
         url = reverse("admin:core_user_change", args=[professional.owner.id])
@@ -106,11 +124,11 @@ class ProfessionalAdmin(admin.ModelAdmin):
 
 @admin.register(Investor)
 class InvestorAdmin(admin.ModelAdmin):
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(InvestorAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields["photo"].disabled = True
-        form.base_fields["cv"].disabled = True
-        return form
+    # def get_form(self, request, obj=None, **kwargs):
+    #     form = super(InvestorAdmin, self).get_form(request, obj, **kwargs)
+    #     form.base_fields["photo"].disabled = True
+    #     form.base_fields["cv"].disabled = True
+    #     return form
 
     list_display = ("id", "name", "email", "owner_link")
     search_fields = (
@@ -121,6 +139,10 @@ class InvestorAdmin(admin.ModelAdmin):
     # list_filter = ['name', ('owner', admin.RelatedOnlyFieldListFilter)]
     ordering = ("id",)
     filter_horizontal = ("interest",)
+    autocomplete_fields = (
+        "photo",
+        "cv",
+    )
 
     def owner_link(self, investor: Investor):
         url = reverse("admin:core_user_change", args=[investor.owner.id])

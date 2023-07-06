@@ -14,10 +14,10 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(ArticleAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields["image"].disabled = True
-        return form
+    # def get_form(self, request, obj=None, **kwargs):
+    #     form = super(ArticleAdmin, self).get_form(request, obj, **kwargs)
+    #     form.base_fields["image"].disabled = True
+    #     return form
 
     list_display = ("id", "name", "company_link", "is_visible", "created_at")
     search_fields = (
@@ -32,6 +32,7 @@ class ArticleAdmin(admin.ModelAdmin):
         "is_visible",
     )
     filter_horizontal = ("tags",)
+    autocomplete_fields = ("image",)
 
     def company_link(self, article: Article):
         url = reverse("admin:profiles_startup_change", args=[article.company_id.id])

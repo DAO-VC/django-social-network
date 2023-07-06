@@ -16,6 +16,7 @@ class ImageAdmin(admin.ModelAdmin):
     image_tag.short_description = "Image"
     list_display = ("id", "image", "image_tag")
     readonly_fields = ("image_tag",)
+    search_fields = ("id",)
 
 
 @admin.register(File)
@@ -31,3 +32,4 @@ class FileAdmin(admin.ModelAdmin):
     file_tag.short_description = "Pdf"
     list_display = ("id", "pdf", "file_tag")
     readonly_fields = ("file_tag",)
+    search_fields = ("id",)
