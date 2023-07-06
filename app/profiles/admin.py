@@ -16,7 +16,14 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Industries)
 class IndustriesAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "type")
+    list_display = ("id", "title_link", "type")
+
+    def title_link(self, industries: Industries):
+        url = reverse("admin:profiles_industries_change", args=[industries.id])
+        link = '<a href="%s">%s</a>' % (url, industries.title)
+        return mark_safe(link)
+
+    title_link.short_description = "Название"
 
 
 @admin.register(Achievements)
@@ -37,7 +44,14 @@ class LinksAdmin(admin.ModelAdmin):
 
 @admin.register(SaleRegions)
 class SaleRegionsAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
+    list_display = ("id", "title_link")
+
+    def title_link(self, sale_region: SaleRegions):
+        url = reverse("admin:profiles_saleregions_change", args=[sale_region.id])
+        link = '<a href="%s">%s</a>' % (url, sale_region.name)
+        return mark_safe(link)
+
+    title_link.short_description = "Название"
 
 
 @admin.register(Startup)
@@ -61,7 +75,7 @@ class StartupAdmin(admin.ModelAdmin):
     #     return form
     list_display = (
         "id",
-        "name",
+        "name_link",
         "owner_link",
     )
     search_fields = (
@@ -74,11 +88,20 @@ class StartupAdmin(admin.ModelAdmin):
 
     def owner_link(self, startup: Startup):
         url = reverse("admin:core_user_change", args=[startup.owner.id])
-        link = '<a href="%s">%s</a>' % (url, startup.owner.id)
+        link = '<a href="%s">%s</a>' % (
+            url,
+            f"{startup.owner.id}-{startup.owner.email}",
+        )
         return mark_safe(link)
 
     owner_link.short_description = "Владелец"
 
+    def name_link(self, startup: Startup):
+        url = reverse("admin:profiles_startup_change", args=[startup.id])
+        link = '<a href="%s">%s</a>' % (url, startup.name)
+        return mark_safe(link)
+
+    owner_link.short_description = "Владелец"
     # def image_link(self, startup: Startup):
     #     try:
     #         if Image.objects.filter(id=startup.logo.id).exists():
@@ -100,7 +123,7 @@ class ProfessionalAdmin(admin.ModelAdmin):
     #     form.base_fields["cv"].disabled = True
     #     return form
 
-    list_display = ("id", "name", "email", "owner_link")
+    list_display = ("id", "name_link", "email_link", "owner_link")
     search_fields = (
         "name__startswith",
         "id",
@@ -116,10 +139,28 @@ class ProfessionalAdmin(admin.ModelAdmin):
 
     def owner_link(self, professional: Professional):
         url = reverse("admin:core_user_change", args=[professional.owner.id])
-        link = '<a href="%s">%s</a>' % (url, professional.owner.id)
+        link = '<a href="%s">%s</a>' % (url, professional.owner.email)
         return mark_safe(link)
 
     owner_link.short_description = "Владелец"
+
+    def email_link(self, professional: Professional):
+        url = reverse(
+            "admin:profiles_professional_change", args=[professional.owner.id]
+        )
+        link = '<a href="%s">%s</a>' % (url, professional.email)
+        return mark_safe(link)
+
+    email_link.short_description = "Email"
+
+    def name_link(self, professional: Professional):
+        url = reverse(
+            "admin:profiles_professional_change", args=[professional.owner.id]
+        )
+        link = '<a href="%s">%s</a>' % (url, professional.name)
+        return mark_safe(link)
+
+    name_link.short_description = "Имя"
 
 
 @admin.register(Investor)
@@ -130,7 +171,7 @@ class InvestorAdmin(admin.ModelAdmin):
     #     form.base_fields["cv"].disabled = True
     #     return form
 
-    list_display = ("id", "name", "email", "owner_link")
+    list_display = ("id", "name_link", "email_link", "owner_link")
     search_fields = (
         "name__startswith",
         "id",
@@ -146,7 +187,21 @@ class InvestorAdmin(admin.ModelAdmin):
 
     def owner_link(self, investor: Investor):
         url = reverse("admin:core_user_change", args=[investor.owner.id])
-        link = '<a href="%s">%s</a>' % (url, investor.owner.id)
+        link = '<a href="%s">%s</a>' % (url, investor.owner.email)
         return mark_safe(link)
 
     owner_link.short_description = "Владелец"
+
+    def email_link(self, investor: Investor):
+        url = reverse("admin:profiles_investor_change", args=[investor.id])
+        link = '<a href="%s">%s</a>' % (url, investor.email)
+        return mark_safe(link)
+
+    email_link.short_description = "Email"
+
+    def name_link(self, investor: Investor):
+        url = reverse("admin:profiles_investor_change", args=[investor.id])
+        link = '<a href="%s">%s</a>' % (url, investor.name)
+        return mark_safe(link)
+
+    email_link.short_description = "Имя"

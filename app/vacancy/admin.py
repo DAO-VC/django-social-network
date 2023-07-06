@@ -25,7 +25,7 @@ class SkillAdmin(admin.ModelAdmin):
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
-    list_display = ("id", "position", "company_link", "is_visible", "created_at")
+    list_display = ("id", "position_link", "company_link", "is_visible", "created_at")
     search_fields = (
         "name__startswith",
         "id",
@@ -41,10 +41,20 @@ class VacancyAdmin(admin.ModelAdmin):
 
     def company_link(self, vacancy: Vacancy):
         url = reverse("admin:profiles_startup_change", args=[vacancy.company_id.id])
-        link = '<a href="%s">%s</a>' % (url, vacancy.company_id.id)
+        link = '<a href="%s">%s</a>' % (
+            url,
+            f"{vacancy.company_id.id}-{vacancy.company_id.name}",
+        )
         return mark_safe(link)
 
     company_link.short_description = "Владелец"
+
+    def position_link(self, vacancy: Vacancy):
+        url = reverse("admin:vacancy_vacancy_change", args=[vacancy.id])
+        link = '<a href="%s">%s</a>' % (url, vacancy.position)
+        return mark_safe(link)
+
+    position_link.short_description = "Позиция"
 
 
 @admin.register(Candidate)
@@ -72,14 +82,20 @@ class CandidateAdmin(admin.ModelAdmin):
         url = reverse(
             "admin:profiles_professional_change", args=[candidate.professional_id.id]
         )
-        link = '<a href="%s">%s</a>' % (url, candidate.professional_id.id)
+        link = '<a href="%s">%s</a>' % (
+            url,
+            f"{candidate.professional_id.id}-{candidate.professional_id.email}",
+        )
         return mark_safe(link)
 
     professional_link.short_description = "Профессионал"
 
     def vacancy_link(self, candidate: Candidate):
         url = reverse("admin:vacancy_vacancy_change", args=[candidate.vacancy_id.id])
-        link = '<a href="%s">%s</a>' % (url, candidate.vacancy_id.id)
+        link = '<a href="%s">%s</a>' % (
+            url,
+            f"{candidate.vacancy_id.id}-{candidate.vacancy_id.position}",
+        )
         return mark_safe(link)
 
     vacancy_link.short_description = "Вакансия"
@@ -103,14 +119,20 @@ class WorkTeamAdmin(admin.ModelAdmin):
         url = reverse(
             "admin:vacancy_candidate_change", args=[work_team.candidate_id.id]
         )
-        link = '<a href="%s">%s</a>' % (url, work_team.candidate_id.id)
+        link = '<a href="%s">%s</a>' % (
+            url,
+            f"{work_team.candidate_id.id}-{work_team.candidate_id.professional_id.email}",
+        )
         return mark_safe(link)
 
     candidate_link.short_description = "Кандидат"
 
     def startup_link(self, work_team: WorkTeam):
         url = reverse("admin:profiles_startup_change", args=[work_team.startup_id.id])
-        link = '<a href="%s">%s</a>' % (url, work_team.startup_id.id)
+        link = '<a href="%s">%s</a>' % (
+            url,
+            f"{work_team.startup_id.id}-{work_team.startup_id.name}",
+        )
         return mark_safe(link)
 
     startup_link.short_description = "Стартап"

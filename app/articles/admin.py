@@ -8,8 +8,15 @@ from articles.models import Article, Tag
 class TagAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "title",
+        "title_link",
     )
+
+    def title_link(self, tag: Tag):
+        url = reverse("admin:articles_tag_change", args=[tag.id])
+        link = '<a href="%s">%s</a>' % (url, tag.title)
+        return mark_safe(link)
+
+    title_link.short_description = "Название"
 
 
 @admin.register(Article)
@@ -19,7 +26,7 @@ class ArticleAdmin(admin.ModelAdmin):
     #     form.base_fields["image"].disabled = True
     #     return form
 
-    list_display = ("id", "name", "company_link", "is_visible", "created_at")
+    list_display = ("id", "name_link", "company_link", "is_visible", "created_at")
     search_fields = (
         "name__startswith",
         "id",
@@ -36,7 +43,17 @@ class ArticleAdmin(admin.ModelAdmin):
 
     def company_link(self, article: Article):
         url = reverse("admin:profiles_startup_change", args=[article.company_id.id])
-        link = '<a href="%s">%s</a>' % (url, article.company_id.id)
+        link = '<a href="%s">%s</a>' % (
+            url,
+            f"{article.company_id.id}-{article.company_id.name}",
+        )
         return mark_safe(link)
 
     company_link.short_description = "Владелец"
+
+    def name_link(self, article: Article):
+        url = reverse("admin:articles_article_change", args=[article.id])
+        link = '<a href="%s">%s</a>' % (url, article.name)
+        return mark_safe(link)
+
+    name_link.short_description = "Заголовок"
