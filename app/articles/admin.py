@@ -39,13 +39,13 @@ class ArticleAdmin(admin.ModelAdmin):
         "is_visible",
     )
     filter_horizontal = ("tags",)
-    autocomplete_fields = ("image",)
+    raw_id_fields = ("image",)
 
     def company_link(self, article: Article):
         url = reverse("admin:profiles_startup_change", args=[article.company_id.id])
         link = '<a href="%s">%s</a>' % (
             url,
-            f"{article.company_id.id}-{article.company_id.name}",
+            article.company_id.name,
         )
         return mark_safe(link)
 

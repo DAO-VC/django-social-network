@@ -43,7 +43,7 @@ class VacancyAdmin(admin.ModelAdmin):
         url = reverse("admin:profiles_startup_change", args=[vacancy.company_id.id])
         link = '<a href="%s">%s</a>' % (
             url,
-            f"{vacancy.company_id.id}-{vacancy.company_id.name}",
+            vacancy.company_id.name,
         )
         return mark_safe(link)
 
@@ -84,7 +84,7 @@ class CandidateAdmin(admin.ModelAdmin):
         )
         link = '<a href="%s">%s</a>' % (
             url,
-            f"{candidate.professional_id.id}-{candidate.professional_id.email}",
+            candidate.professional_id.email,
         )
         return mark_safe(link)
 
@@ -94,7 +94,7 @@ class CandidateAdmin(admin.ModelAdmin):
         url = reverse("admin:vacancy_vacancy_change", args=[candidate.vacancy_id.id])
         link = '<a href="%s">%s</a>' % (
             url,
-            f"{candidate.vacancy_id.id}-{candidate.vacancy_id.position}",
+            candidate.vacancy_id.position,
         )
         return mark_safe(link)
 
@@ -121,7 +121,7 @@ class WorkTeamAdmin(admin.ModelAdmin):
         )
         link = '<a href="%s">%s</a>' % (
             url,
-            f"{work_team.candidate_id.id}-{work_team.candidate_id.professional_id.email}",
+            work_team.candidate_id.professional_id.email,
         )
         return mark_safe(link)
 
@@ -131,7 +131,7 @@ class WorkTeamAdmin(admin.ModelAdmin):
         url = reverse("admin:profiles_startup_change", args=[work_team.startup_id.id])
         link = '<a href="%s">%s</a>' % (
             url,
-            f"{work_team.startup_id.id}-{work_team.startup_id.name}",
+            work_team.startup_id.name,
         )
         return mark_safe(link)
 

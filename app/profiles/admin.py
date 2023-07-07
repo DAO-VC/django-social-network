@@ -84,13 +84,14 @@ class StartupAdmin(admin.ModelAdmin):
     )
     ordering = ("id",)
     filter_horizontal = ("work_team", "business_type", "regions", "industries")
-    autocomplete_fields = ("logo", "background", "pitch_presentation")
+    # autocomplete_fields = ("logo", "background", "pitch_presentation")
+    raw_id_fields = ("logo", "background", "pitch_presentation")
 
     def owner_link(self, startup: Startup):
         url = reverse("admin:core_user_change", args=[startup.owner.id])
         link = '<a href="%s">%s</a>' % (
             url,
-            f"{startup.owner.id}-{startup.owner.email}",
+            startup.owner.email,
         )
         return mark_safe(link)
 
@@ -132,7 +133,7 @@ class ProfessionalAdmin(admin.ModelAdmin):
     # list_filter = ['name', ('owner', admin.RelatedOnlyFieldListFilter)]
     ordering = ("id",)
     filter_horizontal = ("skills",)
-    autocomplete_fields = (
+    raw_id_fields = (
         "photo",
         "cv",
     )
@@ -180,7 +181,7 @@ class InvestorAdmin(admin.ModelAdmin):
     # list_filter = ['name', ('owner', admin.RelatedOnlyFieldListFilter)]
     ordering = ("id",)
     filter_horizontal = ("interest",)
-    autocomplete_fields = (
+    raw_id_fields = (
         "photo",
         "cv",
     )
