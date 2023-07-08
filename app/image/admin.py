@@ -13,9 +13,10 @@ class ImageAdmin(admin.ModelAdmin):
             '<img src="%s" style="width: 250px; height:250px;" />' % obj.image.url
         )
 
-    image_tag.short_description = "Image"
-    list_display = ("id", "image", "image_tag")
-    readonly_fields = ("image_tag",)
+    #
+    # image_tag.short_description = "Image"
+    list_display = ("id", "image_tag")
+    # readonly_fields = ("image_tag",)
     search_fields = ("id",)
 
 
@@ -30,6 +31,6 @@ class FileAdmin(admin.ModelAdmin):
         )
 
     file_tag.short_description = "Pdf"
-    list_display = ("id", "pdf", "file_tag")
-    readonly_fields = ("file_tag",)
+    list_display = ("id", "file_tag")
+    # readonly_fields = ("file_tag",)
     search_fields = ("id",)
