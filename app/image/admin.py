@@ -14,11 +14,19 @@ class ImageAdmin(admin.ModelAdmin):
             '<img src="%s" style="width: 250px; height:250px;" />' % obj.image.url
         )
 
+    def title_link(self, image: Image):
+        url = reverse("admin:image_image_change", args=[image.id])
+        link = '<a href="%s">%s</a>' % (url, image.image)
+        return mark_safe(link)
+
+    title_link.short_description = "Image"
+
     #
     # image_tag.short_description = "Image"
     list_display = ("id", "image_tag")
     # readonly_fields = ("image_tag",)
     search_fields = ("id", "image__contains")
+    readonly_fields = ("image_tag",)
 
 
 @admin.register(File)

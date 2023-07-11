@@ -146,18 +146,14 @@ class ProfessionalAdmin(admin.ModelAdmin):
     owner_link.short_description = "Владелец"
 
     def email_link(self, professional: Professional):
-        url = reverse(
-            "admin:profiles_professional_change", args=[professional.owner.id]
-        )
+        url = reverse("admin:profiles_professional_change", args=[professional.id])
         link = '<a href="%s">%s</a>' % (url, professional.email)
         return mark_safe(link)
 
     email_link.short_description = "Email"
 
     def name_link(self, professional: Professional):
-        url = reverse(
-            "admin:profiles_professional_change", args=[professional.owner.id]
-        )
+        url = reverse("admin:profiles_professional_change", args=[professional.id])
         link = '<a href="%s">%s</a>' % (url, professional.name)
         return mark_safe(link)
 
