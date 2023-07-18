@@ -5,6 +5,7 @@ from rest_framework.exceptions import ValidationError
 
 from profiles.models.startup import Startup
 from profiles.serializers.startup import StartupToArticleSerializer
+from vacancy.models.candidate import Candidate
 from vacancy.models.vacancy import Vacancy, Skill, Requirement
 
 
@@ -18,8 +19,10 @@ class VacancyBaseSerializer(serializers.ModelSerializer):
         many=True, slug_field="title", read_only=True
     )
 
-    def get_total_candidates(self, instance):
-        return instance.candidate_vacancy.count()
+    def get_total_candidates(self, instance: Vacancy):
+        return instance.candidate_vacancy.filter(
+            accept_status=Candidate.AcceptStatus.PENDING_FOR_APPROVAL,
+        )
 
     class Meta:
         model = Vacancy
