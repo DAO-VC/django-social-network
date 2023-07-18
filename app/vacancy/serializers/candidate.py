@@ -108,6 +108,7 @@ class CandidateFavoriteSerializer(serializers.ModelSerializer):
             "accept_status",
             "is_favorite",
             "created_at",
+            "about",
         )
 
     def update(self, instance: Candidate, validated_data):
