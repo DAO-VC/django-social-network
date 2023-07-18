@@ -82,7 +82,8 @@ class ListAllVacancyCandidates(generics.ListAPIView):
 
     def get_queryset(self):
         return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
-            vacancy_id=self.kwargs["pk"]
+            vacancy_id=self.kwargs["pk"],
+            accept_status=Candidate.AcceptStatus.PENDING_FOR_APPROVAL,
         )
 
 
