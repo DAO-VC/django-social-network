@@ -44,10 +44,10 @@ class Candidate(models.Model):
     created_at = CreationDateTimeField(verbose_name="Дата создания")
 
     class Meta:
-        # unique_together = (
-        #     "professional_id",
-        #     "vacancy_id",
-        # )
+        unique_together = (
+            "professional_id",
+            "vacancy_id",
+        )
         verbose_name = "Кандидат"
         verbose_name_plural = "Кандидаты"
 

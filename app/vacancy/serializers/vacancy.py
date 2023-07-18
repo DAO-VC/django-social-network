@@ -22,7 +22,7 @@ class VacancyBaseSerializer(serializers.ModelSerializer):
     def get_total_candidates(self, instance: Vacancy):
         return instance.candidate_vacancy.filter(
             accept_status=Candidate.AcceptStatus.PENDING_FOR_APPROVAL,
-        )
+        ).count()
 
     class Meta:
         model = Vacancy
