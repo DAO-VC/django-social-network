@@ -50,7 +50,7 @@ class ArticleListCreateView(generics.ListCreateAPIView):
                 )
                 | Q(company_id__owner=self.request.user.id)
             )
-        )
+        ).distinct()
         self.check_object_permissions(self.request, obj)
         return obj
 

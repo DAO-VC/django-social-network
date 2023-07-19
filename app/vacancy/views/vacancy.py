@@ -87,7 +87,7 @@ class VacancyAllView(generics.ListAPIView):
                 "company_id",
             )
             .prefetch_related("skills", "requirements")
-            .all()
+            .filter(is_visible=True)
         )
 
 
