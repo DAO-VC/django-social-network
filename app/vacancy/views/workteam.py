@@ -3,6 +3,8 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from profiles.models.startup import Startup
 from profiles.serializers.startup import StartupSerializer
+from vacancy.models.candidate import Candidate
+from vacancy.models.workteam import WorkTeam
 from vacancy.permissions import (
     StartupWorkTeamPermission,
     StartupWorkTeamUpdatePermission,
@@ -54,6 +56,12 @@ class StartupWorkTeamRetrieveDelete(generics.RetrieveUpdateDestroyAPIView):
         ).first()
         self.check_object_permissions(self.request, obj)
         return obj.work_team.all()
+
+    def perform_destroy(self, instance: WorkTeam):
+        candidate = Candidate.objects.filter(id=instance.candidate_id.id).first()
+        candidate.accept_status = Candidate.AcceptStatus.CONCLUDED
+        candidate.save()
+        super().perform_destroy(instance)
 
 
 class ProfessionalWorkView(generics.ListAPIView):

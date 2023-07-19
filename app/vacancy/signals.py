@@ -37,9 +37,9 @@ def send_delete_workteam_object(sender, instance: WorkTeam, **kwargs):
     ]
 
     receivers.append(instance.startup_id.owner.id)
-
-    user = User.objects.filter(id=receiver).first()
-    ChatNotification.objects.create(
-        user=user,
-        text=f"User '{instance.candidate_id.professional_id.owner}' has  to Workteam deleted",
-    )
+    for receiver in receivers:
+        user = User.objects.filter(id=receiver).first()
+        ChatNotification.objects.create(
+            user=user,
+            text=f"User '{instance.candidate_id.professional_id.owner}' has  to Workteam deleted",
+        )
