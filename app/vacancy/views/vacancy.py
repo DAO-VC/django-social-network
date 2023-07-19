@@ -42,7 +42,7 @@ class VacancyListCreateView(generics.ListCreateAPIView):
                 )
                 | Q(company_id__owner=self.request.user.id)
             )
-        )
+        ).distinct()
 
 
 class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
