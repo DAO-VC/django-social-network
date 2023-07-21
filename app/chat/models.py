@@ -64,16 +64,16 @@ class ChatNotification(models.Model):
 
     user = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,
-        # on_delete=models.CASCADE,
+        # on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name="reciever",
         verbose_name="Получатель уведомления",
         null=True,
     )
     author = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,
-        # on_delete=models.CASCADE,
+        # on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name="author",
         null=True,
         verbose_name="Автор(опционально)",
