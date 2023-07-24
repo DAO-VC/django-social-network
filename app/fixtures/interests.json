@@ -3,35 +3,35 @@
     "model": "articles.tag",
     "pk": 1,
     "fields": {
-      "title": "Agricultural Tech"
+      "title": "agricultural_tech"
     }
   },
   {
     "model": "articles.tag",
     "pk": 2,
     "fields": {
-      "title": "Analytics & Big Data"
+      "title": "analytics_big_data"
     }
   },
   {
     "model": "articles.tag",
     "pk": 3,
     "fields": {
-      "title": "Artificial Intelligence & Learning"
+      "title": "artificial_intelligence_learning"
     }
   },
   {
     "model": "articles.tag",
     "pk": 4,
     "fields": {
-      "title": "Augmented Reality"
+      "title": "augmented_reality"
     }
   },
   {
     "model": "articles.tag",
     "pk": 5,
     "fields": {
-      "title": "Biotech"
+      "title": "biotech"
     }
   },
 
@@ -39,35 +39,35 @@
     "model": "articles.tag",
     "pk": 6,
     "fields": {
-      "title": "Cleantech"
+      "title": "cleantech"
     }
   },
   {
     "model": "articles.tag",
     "pk": 7,
     "fields": {
-      "title": "Clothing & Fashion"
+      "title": "clothing_fashion"
     }
   },
   {
     "model": "articles.tag",
     "pk": 8,
     "fields": {
-      "title": "Communications & Media"
+      "title": "communications_media"
     }
   },
   {
     "model": "articles.tag",
     "pk": 9,
     "fields": {
-      "title": "Consumer"
+      "title": "consumer"
     }
   },
   {
     "model": "articles.tag",
     "pk": 10,
     "fields": {
-      "title": "Electronics"
+      "title": "electronics"
     }
   },
 
@@ -75,175 +75,175 @@
     "model": "articles.tag",
     "pk": 11,
     "fields": {
-      "title": "Cyber"
+      "title": "cyber"
     }
   },
   {
     "model": "articles.tag",
     "pk": 12,
     "fields": {
-      "title": "Security"
+      "title": "security"
     }
   },
   {
     "model": "articles.tag",
     "pk": 13,
     "fields": {
-      "title": "E-commerce & Online Marketplaces"
+      "title": "e-commerce_online_marketplaces"
     }
   },
   {
     "model": "articles.tag",
     "pk": 14,
     "fields": {
-      "title": "Education"
+      "title": "education"
     }
   },
   {
     "model": "articles.tag",
     "pk": 15,
     "fields": {
-      "title": "Enterprise Software"
+      "title": "enterprise_software"
     }
   },
   {
     "model": "articles.tag",
     "pk": 16,
     "fields": {
-      "title": "Finance & Insurance"
+      "title": "finance_insurance"
     }
   },
   {
     "model": "articles.tag",
     "pk": 17,
     "fields": {
-      "title": "Food & Nutrition"
+      "title": "food_nutrition"
     }
   },
   {
     "model": "articles.tag",
     "pk": 18,
     "fields": {
-      "title": "Gaming"
+      "title": "gaming"
     }
   },
   {
     "model": "articles.tag",
     "pk": 19,
     "fields": {
-      "title": "Health & Wellbeing"
+      "title": "health_wellbeing"
     }
   },
   {
     "model": "articles.tag",
     "pk": 20,
     "fields": {
-      "title": "Industrial"
+      "title": "industrial"
     }
   },
   {
     "model": "articles.tag",
     "pk": 21,
     "fields": {
-      "title": "Manufacturing & Materials"
+      "title": "manufacturing_materials"
     }
   },
   {
     "model": "articles.tag",
     "pk": 22,
     "fields": {
-      "title": "Marketing & AdTech"
+      "title": "marketing_adTech"
     }
   },
   {
     "model": "articles.tag",
     "pk": 23,
     "fields": {
-      "title": "Medtech & Pharma"
+      "title": "medtech_pharma"
     }
   },
   {
     "model": "articles.tag",
     "pk": 24,
     "fields": {
-      "title": "Mobile Hardware"
+      "title": "mobile_hardware"
     }
   },
   {
     "model": "articles.tag",
     "pk": 25,
     "fields": {
-      "title": "Mobile Software"
+      "title": "mobile_software"
     }
   },
   {
     "model": "articles.tag",
     "pk": 26,
     "fields": {
-      "title": "Music & Entertainment"
+      "title": "music_entertainment"
     }
   },
   {
     "model": "articles.tag",
     "pk": 27,
     "fields": {
-      "title": "On-demand Services"
+      "title": "on-demand_services"
     }
   },
   {
     "model": "articles.tag",
     "pk": 28,
     "fields": {
-      "title": "Property & Construction Tech"
+      "title": "property_construction_tech"
     }
   },
   {
     "model": "articles.tag",
     "pk": 29,
     "fields": {
-      "title": "Robotics"
+      "title": "robotics"
     }
   },
   {
     "model": "articles.tag",
     "pk": 30,
     "fields": {
-      "title": "Social Entrepreneurship"
+      "title": "social_entrepreneurship"
     }
   },
   {
     "model": "articles.tag",
     "pk": 31,
     "fields": {
-      "title": "Social Media & Messaging"
+      "title": "social_media_messaging"
     }
   },
   {
     "model": "articles.tag",
     "pk": 32,
     "fields": {
-      "title": "Cryptocurrencies"
+      "title": "cryptocurrencies"
     }
   },
   {
     "model": "articles.tag",
     "pk": 33,
     "fields": {
-      "title": "NTF"
+      "title": "ntf"
     }
   },
   {
     "model": "articles.tag",
     "pk": 34,
     "fields": {
-      "title": "DeFi"
+      "title": "defi"
     }
   },
   {
     "model": "articles.tag",
     "pk": 35,
     "fields": {
-      "title": "GameFi"
+      "title": "gamefi"
     }
   }
 ]

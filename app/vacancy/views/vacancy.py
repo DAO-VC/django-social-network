@@ -3,6 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
 
+from vacancy.filters import VacancyModelFilter
 from vacancy.models.vacancy import Vacancy
 from vacancy.permissions import (
     VacancyGetCreatePermission,
@@ -77,14 +78,7 @@ class VacancyAllView(generics.ListAPIView):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    filterset_fields = [
-        "id",
-        "company_id",
-        "salary_type",
-        "requirements",
-        "work_schedule",
-        "place",
-    ]
+    filterset_class = VacancyModelFilter
     ordering_fields = ["company_id", "position", "salary", "requirements", "created_at"]
     search_fields = ("salary", "salary_type", "description", "company_id", "position")
 

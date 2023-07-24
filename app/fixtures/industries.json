@@ -3,7 +3,7 @@
     "model": "profiles.industries",
     "pk": 1,
     "fields": {
-      "title": "Agricultural Tech",
+      "title": "agricultural_tech",
       "type": "other"
     }
   },
@@ -11,7 +11,7 @@
     "model": "profiles.industries",
     "pk": 2,
     "fields": {
-      "title": "Analytics & Big Data",
+      "title": "analytics_big_data",
       "type": "other"
     }
   },
@@ -19,7 +19,7 @@
     "model": "profiles.industries",
     "pk": 3,
     "fields": {
-      "title": "Artificial Intelligence & Learning",
+      "title": "artificial_intelligence_learning",
       "type": "other"
     }
   },
@@ -27,7 +27,7 @@
     "model": "profiles.industries",
     "pk": 4,
     "fields": {
-      "title": "Augmented Reality",
+      "title": "augmented_reality",
       "type": "other"
     }
   },
@@ -35,7 +35,7 @@
     "model": "profiles.industries",
     "pk": 5,
     "fields": {
-      "title": "Biotech",
+      "title": "biotech",
       "type": "other"
     }
   },
@@ -44,7 +44,7 @@
     "model": "profiles.industries",
     "pk": 6,
     "fields": {
-      "title": "Cleantech",
+      "title": "cleantech",
       "type": "other"
     }
   },
@@ -52,7 +52,7 @@
     "model": "profiles.industries",
     "pk": 7,
     "fields": {
-      "title": "Clothing & Fashion",
+      "title": "clothing_fashion",
       "type": "other"
     }
   },
@@ -60,7 +60,7 @@
     "model": "profiles.industries",
     "pk": 8,
     "fields": {
-      "title": "Communications & Media",
+      "title": "communications_media",
       "type": "other"
     }
   },
@@ -68,7 +68,7 @@
     "model": "profiles.industries",
     "pk": 9,
     "fields": {
-      "title": "Consumer",
+      "title": "consumer",
       "type": "other"
     }
   },
@@ -76,7 +76,7 @@
     "model": "profiles.industries",
     "pk": 10,
     "fields": {
-      "title": "Electronics",
+      "title": "electronics",
       "type": "other"
     }
   },
@@ -85,7 +85,7 @@
     "model": "profiles.industries",
     "pk": 11,
     "fields": {
-      "title": "Cyber",
+      "title": "cyber",
       "type": "other"
     }
   },
@@ -93,7 +93,7 @@
     "model": "profiles.industries",
     "pk": 12,
     "fields": {
-      "title": "Security",
+      "title": "security",
       "type": "other"
     }
   },
@@ -101,7 +101,7 @@
     "model": "profiles.industries",
     "pk": 13,
     "fields": {
-      "title": "E-commerce & Online Marketplaces",
+      "title": "e-commerce_online_marketplaces",
       "type": "other"
     }
   },
@@ -109,7 +109,7 @@
     "model": "profiles.industries",
     "pk": 14,
     "fields": {
-      "title": "Education",
+      "title": "education",
       "type": "other"
     }
   },
@@ -117,7 +117,7 @@
     "model": "profiles.industries",
     "pk": 15,
     "fields": {
-      "title": "Enterprise Software",
+      "title": "enterprise_software",
       "type": "other"
     }
   },
@@ -125,7 +125,7 @@
     "model": "profiles.industries",
     "pk": 16,
     "fields": {
-      "title": "Finance & Insurance",
+      "title": "finance_insurance",
       "type": "other"
     }
   },
@@ -133,7 +133,7 @@
     "model": "profiles.industries",
     "pk": 17,
     "fields": {
-      "title": "Food & Nutrition",
+      "title": "food_nutrition",
       "type": "other"
     }
   },
@@ -141,7 +141,7 @@
     "model": "profiles.industries",
     "pk": 18,
     "fields": {
-      "title": "Gaming",
+      "title": "gaming",
       "type": "other"
     }
   },
@@ -149,7 +149,7 @@
     "model": "profiles.industries",
     "pk": 19,
     "fields": {
-      "title": "Health & Wellbeing",
+      "title": "health_wellbeing",
       "type": "other"
     }
   },
@@ -157,7 +157,7 @@
     "model": "profiles.industries",
     "pk": 20,
     "fields": {
-      "title": "Industrial",
+      "title": "industrial",
       "type": "other"
     }
   },
@@ -165,7 +165,7 @@
     "model": "profiles.industries",
     "pk": 21,
     "fields": {
-      "title": "Manufacturing & Materials",
+      "title": "manufacturing_materials",
       "type": "other"
     }
   },
@@ -173,7 +173,7 @@
     "model": "profiles.industries",
     "pk": 22,
     "fields": {
-      "title": "Marketing & AdTech",
+      "title": "marketing_adTech",
       "type": "other"
     }
   },
@@ -181,7 +181,7 @@
     "model": "profiles.industries",
     "pk": 23,
     "fields": {
-      "title": "Medtech & Pharma",
+      "title": "medtech_pharma",
       "type": "other"
     }
   },
@@ -189,7 +189,7 @@
     "model": "profiles.industries",
     "pk": 24,
     "fields": {
-      "title": "Mobile Hardware",
+      "title": "mobile_hardware",
       "type": "other"
     }
   },
@@ -197,7 +197,7 @@
     "model": "profiles.industries",
     "pk": 25,
     "fields": {
-      "title": "Mobile Software",
+      "title": "mobile_software",
       "type": "other"
     }
   },
@@ -205,7 +205,7 @@
     "model": "profiles.industries",
     "pk": 26,
     "fields": {
-      "title": "Music & Entertainment",
+      "title": "music_entertainment",
       "type": "other"
     }
   },
@@ -213,7 +213,7 @@
     "model": "profiles.industries",
     "pk": 27,
     "fields": {
-      "title": "On-demand Services",
+      "title": "on-demand_services",
       "type": "other"
     }
   },
@@ -221,7 +221,7 @@
     "model": "profiles.industries",
     "pk": 28,
     "fields": {
-      "title": "Property & Construction Tech",
+      "title": "property_construction_tech",
       "type": "other"
     }
   },
@@ -229,7 +229,7 @@
     "model": "profiles.industries",
     "pk": 29,
     "fields": {
-      "title": "Robotics",
+      "title": "robotics",
       "type": "other"
     }
   },
@@ -237,7 +237,7 @@
     "model": "profiles.industries",
     "pk": 30,
     "fields": {
-      "title": "Social Entrepreneurship",
+      "title": "social_entrepreneurship",
       "type": "other"
     }
   },
@@ -245,7 +245,7 @@
     "model": "profiles.industries",
     "pk": 31,
     "fields": {
-      "title": "Social Media & Messaging",
+      "title": "social_media_messaging",
       "type": "other"
     }
   },
@@ -253,7 +253,7 @@
     "model": "profiles.industries",
     "pk": 32,
     "fields": {
-      "title": "Cryptocurrencies",
+      "title": "cryptocurrencies",
       "type": "blockchain"
     }
   },
@@ -261,7 +261,7 @@
     "model": "profiles.industries",
     "pk": 33,
     "fields": {
-      "title": "NTF",
+      "title": "ntf",
       "type": "blockchain"
     }
   },
@@ -269,7 +269,7 @@
     "model": "profiles.industries",
     "pk": 34,
     "fields": {
-      "title": "DeFi",
+      "title": "defi",
       "type": "blockchain"
     }
   },
@@ -277,7 +277,7 @@
     "model": "profiles.industries",
     "pk": 35,
     "fields": {
-      "title": "GameFi",
+      "title": "gamefi",
       "type": "blockchain"
     }
   }
