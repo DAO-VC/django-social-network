@@ -77,7 +77,14 @@ class VacancyAllView(generics.ListAPIView):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    filterset_fields = ["id", "company_id", "salary", "requirements"]
+    filterset_fields = [
+        "id",
+        "company_id",
+        "salary_type",
+        "requirements",
+        "work_schedule",
+        "place",
+    ]
     ordering_fields = ["company_id", "position", "salary", "requirements", "created_at"]
     search_fields = ("salary", "salary_type", "description", "company_id", "position")
 
