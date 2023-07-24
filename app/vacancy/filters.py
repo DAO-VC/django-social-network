@@ -14,8 +14,8 @@ class VacancyModelFilter(django_filters.FilterSet):
     def skills_by_title(self, queryset, name, value):
         titles = value.split(",")  # Разбиваем список значений по запятой
 
-        return (
-            queryset.filter(skills__title__in=titles)
-            .annotate(title_count=Sum("skills"))
-            .filter(title_count=len(titles))
-        )
+        queryset = queryset.annotate(count=Count("skills")).filter(count=len(titles))
+
+        for title in titles:
+            queryset = queryset.filter(skills__title=title)
+        return queryset
