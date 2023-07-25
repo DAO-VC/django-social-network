@@ -9,6 +9,7 @@ from offer.permissions import OfferStartupCandidatesPermission
 from offer.serializers.candidate import (
     CandidateStartupCreateSerializer,
     CandidateStartupBaseSerializer,
+    InvestCandidateFavoriteSerializer,
 )
 from offer.serializers.offer import (
     ConfirmOfferSerializer,
@@ -96,12 +97,13 @@ class InvestorConfirmedStartupsList(generics.ListAPIView):
 class StartupConfirmedList(generics.ListAPIView):
     """Список всех инвесторов стартапа"""
 
-    serializer_class = ConfirmedOfferStartupSerializer
+    serializer_class = CandidateStartupBaseSerializer
     permission_classes = (IsAuthenticated, StartupCreatePermission)
 
     def get_queryset(self):
-        return ConfirmedOffer.objects.filter(
+        return CandidateStartup.objects.filter(
             startup_id__owner=self.request.user,
+            accept_status=CandidateStartup.AcceptStatus.ACCEPT,
         )
 
 
@@ -114,3 +116,36 @@ class StartupConfirmedRetrieveDeleteView(generics.RetrieveDestroyAPIView):
         return ConfirmedOffer.objects.filter(
             investor_id__owner=self.request.user,
         )
+
+
+class StartupMyApplications(generics.ListAPIView):
+    """Список всех заявок стартапа на инвестиции"""
+
+    serializer_class = CandidateStartupBaseSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return CandidateStartup.objects.filter(
+            startup_id__owner=self.request.user,
+        )
+
+
+class OfferFavoriteCandidates(generics.ListAPIView):
+    """Список всех фаворитов кандидатов инвестора"""
+
+    serializer_class = CandidateStartupBaseSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return CandidateStartup.objects.filter(
+            offer_id__investor_id__owner=self.request.user, is_favorite=True
+        )
+
+
+class InvestCandidateFavoriteRetrieveView(generics.UpdateAPIView):
+    """Добавление | удаление кандидата в фавориты"""
+
+    serializer_class = InvestCandidateFavoriteSerializer
+    http_method_names = ["put"]
+    permission_classes = (OfferStartupCandidatesPermission,)
+    queryset = CandidateStartup.objects.all()

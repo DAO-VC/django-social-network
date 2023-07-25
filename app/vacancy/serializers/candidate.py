@@ -108,7 +108,7 @@ class StartupApproveCandidateSerializer(serializers.ModelSerializer):
 
 
 class CandidateFavoriteSerializer(serializers.ModelSerializer):
-    """Сериализатор изменения видимости вакансии"""
+    """Сериализатор изменения статуса is_favorite кандидата"""
 
     class Meta:
         model = Candidate

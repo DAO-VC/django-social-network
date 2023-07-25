@@ -1,14 +1,15 @@
 from django.urls import path
 
 from offer.views.candidate import (
-    OfferStartupCandidates,
-    OfferRetrieveStartupCandidates,
     ListAllOfferCandidates,
     ConfirmOfferView,
     InvestorConfirmedStartupsList,
     StartupConfirmedRetrieveDeleteView,
     StartupCandidateCreateView,
     StartupConfirmedList,
+    StartupMyApplications,
+    OfferFavoriteCandidates,
+    InvestCandidateFavoriteRetrieveView,
 )
 from offer.views.offer import (
     OfferListCreateView,
@@ -35,16 +36,16 @@ urlpatterns = [
         OfferVisibleRetrieveView.as_view(),
         name="visible_retrieve_offer",
     ),
-    path(
-        "main/offers/candidates/",
-        OfferStartupCandidates.as_view(),
-        name="all_startups_candidates_to_investor",
-    ),
-    path(
-        "main/offers/candidates/<int:pk>/",
-        OfferRetrieveStartupCandidates.as_view(),
-        name="retrieve_delete_startup_candidate_to_offer",
-    ),
+    # path(
+    #     "main/offers/candidates/",
+    #     OfferStartupCandidates.as_view(),
+    #     name="all_startups_candidates_to_investor",
+    # ),
+    # path(
+    #     "main/offers/candidates/<int:pk>/",
+    #     OfferRetrieveStartupCandidates.as_view(),
+    #     name="retrieve_delete_startup_candidate_to_offer",
+    # ),
     path(
         "main/offers/<int:pk>/candidates/",
         ListAllOfferCandidates.as_view(),
@@ -82,8 +83,23 @@ urlpatterns = [
         name="apply_startup_to_offer",
     ),
     path(
-        "main/startup/investors/",
+        "main/startup/investments/",
         StartupConfirmedList.as_view(),
         name="all_startup_investors_list",
+    ),
+    path(
+        "main/startup/applications/",
+        StartupMyApplications.as_view(),
+        name="all_startup_applications_list",
+    ),
+    path(
+        "main/investor/favorites/",
+        OfferFavoriteCandidates.as_view(),
+        name="all_favorites_to_investor",
+    ),
+    path(
+        "main/investor/candidates/<int:pk>/favorite/",
+        InvestCandidateFavoriteRetrieveView.as_view(),
+        name="add/remove_offer_candidate_to_favorite",
     ),
 ]

@@ -1,23 +1,23 @@
 from django.db import models
 from django_extensions.db.fields import CreationDateTimeField
-
 from profiles.models.investor import Investor
-from profiles.models.other_models import Industries
 from profiles.models.startup import Startup
+from vacancy.models.vacancy import Skill
 
 
 class Offer(models.Model):
     """Сущность оффера инвестора"""
 
     investor_id = models.ForeignKey(Investor, models.CASCADE, verbose_name="Владелец")
+    caption = models.CharField("Заголовок", max_length=128)
     amount = models.IntegerField(verbose_name="Кол-во инвестиций")
     industries = models.ManyToManyField(
-        Industries,
+        Skill,
         verbose_name="Индустрии",
         blank=True,
         related_name="offer_industries",
     )
-    details = models.TextField("Детали")
+    offer_information = models.TextField("Информация о офере")
     is_visible = models.BooleanField(verbose_name="Активен")
     # TODO: article?
     created_at = CreationDateTimeField(verbose_name="Дата создания")

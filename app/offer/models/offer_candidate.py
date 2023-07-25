@@ -16,6 +16,8 @@ class CandidateStartup(models.Model):
     accept_status = models.CharField(
         "Статус", choices=AcceptStatus.choices, max_length=50, null=True, blank=True
     )
+    about = models.TextField("Обо мне")
+    is_favorite = models.BooleanField(verbose_name="В избранных")
     created_at = CreationDateTimeField(verbose_name="Дата создания")
 
     class Meta:
@@ -23,3 +25,12 @@ class CandidateStartup(models.Model):
             "startup_id",
             "offer_id",
         )
+
+    def __str__(self):
+        return f"{self.id} - Кандидат"
+
+    def change_favorite(self):
+        if self.is_favorite:
+            self.is_favorite = False
+        else:
+            self.is_favorite = True

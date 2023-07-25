@@ -6,6 +6,7 @@ from offer.models.offer_candidate import CandidateStartup
 from profiles.models.investor import Investor
 from profiles.serializers.investor import InvestorSerializer
 from profiles.serializers.startup import StartupSerializer
+from vacancy.models.vacancy import Skill
 
 
 class OfferBaseSerializer(serializers.ModelSerializer):
@@ -23,7 +24,12 @@ class OfferCreateSerializer(serializers.ModelSerializer):
     """Сериализатор создания офера"""
 
     investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
-    is_visible = serializers.BooleanField(read_only=True)
+    industries = serializers.SlugRelatedField(
+        many=True, slug_field="title", read_only=True
+    )
+    update_industries = serializers.ListField(
+        child=serializers.CharField(max_length=50), write_only=True
+    )
 
     class Meta:
         model = Offer
@@ -34,29 +40,42 @@ class OfferCreateSerializer(serializers.ModelSerializer):
             owner=self.context["request"].user
         ).first()
 
-        industries = validated_data.pop("industries")
-        if len(industries) < 1:
-            raise ValidationError("Минимум одина индустрия")
+        industries_titles = validated_data.pop("update_industries")
         with transaction.atomic():
             offer = Offer.objects.create(
-                **validated_data, investor_id=investor, is_visible=True
+                **validated_data,
+                investor_id=investor,
             )
-            offer.industries.set(industries)
-
+            update_industries = []
+            for title in industries_titles:
+                industries, created = Skill.objects.get_or_create(title=title)
+                update_industries.append(industries)
+        offer.industries.set(update_industries)
         return offer
 
 
 class OfferUpdateSerializer(serializers.ModelSerializer):
     """Сериализатор обновления офера"""
 
+    industries = serializers.SlugRelatedField(
+        many=True, slug_field="title", read_only=True
+    )
+    update_industries = serializers.ListField(
+        child=serializers.CharField(max_length=54), write_only=True
+    )
+
     class Meta:
         model = Offer
         exclude = ("investor_id",)
 
-    def update(self, instance, validated_data):
-        industries = validated_data.pop("industries")
-        if len(industries) > 0:
-            instance.industries.set(industries)
+    def update(self, instance: Offer, validated_data):
+        industries_titles = validated_data.pop("update_industries")
+        with transaction.atomic():
+            new_industries = []
+            for title in industries_titles:
+                industries, created = Skill.objects.get_or_create(title=title)
+                new_industries.append(industries)
+        instance.industries.set(new_industries)
         return super().update(instance, validated_data)
 
 
@@ -71,8 +90,9 @@ class OfferVisibleSerializer(serializers.ModelSerializer):
             "amount",
             "industries",
             "is_visible",
-            "details",
+            "offer_information",
             "created_at",
+            "caption",
         )
 
     def update(self, instance: Offer, validated_data):
@@ -95,6 +115,8 @@ class ConfirmOfferSerializer(serializers.ModelSerializer):
             "offer_id",
             "accept_status",
             "created_at",
+            "about",
+            "is_favorite",
         )
 
     def update(self, instance: CandidateStartup, validated_data):

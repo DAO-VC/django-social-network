@@ -42,8 +42,30 @@ class CandidateStartupCreateSerializer(serializers.ModelSerializer):
                 offer_id=offer,
                 startup_id=startup,
                 accept_status=CandidateStartup.AcceptStatus.PENDING_FOR_APPROVAL,
+                is_favorite=False,
             )
         except IntegrityError:
             raise ValidationError("Вы уже подались на эту вакансию")
 
         return startup_candidate
+
+
+class InvestCandidateFavoriteSerializer(serializers.ModelSerializer):
+    """Сериализатор изменения статуса is_favorite кандидата"""
+
+    class Meta:
+        model = CandidateStartup
+        fields = "__all__"
+        read_only_fields = (
+            "startup_id",
+            "offer_id",
+            "accept_status",
+            "about",
+            "created_at",
+            "is_favorite",
+        )
+
+    def update(self, instance: CandidateStartup, validated_data):
+        instance.change_favorite()
+        instance.save()
+        return super().update(instance, validated_data)
