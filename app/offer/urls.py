@@ -10,6 +10,8 @@ from offer.views.candidate import (
     StartupMyApplications,
     OfferFavoriteCandidates,
     InvestCandidateFavoriteRetrieveView,
+    OfferRetrieveStartupCandidates,
+    StartupMyApplicationsRetrieveView,
 )
 from offer.views.offer import (
     OfferListCreateView,
@@ -41,11 +43,11 @@ urlpatterns = [
     #     OfferStartupCandidates.as_view(),
     #     name="all_startups_candidates_to_investor",
     # ),
-    # path(
-    #     "main/offers/candidates/<int:pk>/",
-    #     OfferRetrieveStartupCandidates.as_view(),
-    #     name="retrieve_delete_startup_candidate_to_offer",
-    # ),
+    path(
+        "main/offers/candidates/<int:pk>/",
+        OfferRetrieveStartupCandidates.as_view(),
+        name="retrieve_delete_startup_candidate_to_offer",
+    ),
     path(
         "main/offers/<int:pk>/candidates/",
         ListAllOfferCandidates.as_view(),
@@ -91,6 +93,11 @@ urlpatterns = [
         "main/startup/applications/",
         StartupMyApplications.as_view(),
         name="all_startup_applications_list",
+    ),
+    path(
+        "main/startup/applications/<int:pk>/",
+        StartupMyApplicationsRetrieveView.as_view(),
+        name="retrieve_applications_startup",
     ),
     path(
         "main/investor/favorites/",

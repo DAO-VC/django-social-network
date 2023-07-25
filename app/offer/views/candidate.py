@@ -5,7 +5,10 @@ from rest_framework.permissions import IsAuthenticated
 from core.permissions import StartupCreatePermission
 from offer.models.offer import ConfirmedOffer
 from offer.models.offer_candidate import CandidateStartup
-from offer.permissions import OfferStartupCandidatesPermission
+from offer.permissions import (
+    OfferStartupCandidatesPermission,
+    StartupMyApplicationsPermission,
+)
 from offer.serializers.candidate import (
     CandidateStartupCreateSerializer,
     CandidateStartupBaseSerializer,
@@ -123,6 +126,19 @@ class StartupMyApplications(generics.ListAPIView):
 
     serializer_class = CandidateStartupBaseSerializer
     permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return CandidateStartup.objects.filter(
+            startup_id__owner=self.request.user,
+        )
+
+
+class StartupMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
+    """Получение | удаление заявки профессионала по id"""
+
+    serializer_class = CandidateStartupBaseSerializer
+    http_method_names = ["get", "delete"]
+    permission_classes = (IsAuthenticated, StartupMyApplicationsPermission)
 
     def get_queryset(self):
         return CandidateStartup.objects.filter(

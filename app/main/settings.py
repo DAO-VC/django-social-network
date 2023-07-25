@@ -198,8 +198,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.dao.vc/",
 ]
 
-# TODO : Пермишн на все ручки добавить
-
 
 LOGS_DIR = BASE_DIR / env.str("ENV_APP_LOGS_PATH", "logs")
 MIN_LOGGING_LEVEL = env.str("ENV_LOG_LEVEL", "INFO")
