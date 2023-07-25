@@ -80,3 +80,14 @@ class ProfessionalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Professional
         fields = "__all__"
+
+
+class ProfessionalInWorkTeamSerializer(serializers.ModelSerializer):
+    """Базовый сериализатор профессионала"""
+
+    photo = ImageSerializer(read_only=True)
+    cv = FileSerializer(read_only=True)
+
+    class Meta:
+        model = Professional
+        fields = ["id", "name", "lastName", "photo", "cv"]

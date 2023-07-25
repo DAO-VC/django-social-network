@@ -7,7 +7,10 @@ from django.db.utils import IntegrityError
 from core.models import User
 from profiles.models.professional import Professional
 from profiles.models.startup import Startup
-from profiles.serializers.professional import ProfessionalSerializer
+from profiles.serializers.professional import (
+    ProfessionalSerializer,
+    ProfessionalInWorkTeamSerializer,
+)
 from vacancy.models.candidate import Candidate
 from vacancy.models.vacancy import Vacancy
 from vacancy.models.workteam import WorkTeam
@@ -124,3 +127,11 @@ class CandidateFavoriteSerializer(serializers.ModelSerializer):
         instance.change_favorite()
         instance.save()
         return super().update(instance, validated_data)
+
+
+class CandidateWorkTeamSerializer(serializers.ModelSerializer):
+    professional_id = ProfessionalInWorkTeamSerializer()
+
+    class Meta:
+        model = Candidate
+        fields = "__all__"

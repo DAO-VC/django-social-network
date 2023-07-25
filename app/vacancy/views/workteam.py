@@ -2,13 +2,14 @@ from django.db.models import Q
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from profiles.models.startup import Startup
-from profiles.serializers.startup import StartupSerializer
 from vacancy.models.candidate import Candidate
 from vacancy.models.workteam import WorkTeam
 from vacancy.permissions import (
     StartupWorkTeamPermission,
     StartupWorkTeamUpdatePermission,
+    ProfessionalMyApplicationsPermission,
 )
+from vacancy.serializers.candidate import CandidateBaseSerializer
 from vacancy.serializers.workteam import (
     WorkTeamBaseSerializer,
     WorkTeamUpdatePermissionsSerializer,
@@ -64,13 +65,26 @@ class StartupWorkTeamRetrieveDelete(generics.RetrieveUpdateDestroyAPIView):
         super().perform_destroy(instance)
 
 
-class ProfessionalWorkView(generics.ListAPIView):
-    """Отображение рабочего стартапа профессионала"""
+# class ProfessionalWorkView(generics.ListAPIView):
+#     """Отображение рабочего стартапа профессионала"""
+#
+#     serializer_class = StartupSerializer
+#     permission_classes = (IsAuthenticated,)
+#
+#     def get_queryset(self):
+#         return Startup.objects.filter(
+#             work_team__candidate_id__professional_id__owner=self.request.user.id
+#         )
 
-    serializer_class = StartupSerializer
-    permission_classes = (IsAuthenticated,)
+
+class ProfessionalWorkView(generics.ListAPIView):
+    """Отображение работы профессионала"""
+
+    serializer_class = CandidateBaseSerializer
+    permission_classes = (IsAuthenticated, ProfessionalMyApplicationsPermission)
 
     def get_queryset(self):
-        return Startup.objects.filter(
-            work_team__candidate_id__professional_id__owner=self.request.user.id
+        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
+            professional_id__owner_id=self.request.user.id,
+            accept_status=Candidate.AcceptStatus.IN_THE_TEAM,
         )

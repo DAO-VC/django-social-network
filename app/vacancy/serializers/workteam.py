@@ -1,10 +1,12 @@
 from rest_framework import serializers
-
 from vacancy.models.workteam import WorkTeam
+from vacancy.serializers.candidate import CandidateWorkTeamSerializer
 
 
 class WorkTeamBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор участника команды"""
+
+    candidate_id = CandidateWorkTeamSerializer()
 
     class Meta:
         model = WorkTeam
