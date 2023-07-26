@@ -1,7 +1,9 @@
-from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
 
 from core.permissions import InvestorCreatePermission
+from offer.filters import OfferModelFilter
 from offer.models.offer import Offer
 from offer.permissions import OfferVisiblePermission
 from offer.serializers.offer import (
@@ -39,6 +41,14 @@ class AllOffersList(generics.ListAPIView):
     """Список всех офферов платформы"""
 
     serializer_class = OfferBaseSerializer
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_class = OfferModelFilter
+    ordering_fields = ["investor_id", "created_at"]
+    search_fields = ("amount", "offer_information", "caption", "investor_id")
 
     def get_queryset(self):
         return Offer.objects.filter(is_visible=True)
