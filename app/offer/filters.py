@@ -23,7 +23,7 @@ class OfferModelFilter(django_filters.FilterSet):
 
     def salary_filter(self, queryset, name, value):
         match value:
-            case "Less then 1000":
+            case "less_then_1000":
                 return queryset.filter(amount__lt=1000)
 
             case "1000–3000":
@@ -35,7 +35,7 @@ class OfferModelFilter(django_filters.FilterSet):
             case "5001-7000":
                 return queryset.filter(amount__lte=7000, amount__gte=5001)
 
-            case "More then 7000":
+            case "more_then_7000":
                 return queryset.filter(amount__gte=7001)
 
             case _:
