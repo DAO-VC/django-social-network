@@ -6,14 +6,15 @@ from offer.models.offer import Offer
 from offer.models.offer_candidate import CandidateStartup
 from offer.serializers.offer import OfferBaseSerializer
 from profiles.models.startup import Startup
-from profiles.serializers.startup import StartupSerializer
+from profiles.serializers.startup import StartupSerializer, StartupToArticleSerializer
 
 
 class CandidateStartupBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор кандидата на оффер"""
 
     # startup_id = serializers.PrimaryKeyRelatedField(read_only=True)
-    startup_id = StartupSerializer(read_only=True)
+    # startup_id = StartupSerializer(read_only=True)
+    startup_id = StartupToArticleSerializer(read_only=True)
     # offer_id = serializers.PrimaryKeyRelatedField(read_only=True)
     offer_id = OfferBaseSerializer(read_only=True)
     accept_status = serializers.CharField(read_only=True)

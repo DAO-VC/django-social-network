@@ -88,12 +88,20 @@ class ConfirmOfferView(generics.UpdateAPIView):
 class InvestorConfirmedStartupsList(generics.ListAPIView):
     """Список всех инвестируемых проектов инвестора"""
 
-    serializer_class = ConfirmedOfferInvestorSerializer
-    permission_classes = (OfferStartupCandidatesPermission,)
+    # serializer_class = ConfirmedOfferInvestorSerializer
+    # permission_classes = (OfferStartupCandidatesPermission,)
+    #
+    # def get_queryset(self):
+    #     return ConfirmedOffer.objects.filter(
+    #         investor_id__owner=self.request.user,
+    #     )
+    serializer_class = CandidateStartupBaseSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return ConfirmedOffer.objects.filter(
-            investor_id__owner=self.request.user,
+        return CandidateStartup.objects.filter(
+            offer_id__investor_id__owner=self.request.user,
+            accept_status=CandidateStartup.AcceptStatus.ACCEPT,
         )
 
 
