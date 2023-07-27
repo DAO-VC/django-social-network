@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from profiles.serializers.startup import StartupToArticleSerializer
 from vacancy.models.workteam import WorkTeam
 from vacancy.serializers.candidate import CandidateWorkTeamSerializer
 
@@ -7,6 +9,7 @@ class WorkTeamBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор участника команды"""
 
     candidate_id = CandidateWorkTeamSerializer()
+    startup_id = StartupToArticleSerializer()
 
     class Meta:
         model = WorkTeam
