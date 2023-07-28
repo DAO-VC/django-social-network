@@ -11,7 +11,7 @@
     "model": "profiles.industries",
     "pk": 2,
     "fields": {
-      "title": "analytics_big_data",
+      "title": "analytics_&_big_data",
       "type": "other"
     }
   },
@@ -19,7 +19,7 @@
     "model": "profiles.industries",
     "pk": 3,
     "fields": {
-      "title": "artificial_intelligence_learning",
+      "title": "artificial_intelligence_&_learning",
       "type": "other"
     }
   },
@@ -52,7 +52,7 @@
     "model": "profiles.industries",
     "pk": 7,
     "fields": {
-      "title": "clothing_fashion",
+      "title": "clothing_&_fashion",
       "type": "other"
     }
   },
@@ -60,7 +60,7 @@
     "model": "profiles.industries",
     "pk": 8,
     "fields": {
-      "title": "communications_media",
+      "title": "communications_&_media",
       "type": "other"
     }
   },
@@ -101,7 +101,7 @@
     "model": "profiles.industries",
     "pk": 13,
     "fields": {
-      "title": "e-commerce_online_marketplaces",
+      "title": "e-commerce_&_online_marketplaces",
       "type": "other"
     }
   },
@@ -125,7 +125,7 @@
     "model": "profiles.industries",
     "pk": 16,
     "fields": {
-      "title": "finance_insurance",
+      "title": "finance_&_insurance",
       "type": "other"
     }
   },
@@ -133,7 +133,7 @@
     "model": "profiles.industries",
     "pk": 17,
     "fields": {
-      "title": "food_nutrition",
+      "title": "food_&_nutrition",
       "type": "other"
     }
   },
@@ -149,7 +149,7 @@
     "model": "profiles.industries",
     "pk": 19,
     "fields": {
-      "title": "health_wellbeing",
+      "title": "health_&_wellbeing",
       "type": "other"
     }
   },
@@ -165,7 +165,7 @@
     "model": "profiles.industries",
     "pk": 21,
     "fields": {
-      "title": "manufacturing_materials",
+      "title": "manufacturing_&_materials",
       "type": "other"
     }
   },
@@ -173,7 +173,7 @@
     "model": "profiles.industries",
     "pk": 22,
     "fields": {
-      "title": "marketing_adTech",
+      "title": "marketing_&_adtech",
       "type": "other"
     }
   },
@@ -181,7 +181,7 @@
     "model": "profiles.industries",
     "pk": 23,
     "fields": {
-      "title": "medtech_pharma",
+      "title": "medtech_&_pharma",
       "type": "other"
     }
   },
@@ -205,7 +205,7 @@
     "model": "profiles.industries",
     "pk": 26,
     "fields": {
-      "title": "music_entertainment",
+      "title": "music_&_entertainment",
       "type": "other"
     }
   },
@@ -221,7 +221,7 @@
     "model": "profiles.industries",
     "pk": 28,
     "fields": {
-      "title": "property_construction_tech",
+      "title": "property_&_construction_tech",
       "type": "other"
     }
   },
@@ -245,7 +245,7 @@
     "model": "profiles.industries",
     "pk": 31,
     "fields": {
-      "title": "social_media_messaging",
+      "title": "social_media_&_messaging",
       "type": "other"
     }
   },

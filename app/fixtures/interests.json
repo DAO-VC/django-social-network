@@ -10,14 +10,14 @@
     "model": "articles.tag",
     "pk": 2,
     "fields": {
-      "title": "analytics_big_data"
+      "title": "analytics_&_big_data"
     }
   },
   {
     "model": "articles.tag",
     "pk": 3,
     "fields": {
-      "title": "artificial_intelligence_learning"
+      "title": "artificial_intelligence_&_learning"
     }
   },
   {
@@ -46,14 +46,14 @@
     "model": "articles.tag",
     "pk": 7,
     "fields": {
-      "title": "clothing_fashion"
+      "title": "clothing_&_fashion"
     }
   },
   {
     "model": "articles.tag",
     "pk": 8,
     "fields": {
-      "title": "communications_media"
+      "title": "communications_&_media"
     }
   },
   {
@@ -89,7 +89,7 @@
     "model": "articles.tag",
     "pk": 13,
     "fields": {
-      "title": "e-commerce_online_marketplaces"
+      "title": "e-commerce_&_online_marketplaces"
     }
   },
   {
@@ -110,14 +110,14 @@
     "model": "articles.tag",
     "pk": 16,
     "fields": {
-      "title": "finance_insurance"
+      "title": "finance_&_insurance"
     }
   },
   {
     "model": "articles.tag",
     "pk": 17,
     "fields": {
-      "title": "food_nutrition"
+      "title": "food_&_nutrition"
     }
   },
   {
@@ -131,7 +131,7 @@
     "model": "articles.tag",
     "pk": 19,
     "fields": {
-      "title": "health_wellbeing"
+      "title": "health_&_wellbeing"
     }
   },
   {
@@ -145,21 +145,21 @@
     "model": "articles.tag",
     "pk": 21,
     "fields": {
-      "title": "manufacturing_materials"
+      "title": "manufacturing_&_materials"
     }
   },
   {
     "model": "articles.tag",
     "pk": 22,
     "fields": {
-      "title": "marketing_adTech"
+      "title": "marketing_&_adtech"
     }
   },
   {
     "model": "articles.tag",
     "pk": 23,
     "fields": {
-      "title": "medtech_pharma"
+      "title": "medtech_&_pharma"
     }
   },
   {
@@ -180,7 +180,7 @@
     "model": "articles.tag",
     "pk": 26,
     "fields": {
-      "title": "music_entertainment"
+      "title": "music_&_entertainment"
     }
   },
   {
@@ -194,7 +194,7 @@
     "model": "articles.tag",
     "pk": 28,
     "fields": {
-      "title": "property_construction_tech"
+      "title": "property_&_construction_tech"
     }
   },
   {
@@ -215,7 +215,7 @@
     "model": "articles.tag",
     "pk": 31,
     "fields": {
-      "title": "social_media_messaging"
+      "title": "social_media_&_messaging"
     }
   },
   {
