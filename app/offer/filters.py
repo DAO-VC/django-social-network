@@ -33,7 +33,7 @@ class OfferModelFilter(django_filters.FilterSet):
                 return queryset.filter(amount__lt=1000)
 
             case "1000-3000":
-                return queryset.filter(amount__lte=3000, amount__gte=1001)
+                return queryset.filter(amount__lte=3000, amount__gte=1000)
 
             case "3001-5000":
                 return queryset.filter(amount__lte=5000, amount__gte=3001)
