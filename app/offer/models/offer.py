@@ -32,7 +32,7 @@ class ConfirmedOffer(models.Model):
 
     startup_id = models.ForeignKey(Startup, models.CASCADE)
     investor_id = models.ForeignKey(Investor, models.CASCADE)
-    offer_id = models.ForeignKey(Offer, models.CASCADE, null=True)
+    offer_id = models.ForeignKey(Offer, models.SET_NULL, null=True)
 
     class Meta:
         unique_together = (
