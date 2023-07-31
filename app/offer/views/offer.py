@@ -58,9 +58,11 @@ class AllOffersRetrieve(generics.RetrieveAPIView):
     """Детальный вывод оффера платформы по id"""
 
     serializer_class = OfferBaseSerializer
+    queryset = Offer.objects.all()
+    permission_classes = (OfferVisiblePermission,)
 
-    def get_queryset(self):
-        return Offer.objects.filter(is_visible=True)
+    # def get_queryset(self):
+    #     return Offer.objects.filter(is_visible=True)
 
 
 class OfferVisibleRetrieveView(generics.UpdateAPIView):

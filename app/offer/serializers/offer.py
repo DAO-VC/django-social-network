@@ -7,6 +7,7 @@ from profiles.models.investor import Investor
 from profiles.serializers.investor import InvestorSerializer
 from profiles.serializers.startup import StartupSerializer
 from vacancy.models.vacancy import Skill
+from django.db.utils import IntegrityError
 
 
 class OfferBaseSerializer(serializers.ModelSerializer):
@@ -14,6 +15,9 @@ class OfferBaseSerializer(serializers.ModelSerializer):
 
     # investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
     investor_id = InvestorSerializer(read_only=True)
+    industries = serializers.SlugRelatedField(
+        many=True, slug_field="title", read_only=True
+    )
 
     class Meta:
         model = Offer
@@ -122,10 +126,16 @@ class ConfirmOfferSerializer(serializers.ModelSerializer):
     def update(self, instance: CandidateStartup, validated_data):
         instance.accept_status = CandidateStartup.AcceptStatus.ACCEPT
         instance.save()
-        new_confirmed_offer = ConfirmedOffer(
-            startup_id=instance.startup_id, investor_id=instance.offer_id.investor_id
-        )
-        new_confirmed_offer.save()
+        try:
+            ConfirmedOffer.objects.create(
+                startup_id=instance.startup_id,
+                investor_id=instance.offer_id.investor_id,
+            )
+        except IntegrityError:
+            raise ValidationError(
+                f"This startup already in confirmed offers  Investor {instance.offer_id.investor_id}"
+            )
+
         return super().update(instance, validated_data)
 
 

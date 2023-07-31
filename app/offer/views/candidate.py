@@ -41,6 +41,7 @@ class ListAllOfferCandidates(generics.ListAPIView):
     ]
     filterset_fields = ["id", "accept_status"]
     ordering_fields = ["accept_status", "created_at"]
+    search_fields = ("about", "startup_id__name")
 
     def get_queryset(self):
         return CandidateStartup.objects.filter(offer_id=self.kwargs["pk"])

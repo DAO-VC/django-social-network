@@ -15,10 +15,12 @@ class OfferModelFilter(django_filters.FilterSet):
     def industries_by_title(self, queryset, name, value):
         titles = value.split(",")  # Разбиваем список значений по запятой
 
-        queryset = queryset.annotate(count=Count("skills")).filter(count=len(titles))
+        queryset = queryset.annotate(count=Count("industries")).filter(
+            count=len(titles)
+        )
 
         for title in titles:
-            queryset = queryset.filter(skills__title=title)
+            queryset = queryset.filter(industries__title=title)
         return queryset
 
     def salary_filter(self, queryset, name, value):
