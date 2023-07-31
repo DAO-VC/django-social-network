@@ -68,7 +68,7 @@ class AllOffersRetrieve(generics.RetrieveAPIView):
 
     serializer_class = OfferBaseSerializer
     queryset = Offer.objects.all()
-    permission_classes = (OfferVisiblePermission,)
+    # permission_classes = (OfferVisiblePermission,)
 
     # def get_queryset(self):
     #     return Offer.objects.filter(is_visible=True)

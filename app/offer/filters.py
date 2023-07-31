@@ -25,7 +25,7 @@ class OfferModelFilter(django_filters.FilterSet):
     def industries_by_title(self, queryset, name, value):
         titles = value.split(",")  # Разбиваем список значений по запятой
 
-        return queryset.filter(industries__title__in=titles)
+        return queryset.filter(industries__title__in=titles).distinct()
 
     def salary_filter(self, queryset, name, value):
         match value:

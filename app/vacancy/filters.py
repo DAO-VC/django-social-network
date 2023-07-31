@@ -23,4 +23,4 @@ class VacancyModelFilter(django_filters.FilterSet):
     def skills_by_title(self, queryset, name, value):
         titles = value.split(",")  # Разбиваем список значений по запятой
 
-        return queryset.filter(skills__title__in=titles)
+        return queryset.filter(skills__title__in=titles).distinct()
