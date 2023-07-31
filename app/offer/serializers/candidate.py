@@ -30,6 +30,7 @@ class CandidateStartupCreateSerializer(serializers.ModelSerializer):
     startup_id = serializers.PrimaryKeyRelatedField(read_only=True)
     offer_id = serializers.PrimaryKeyRelatedField(read_only=True)
     accept_status = serializers.CharField(read_only=True)
+    is_favorite = serializers.CharField(read_only=True)
 
     class Meta:
         model = CandidateStartup

@@ -129,6 +129,14 @@ class StartupConfirmedRetrieveDeleteView(generics.RetrieveDestroyAPIView):
             investor_id__owner=self.request.user,
         )
 
+    def perform_destroy(self, instance: ConfirmedOffer):
+        candidate = CandidateStartup.objects.filter(
+            startup_id=instance.startup_id.id, offer_id=instance.offer_id.id
+        ).first()
+        candidate.accept_status = CandidateStartup.AcceptStatus.CONCLUDED
+        candidate.save()
+        super().perform_destroy(instance)
+
 
 class StartupMyApplications(generics.ListAPIView):
     """Список всех заявок стартапа на инвестиции"""
@@ -143,7 +151,7 @@ class StartupMyApplications(generics.ListAPIView):
 
 
 class StartupMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
-    """Получение | удаление заявки профессионала по id"""
+    """Получение | удаление заявки стартапа по id"""
 
     serializer_class = CandidateStartupBaseSerializer
     http_method_names = ["get", "delete"]

@@ -130,6 +130,7 @@ class ConfirmOfferSerializer(serializers.ModelSerializer):
             ConfirmedOffer.objects.create(
                 startup_id=instance.startup_id,
                 investor_id=instance.offer_id.investor_id,
+                offer_id=instance.offer_id,
             )
         except IntegrityError:
             raise ValidationError(
@@ -141,6 +142,7 @@ class ConfirmOfferSerializer(serializers.ModelSerializer):
 
 class ConfirmedOfferInvestorSerializer(serializers.ModelSerializer):
     startup_id = StartupSerializer(read_only=True)
+    offer_id = OfferBaseSerializer(read_only=True)
 
     class Meta:
         model = ConfirmedOffer
@@ -149,6 +151,7 @@ class ConfirmedOfferInvestorSerializer(serializers.ModelSerializer):
 
 class ConfirmedOfferStartupSerializer(serializers.ModelSerializer):
     investor_id = InvestorSerializer(read_only=True)
+    offer_id = OfferBaseSerializer(read_only=True)
 
     class Meta:
         model = ConfirmedOffer
