@@ -12,16 +12,20 @@ class OfferModelFilter(django_filters.FilterSet):
         model = Offer
         fields = ["industries", "salary"]
 
+    # def industries_by_title(self, queryset, name, value):
+    #     titles = value.split(",")  # Разбиваем список значений по запятой
+    #
+    #     queryset = queryset.annotate(count=Count("industries")).filter(
+    #         count=len(titles)
+    #     )
+    #
+    #     for title in titles:
+    #         queryset = queryset.filter(industries__title=title)
+    #     return queryset
     def industries_by_title(self, queryset, name, value):
         titles = value.split(",")  # Разбиваем список значений по запятой
 
-        queryset = queryset.annotate(count=Count("industries")).filter(
-            count=len(titles)
-        )
-
-        for title in titles:
-            queryset = queryset.filter(industries__title=title)
-        return queryset
+        return queryset.filter(industries__title__in=titles)
 
     def salary_filter(self, queryset, name, value):
         match value:

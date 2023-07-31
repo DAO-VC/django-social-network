@@ -14,6 +14,7 @@ class OfferBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор оффера"""
 
     # investor_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    total_candidates = serializers.SerializerMethodField(read_only=True)
     investor_id = InvestorSerializer(read_only=True)
     industries = serializers.SlugRelatedField(
         many=True, slug_field="title", read_only=True
@@ -22,6 +23,11 @@ class OfferBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
         fields = "__all__"
+
+    def get_total_candidates(self, instance: Offer):
+        return instance.offer_to_candidate.filter(
+            accept_status=CandidateStartup.AcceptStatus.PENDING_FOR_APPROVAL,
+        ).count()
 
 
 class OfferCreateSerializer(serializers.ModelSerializer):

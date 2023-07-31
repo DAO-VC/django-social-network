@@ -11,8 +11,12 @@ class CandidateStartup(models.Model):
         PENDING_FOR_APPROVAL = "pendingforapproval", "Подал заявку"
         ACCEPT = "accept", "Подтвержден"
 
-    startup_id = models.ForeignKey(Startup, models.CASCADE)
-    offer_id = models.ForeignKey(Offer, models.CASCADE)
+    startup_id = models.ForeignKey(
+        Startup, models.CASCADE, related_name="startup_to_offer"
+    )
+    offer_id = models.ForeignKey(
+        Offer, models.CASCADE, related_name="offer_to_candidate"
+    )
 
     accept_status = models.CharField(
         "Статус", choices=AcceptStatus.choices, max_length=50, null=True, blank=True

@@ -17,12 +17,21 @@ from offer.serializers.offer import (
 class OfferListCreateView(generics.ListCreateAPIView):
     """Список всех оферов инвестора | создание офера"""
 
-    serializer_class = OfferCreateSerializer
-
     permission_classes = (IsAuthenticated, InvestorCreatePermission)
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    ordering_fields = ["created_at"]
 
     def get_queryset(self):
         return Offer.objects.filter(investor_id__owner=self.request.user.id)
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return OfferCreateSerializer
+        return OfferBaseSerializer
 
 
 class OfferRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
@@ -78,6 +87,12 @@ class InvestorAllOffers(generics.ListAPIView):
     """Список всех офферов инвестора по id"""
 
     serializer_class = OfferBaseSerializer
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    ordering_fields = ["created_at"]
 
     # permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
 
