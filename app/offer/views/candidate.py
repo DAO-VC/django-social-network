@@ -17,7 +17,6 @@ from offer.serializers.candidate import (
 from offer.serializers.offer import (
     ConfirmOfferSerializer,
     ConfirmedOfferInvestorSerializer,
-    ConfirmedOfferStartupSerializer,
 )
 
 
@@ -74,6 +73,11 @@ class OfferRetrieveStartupCandidates(generics.RetrieveDestroyAPIView):
         return CandidateStartup.objects.filter(
             offer_id__investor_id__owner=self.request.user
         )
+
+    def perform_destroy(self, instance: CandidateStartup):
+        instance.accept_status = CandidateStartup.AcceptStatus.DECLINE
+        instance.save()
+        return instance
 
 
 class ConfirmOfferView(generics.UpdateAPIView):
