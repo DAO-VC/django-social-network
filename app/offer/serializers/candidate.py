@@ -45,6 +45,7 @@ class CandidateStartupCreateSerializer(serializers.ModelSerializer):
                 startup_id=startup,
                 accept_status=CandidateStartup.AcceptStatus.PENDING_FOR_APPROVAL,
                 is_favorite=False,
+                **validated_data
             )
         except IntegrityError:
             raise ValidationError("Вы уже подались на эту вакансию")

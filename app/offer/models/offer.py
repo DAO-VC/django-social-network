@@ -37,7 +37,7 @@ class ConfirmedOffer(models.Model):
     class Meta:
         unique_together = (
             "startup_id",
-            "investor_id",
+            "offer_id",
         )
         verbose_name = "Подтвержденный офер"
         verbose_name_plural = "Подтвержденные оферы"
