@@ -146,6 +146,7 @@ class StartupConfirmedRetrieveDeleteView(generics.RetrieveDestroyAPIView):
     def get_queryset(self):
         return CandidateStartup.objects.filter(
             offer_id__investor_id__owner=self.request.user,
+            accept_status=CandidateStartup.AcceptStatus.ACCEPT,
         )
 
     def perform_destroy(self, instance: CandidateStartup):
