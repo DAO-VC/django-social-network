@@ -131,18 +131,29 @@ class StartupConfirmedRetrieveDeleteView(generics.RetrieveDestroyAPIView):
 
     serializer_class = ConfirmedOfferInvestorSerializer
 
+    # def get_queryset(self):
+    #     return ConfirmedOffer.objects.filter(
+    #         investor_id__owner=self.request.user,
+    #     )
+    #
+    # def perform_destroy(self, instance: ConfirmedOffer):
+    #     candidate = CandidateStartup.objects.filter(
+    #         startup_id=instance.startup_id.id, offer_id=instance.offer_id.id
+    #     ).first()
+    #     candidate.accept_status = CandidateStartup.AcceptStatus.CONCLUDED
+    #     candidate.save()
+    #     super().perform_destroy(instance)
     def get_queryset(self):
-        return ConfirmedOffer.objects.filter(
-            investor_id__owner=self.request.user,
+        return CandidateStartup.objects.filter(
+            offer_id__investor_id__owner=self.request.user,
         )
 
-    def perform_destroy(self, instance: ConfirmedOffer):
-        candidate = CandidateStartup.objects.filter(
-            startup_id=instance.startup_id.id, offer_id=instance.offer_id.id
-        ).first()
-        candidate.accept_status = CandidateStartup.AcceptStatus.CONCLUDED
-        candidate.save()
-        super().perform_destroy(instance)
+    def perform_destroy(self, instance: CandidateStartup):
+        instance.accept_status = CandidateStartup.AcceptStatus.CONCLUDED
+        instance.save()
+        ConfirmedOffer.objects.filter(
+            startup_id=instance.startup_id, offer_id=instance.offer_id.id
+        ).delete()
 
 
 class StartupMyApplications(generics.ListAPIView):
