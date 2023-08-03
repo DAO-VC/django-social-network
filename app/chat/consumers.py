@@ -71,13 +71,13 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         my_id = self.scope["user"].id
         self.room_group_name = f"notify_{my_id}"
-        await self.update_user_incr(self.scope["user"])
+        # await self.update_user_incr(self.scope["user"])
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
         await self.accept()
 
     async def disconnect(self, code):
-        await self.update_user_decr(self.scope["user"])
+        # await self.update_user_decr(self.scope["user"])
         self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     async def send_notification(self, event):
@@ -121,14 +121,14 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             return_dict,
         )
 
-    @database_sync_to_async
-    def update_user_incr(self, user):
-        User.objects.filter(pk=user.pk).update(online=F("online") + 1)
-
-    @database_sync_to_async
-    def update_user_decr(self, user):
-        User.objects.filter(pk=user.pk).update(online=F("online") - 1)
-
+    # @database_sync_to_async
+    # def update_user_incr(self, user):
+    #     User.objects.filter(pk=user.pk).update(online=F("online") + 1)
+    #
+    # @database_sync_to_async
+    # def update_user_decr(self, user):
+    #     User.objects.filter(pk=user.pk).update(online=F("online") - 1)
+    #
     @database_sync_to_async
     def read_notification(self, notif_id):
         obj = ChatNotification.objects.filter(id=notif_id).first()
