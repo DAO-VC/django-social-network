@@ -89,6 +89,18 @@ services:
   #    command: [ "celery", "-A", "main" ,"flower" ]
 #--url_prefix=flower
 
+  daphne:
+    build: .
+    working_dir: /usr/src/app
+    command: [ "poetry", "run","daphne", "-u", "./daphne.sock",
+               "main.asgi:application" ]
+    restart: always
+    volumes:
+      - .:/code
+    depends_on:
+      - postgres
+      - redis
+
 volumes:
   postgres_data:
   media_data:
