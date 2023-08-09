@@ -95,8 +95,6 @@ services:
     command: [ "poetry", "run","daphne", "-u", "./daphne.sock",
                "main.asgi:application" ]
     restart: always
-    volumes:
-      - .:/code
     depends_on:
       - postgres
       - redis
