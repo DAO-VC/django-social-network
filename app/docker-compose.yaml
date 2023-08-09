@@ -92,6 +92,8 @@ services:
   daphne:
     build: .
     working_dir: /usr/src/app
+    ports:
+      - "127.0.0.1:8001:8001"
     command: [ "poetry", "run","daphne", "-u", "./daphne.sock",
                "main.asgi:application" ]
     restart: always
