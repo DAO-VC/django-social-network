@@ -49,6 +49,7 @@ class Message(models.Model):
     created_at = CreationDateTimeField(
         verbose_name="Дата создания",
     )
+    is_read = models.BooleanField(verbose_name="Прочитано", null=True, blank=True)
 
     class Meta:
         ordering = ("-created_at",)

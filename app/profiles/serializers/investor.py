@@ -88,3 +88,11 @@ class InvestorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Investor
         fields = "__all__"
+
+
+class InvestorChatSerializer(serializers.ModelSerializer):
+    photo = ImageSerializer(read_only=True)
+
+    class Meta:
+        model = Investor
+        fields = ["id", "owner", "name", "photo"]

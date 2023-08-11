@@ -48,7 +48,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def save_message(self, message):
         room = Room.objects.get(id=int(self.room_name))
         user = self.scope["user"]
-        instance = Message.objects.create(author=user, room=room, text=message)
+        instance = Message.objects.create(
+            author=user, room=room, text=message, is_read=False
+        )
         if user.id == room.author.id:
             ChatNotification.objects.create(
                 user=room.receiver,

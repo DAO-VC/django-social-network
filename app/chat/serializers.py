@@ -5,6 +5,12 @@ from rest_framework.exceptions import ValidationError
 from chat.models import Message, Room, ChatNotification
 from core.models import User
 from core.serializers import UserBaseSerializer
+from profiles.models.investor import Investor
+from profiles.models.professional import Professional
+from profiles.models.startup import Startup
+from profiles.serializers.investor import InvestorChatSerializer
+from profiles.serializers.professional import ProfessionalInWorkTeamSerializer
+from profiles.serializers.startup import StartupToArticleSerializer
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -15,16 +21,16 @@ class MessageSerializer(serializers.ModelSerializer):
         exclude = ("room",)
 
 
-class RoomDetailSerializer(serializers.ModelSerializer):
-    """Сериализатор комнаты/чаты"""
-
-    author = UserBaseSerializer(read_only=True)
-    receiver = UserBaseSerializer(read_only=True)
-    messages = MessageSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Room
-        fields = ["id", "author", "receiver", "messages"]
+# class RoomDetailSerializer(serializers.ModelSerializer,RoomListSerializer):
+#     """Сериализатор комнаты/чаты"""
+#
+#     author = UserBaseSerializer(read_only=True)
+#     receiver = UserBaseSerializer(read_only=True)
+#     messages = MessageSerializer(many=True, read_only=True)
+#
+#     class Meta:
+#         model = Room
+#         fields = ["id", "author", "receiver", "messages"]
 
 
 class CreateRoomSerializer(serializers.ModelSerializer):
@@ -43,11 +49,11 @@ class CreateRoomSerializer(serializers.ModelSerializer):
         receiver_id = validated_data.pop("receiver_id")
         receiver = get_object_or_404(User, pk=receiver_id)
 
-        if Room.objects.filter(
-            Q(author=current_user, receiver=receiver)
-            | Q(author=receiver, receiver=current_user)
-        ).exists():
-            raise ValidationError("This chat is already exist")
+        # if Room.objects.filter(
+        #         Q(author=current_user, receiver=receiver)
+        #         | Q(author=receiver, receiver=current_user)
+        # ).exists():
+        #     raise ValidationError("This chat is already exist")
 
         instance = Room.objects.create(author=current_user, receiver=receiver)
         return instance
@@ -56,12 +62,62 @@ class CreateRoomSerializer(serializers.ModelSerializer):
 class RoomListSerializer(serializers.ModelSerializer):
     """Базовый сериализатор комнаты"""
 
+    author_object = serializers.SerializerMethodField(read_only=True)
+    receiver_object = serializers.SerializerMethodField(read_only=True)
+    last_message = serializers.SerializerMethodField(read_only=True)
+    count_unread_messages = serializers.SerializerMethodField(read_only=True)
+
+    def get_author_object(self, instance: Room):
+        if instance.author.profile == User.UserProfile.STARTUP:
+            return StartupToArticleSerializer(
+                Startup.objects.filter(owner__id=instance.author.id).first()
+            ).data
+        if instance.author.profile == User.UserProfile.INVESTOR:
+            return InvestorChatSerializer(
+                Investor.objects.filter(owner__id=instance.author.id).first()
+            ).data
+        if instance.receiver.profile == User.UserProfile.PROFESSIONAL:
+            return ProfessionalInWorkTeamSerializer(
+                Professional.objects.filter(owner__id=instance.author.id).first()
+            ).data
+
+    def get_receiver_object(self, instance: Room):
+        if instance.receiver.profile == User.UserProfile.STARTUP:
+            return StartupToArticleSerializer(
+                Startup.objects.filter(owner__id=instance.author.id).first()
+            ).data
+        if instance.receiver.profile == User.UserProfile.INVESTOR:
+            return InvestorChatSerializer(
+                Investor.objects.filter(owner__id=instance.author.id).first()
+            ).data
+        if instance.receiver.profile == User.UserProfile.PROFESSIONAL:
+            return ProfessionalInWorkTeamSerializer(
+                Professional.objects.filter(owner__id=instance.author.id).first()
+            ).data
+
+    def get_last_message(self, instance: Room):
+        return MessageSerializer(
+            Message.objects.filter(room_id=instance.id).first()
+        ).data
+
+    def get_count_unread_messages(self, instance: Room):
+        return (
+            Message.objects.filter(room_id=instance.id, is_read=False)
+            .exclude(author__id=self.context["request"].user.id)
+            .count()
+        )
+
     class Meta:
         model = Room
         fields = [
             "id",
             "author",
             "receiver",
+            "author_object",
+            "receiver_object",
+            "created_at",
+            "last_message",
+            "count_unread_messages",
         ]
 
 
@@ -71,3 +127,39 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatNotification
         fields = "__all__"
+
+
+class RoomDetailSerializer(RoomListSerializer):
+    """Сериализатор комнаты/чаты"""
+
+    author = UserBaseSerializer(read_only=True)
+    receiver = UserBaseSerializer(read_only=True)
+    messages = MessageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Room
+        fields = [
+            "id",
+            "author",
+            "receiver",
+            "author_object",
+            "receiver_object",
+            "messages",
+            "count_unread_messages",
+        ]
+
+
+class ReadAllMessageSerializer(serializers.ModelSerializer):
+    def update(self, instance: Room, validated_data):
+        user = self.context["request"].user
+        messages = Message.objects.filter(room_id=instance.id).exclude(
+            author__id=user.id
+        )
+        for message in messages:
+            message.is_read = True
+            message.save()
+        return super().update(instance, validated_data)
+
+    class Meta:
+        model = Room
+        exclude = ["id", "author", "receiver", "created_at"]

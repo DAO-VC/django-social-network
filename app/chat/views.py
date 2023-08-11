@@ -6,6 +6,7 @@ from chat.serializers import (
     CreateRoomSerializer,
     RoomDetailSerializer,
     RoomListSerializer,
+    ReadAllMessageSerializer,
 )
 
 
@@ -32,3 +33,9 @@ class MyChatsList(generics.ListAPIView):
         return Room.objects.filter(
             Q(author=self.request.user) | Q(receiver=self.request.user)
         )
+
+
+class ReadAllMessage(generics.UpdateAPIView):
+    queryset = Room.objects.all()
+    serializer_class = ReadAllMessageSerializer
+    http_method_names = ["put"]
