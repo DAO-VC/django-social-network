@@ -1,7 +1,9 @@
 from django.db.models import Q
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from chat.models import Room
+from chat.permissions import RoomPermission, RoomOwnerPermission
 from chat.serializers import (
     CreateRoomSerializer,
     RoomDetailSerializer,
@@ -15,6 +17,7 @@ class StartNewChat(generics.CreateAPIView):
 
     queryset = Room.objects.all()
     serializer_class = CreateRoomSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 class RetrieveChat(generics.RetrieveDestroyAPIView):
@@ -22,6 +25,7 @@ class RetrieveChat(generics.RetrieveDestroyAPIView):
 
     queryset = Room.objects.all()
     serializer_class = RoomDetailSerializer
+    permission_classes = (RoomOwnerPermission,)
 
 
 class MyChatsList(generics.ListAPIView):
@@ -39,3 +43,4 @@ class ReadAllMessage(generics.UpdateAPIView):
     queryset = Room.objects.all()
     serializer_class = ReadAllMessageSerializer
     http_method_names = ["put"]
+    permission_classes = (RoomPermission,)
