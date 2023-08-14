@@ -163,3 +163,39 @@ class ReadAllMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         exclude = ["id", "author", "receiver", "created_at"]
+
+
+class BanUserSerializer(serializers.ModelSerializer):
+    def update(self, instance: User, validated_data):
+        # user = self.context["request"].user
+        # if instance in user.user_banned_list.all():
+        #     raise ValidationError("The user is already in the ban list")
+        # user.user_banned_list.add(instance)
+        user = self.context["request"].user
+        user.get_ban_user(instance)
+        return super().update(instance, validated_data)
+
+    class Meta:
+        model = User
+
+        exclude = (
+            "password",
+            "last_login",
+            "is_superuser",
+            "first_name",
+            "last_name",
+            "is_staff",
+            "is_active",
+            "date_joined",
+            "email",
+            "phone",
+            "code",
+            "username",
+            "is_onboarding",
+            "profile",
+            "online",
+            "permissions",
+            "groups",
+            "user_permissions",
+            "users_banned_list",
+        )

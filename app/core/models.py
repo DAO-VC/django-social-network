@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from core.managers import UserManager
+from rest_framework.exceptions import ValidationError
 
 
 class User(AbstractUser):
@@ -39,6 +40,21 @@ class User(AbstractUser):
         "vacancy.WorkTeam", models.SET_NULL, null=True, blank=True
     )
     online = models.BooleanField(default=False, verbose_name="Онлайн статус")
+    users_banned_list = models.ManyToManyField(
+        "self",
+        verbose_name="Забаненные пользователи",
+        blank=True,
+        related_name="user_banned_list",
+        symmetrical=False,
+    )
+
+    def get_ban_user(self, user):
+        if user == self:
+            raise ValidationError("You can't block yourself")
+        if user in self.user_banned_list.all():
+            self.user_banned_list.remove(user)
+        else:
+            self.user_banned_list.add(user)
 
     class Meta:
         verbose_name = "Пользователь"

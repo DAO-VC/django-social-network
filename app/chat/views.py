@@ -9,7 +9,9 @@ from chat.serializers import (
     RoomDetailSerializer,
     RoomListSerializer,
     ReadAllMessageSerializer,
+    BanUserSerializer,
 )
+from core.models import User
 
 
 class StartNewChat(generics.CreateAPIView):
@@ -44,3 +46,10 @@ class ReadAllMessage(generics.UpdateAPIView):
     serializer_class = ReadAllMessageSerializer
     http_method_names = ["put"]
     permission_classes = (RoomPermission,)
+
+
+class BanUser(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = BanUserSerializer
+    http_method_names = ["put"]
+    permission_classes = (IsAuthenticated,)

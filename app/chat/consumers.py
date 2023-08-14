@@ -27,12 +27,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         result = await self.save_message(text_data_json["message"])
         serializer = MessageSerializer(result)
+        if serializer.data["text"] == "Сhat banned":
+            error_code = 4011
+
+            await self.close(error_code)
+            await self.disconnect({"code": error_code})
+
         return_dict = {
             "type": "chat_message",
             # 'message': text_data_json['message'],
             "message": serializer.data,
             "username": self.scope["user"].email,
         }
+
         await self.channel_layer.group_send(
             self.room_group_name,
             return_dict,
@@ -48,6 +55,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def save_message(self, message):
         room = Room.objects.get(id=int(self.room_name))
         user = self.scope["user"]
+
+        if (
+            user in room.receiver.users_banned_list.all()
+            or room.receiver in user.users_banned_list.all()
+        ):
+            message = "Сhat banned"
+            return Message(author=user, room=room, text=message, is_read=False)
+        #
+        #     self.disconnect({'code': error_code})
+        #     self.close(error_code)
+
         instance = Message.objects.create(
             author=user, room=room, text=message, is_read=False
         )

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from chat.views import StartNewChat, RetrieveChat, MyChatsList, ReadAllMessage
+from chat.views import StartNewChat, RetrieveChat, MyChatsList, ReadAllMessage, BanUser
 
 urlpatterns = [
     path("chat/", StartNewChat.as_view(), name="start_new_chat"),
@@ -11,4 +11,5 @@ urlpatterns = [
         ReadAllMessage.as_view(),
         name="read_all_messages_from_user",
     ),
+    path("user/<int:pk>/ban/", BanUser.as_view(), name="ban_user_with_id"),
 ]
