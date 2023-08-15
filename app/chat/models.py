@@ -8,6 +8,11 @@ from core.models import User
 class Room(models.Model):
     """Сущность/модель чат"""
 
+    class ChatStatus(models.TextChoices):
+        NEW = "new", "Новый"
+        DECLINE = "decline", "Отклонен"
+        ACCEPTED = "accepted", "Принят"
+
     author = models.ForeignKey(
         User, related_name="author_room", on_delete=models.CASCADE, verbose_name="Автор"
     )
@@ -33,6 +38,9 @@ class Room(models.Model):
     )
     object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey("content_type", "object_id")
+    status = models.CharField(
+        "Статус чата", choices=ChatStatus.choices, max_length=32, default=ChatStatus.NEW
+    )
 
     class Meta:
         verbose_name = "Чат/Комната"
