@@ -232,6 +232,7 @@ class StartupChatCreateSerializer(serializers.ModelSerializer):
             receiver=receiver,
             content_type=content_type,
             object_id=candidate.id,
+            status=Room.ChatStatus.NEW,
         )
         return instance
 
@@ -261,6 +262,7 @@ class InvestorChatCreateSerializer(serializers.ModelSerializer):
             receiver=receiver,
             content_type=content_type,
             object_id=candidate.id,
+            status=Room.ChatStatus.NEW,
         )
         return instance
 
