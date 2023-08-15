@@ -2,15 +2,23 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.fields import SerializerMethodField
+
 from chat.models import Message, Room, ChatNotification
 from core.models import User
 from core.serializers import UserBaseSerializer
+from offer.models.offer_candidate import CandidateStartup
+from offer.serializers.candidate import CandidateStartupBaseSerializer
 from profiles.models.investor import Investor
 from profiles.models.professional import Professional
 from profiles.models.startup import Startup
 from profiles.serializers.investor import InvestorChatSerializer
 from profiles.serializers.professional import ProfessionalInWorkTeamSerializer
 from profiles.serializers.startup import StartupToArticleSerializer
+from vacancy.models.candidate import Candidate
+from django.contrib.contenttypes.models import ContentType
+
+from vacancy.serializers.candidate import CandidateBaseSerializer
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -135,6 +143,7 @@ class RoomDetailSerializer(RoomListSerializer):
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     messages = MessageSerializer(many=True, read_only=True)
+    receiver_info = SerializerMethodField(read_only=True)
 
     class Meta:
         model = Room
@@ -146,7 +155,12 @@ class RoomDetailSerializer(RoomListSerializer):
             "receiver_object",
             "messages",
             "count_unread_messages",
+            "receiver_info",
         ]
+
+    def get_receiver_info(self, instance: Room):
+        if isinstance(instance.content_object, Candidate):
+            return CandidateBaseSerializer(instance.content_object).data
 
 
 class ReadAllMessageSerializer(serializers.ModelSerializer):
@@ -199,3 +213,61 @@ class BanUserSerializer(serializers.ModelSerializer):
             "user_permissions",
             "users_banned_list",
         )
+
+
+class StartupChatCreateSerializer(serializers.ModelSerializer):
+    author = UserBaseSerializer(read_only=True)
+    receiver = UserBaseSerializer(read_only=True)
+    receiver_info = SerializerMethodField(read_only=True)
+
+    def create(self, validated_data):
+        candidate = get_object_or_404(
+            Candidate, pk=self.context.get("view").kwargs.get("pk")
+        )
+        author = self.context["request"].user
+        receiver = get_object_or_404(User, pk=candidate.professional_id.owner.id)
+        content_type = ContentType.objects.get_for_model(candidate)
+        instance = Room.objects.create(
+            author=author,
+            receiver=receiver,
+            content_type=content_type,
+            object_id=candidate.id,
+        )
+        return instance
+
+    class Meta:
+        model = Room
+        # fields = "__all__"
+        exclude = ["object_id", "content_type"]
+
+    def get_receiver_info(self, instance: Room):
+        return CandidateBaseSerializer(instance.content_object).data
+
+
+class InvestorChatCreateSerializer(serializers.ModelSerializer):
+    author = UserBaseSerializer(read_only=True)
+    receiver = UserBaseSerializer(read_only=True)
+    receiver_info = SerializerMethodField(read_only=True)
+
+    def create(self, validated_data):
+        candidate = get_object_or_404(
+            CandidateStartup, pk=self.context.get("view").kwargs.get("pk")
+        )
+        author = self.context["request"].user
+        receiver = get_object_or_404(User, pk=candidate.startup_id.owner.id)
+        content_type = ContentType.objects.get_for_model(candidate)
+        instance = Room.objects.create(
+            author=author,
+            receiver=receiver,
+            content_type=content_type,
+            object_id=candidate.id,
+        )
+        return instance
+
+    class Meta:
+        model = Room
+        # fields = "__all__"
+        exclude = ["object_id", "content_type"]
+
+    def get_receiver_info(self, instance: Room):
+        return CandidateStartupBaseSerializer(instance.content_object).data

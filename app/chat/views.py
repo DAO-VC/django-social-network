@@ -10,8 +10,12 @@ from chat.serializers import (
     RoomListSerializer,
     ReadAllMessageSerializer,
     BanUserSerializer,
+    StartupChatCreateSerializer,
+    InvestorChatCreateSerializer,
 )
 from core.models import User
+from offer.permissions import OfferStartupCandidatesPermission
+from vacancy.permissions import StartupCandidateFavoriteRetrievePermission
 
 
 class StartNewChat(generics.CreateAPIView):
@@ -20,6 +24,23 @@ class StartNewChat(generics.CreateAPIView):
     queryset = Room.objects.all()
     serializer_class = CreateRoomSerializer
     permission_classes = (IsAuthenticated,)
+
+
+class StartupStartChat(generics.CreateAPIView):
+    """Представление создания нового чата Startup / Professional"""
+
+    # offer = get_object_or_404(Offer, pk=self.context.get("view").kwargs.get("pk"))
+    queryset = Room.objects.all()
+    serializer_class = StartupChatCreateSerializer
+    permission_classes = (IsAuthenticated, StartupCandidateFavoriteRetrievePermission)
+
+
+class InvestorStartChat(generics.CreateAPIView):
+    """Представление создания нового чата Investor / Startup"""
+
+    queryset = Room.objects.all()
+    serializer_class = InvestorChatCreateSerializer
+    permission_classes = (OfferStartupCandidatesPermission,)
 
 
 class RetrieveChat(generics.RetrieveDestroyAPIView):
