@@ -271,3 +271,9 @@ class InvestorChatCreateSerializer(serializers.ModelSerializer):
 
     def get_receiver_info(self, instance: Room):
         return CandidateStartupBaseSerializer(instance.content_object).data
+
+
+class ChangeRoomStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ["status"]

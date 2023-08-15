@@ -12,6 +12,7 @@ from chat.serializers import (
     BanUserSerializer,
     StartupChatCreateSerializer,
     InvestorChatCreateSerializer,
+    ChangeRoomStatusSerializer,
 )
 from core.models import User
 from offer.permissions import OfferStartupCandidatesPermission
@@ -74,3 +75,10 @@ class BanUser(generics.UpdateAPIView):
     serializer_class = BanUserSerializer
     http_method_names = ["put"]
     permission_classes = (IsAuthenticated,)
+
+
+class ChangeRoomStatus(generics.UpdateAPIView):
+    queryset = Room.objects.all()
+    serializer_class = ChangeRoomStatusSerializer
+    http_method_names = ["put"]
+    permission_classes = (RoomPermission,)
