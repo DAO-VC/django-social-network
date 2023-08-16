@@ -49,7 +49,7 @@ class RetrieveChat(generics.RetrieveDestroyAPIView):
 
     queryset = Room.objects.all()
     serializer_class = RoomDetailSerializer
-    permission_classes = (RoomOwnerPermission,)
+    permission_classes = (RoomPermission,)
 
 
 class MyChatsList(generics.ListAPIView):
