@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
-
+from django.db.utils import IntegrityError
 from chat.models import Message, Room, ChatNotification
 from core.models import User
 from core.serializers import UserBaseSerializer
@@ -71,9 +71,10 @@ class RoomListSerializer(serializers.ModelSerializer):
     """Базовый сериализатор комнаты"""
 
     author_object = serializers.SerializerMethodField(read_only=True)
-    receiver_object = serializers.SerializerMethodField(read_only=True)
+    # receiver_object = serializers.SerializerMethodField(read_only=True)
     last_message = serializers.SerializerMethodField(read_only=True)
     count_unread_messages = serializers.SerializerMethodField(read_only=True)
+    receiver_info = SerializerMethodField(read_only=True)
 
     def get_author_object(self, instance: Room):
         if instance.author.profile == User.UserProfile.STARTUP:
@@ -89,19 +90,19 @@ class RoomListSerializer(serializers.ModelSerializer):
                 Professional.objects.filter(owner__id=instance.author.id).first()
             ).data
 
-    def get_receiver_object(self, instance: Room):
-        if instance.receiver.profile == User.UserProfile.STARTUP:
-            return StartupToArticleSerializer(
-                Startup.objects.filter(owner__id=instance.author.id).first()
-            ).data
-        if instance.receiver.profile == User.UserProfile.INVESTOR:
-            return InvestorChatSerializer(
-                Investor.objects.filter(owner__id=instance.author.id).first()
-            ).data
-        if instance.receiver.profile == User.UserProfile.PROFESSIONAL:
-            return ProfessionalInWorkTeamSerializer(
-                Professional.objects.filter(owner__id=instance.author.id).first()
-            ).data
+    # def get_receiver_object(self, instance: Room):
+    #     if instance.receiver.profile == User.UserProfile.STARTUP:
+    #         return StartupToArticleSerializer(
+    #             Startup.objects.filter(owner__id=instance.author.id).first()
+    #         ).data
+    #     if instance.receiver.profile == User.UserProfile.INVESTOR:
+    #         return InvestorChatSerializer(
+    #             Investor.objects.filter(owner__id=instance.author.id).first()
+    #         ).data
+    #     if instance.receiver.profile == User.UserProfile.PROFESSIONAL:
+    #         return ProfessionalInWorkTeamSerializer(
+    #             Professional.objects.filter(owner__id=instance.author.id).first()
+    #         ).data
 
     def get_last_message(self, instance: Room):
         return MessageSerializer(
@@ -115,6 +116,12 @@ class RoomListSerializer(serializers.ModelSerializer):
             .count()
         )
 
+    def get_receiver_info(self, instance: Room):
+        if isinstance(instance.content_object, Candidate):
+            return CandidateBaseSerializer(instance.content_object).data
+        if isinstance(instance.content_object, CandidateStartup):
+            return CandidateStartupBaseSerializer(instance.content_object).data
+
     class Meta:
         model = Room
         fields = [
@@ -122,10 +129,11 @@ class RoomListSerializer(serializers.ModelSerializer):
             "author",
             "receiver",
             "author_object",
-            "receiver_object",
+            # "receiver_object",
             "created_at",
             "last_message",
             "count_unread_messages",
+            "receiver_info",
         ]
 
 
@@ -143,7 +151,8 @@ class RoomDetailSerializer(RoomListSerializer):
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     messages = MessageSerializer(many=True, read_only=True)
-    receiver_info = SerializerMethodField(read_only=True)
+
+    # receiver_info = SerializerMethodField(read_only=True)
 
     class Meta:
         model = Room
@@ -152,15 +161,15 @@ class RoomDetailSerializer(RoomListSerializer):
             "author",
             "receiver",
             "author_object",
-            "receiver_object",
+            # "receiver_object",
             "messages",
             "count_unread_messages",
             "receiver_info",
         ]
 
-    def get_receiver_info(self, instance: Room):
-        if isinstance(instance.content_object, Candidate):
-            return CandidateBaseSerializer(instance.content_object).data
+    # def get_receiver_info(self, instance: Room):
+    #     if isinstance(instance.content_object, Candidate):
+    #         return CandidateBaseSerializer(instance.content_object).data
 
 
 class ReadAllMessageSerializer(serializers.ModelSerializer):
@@ -227,13 +236,16 @@ class StartupChatCreateSerializer(serializers.ModelSerializer):
         author = self.context["request"].user
         receiver = get_object_or_404(User, pk=candidate.professional_id.owner.id)
         content_type = ContentType.objects.get_for_model(candidate)
-        instance = Room.objects.create(
-            author=author,
-            receiver=receiver,
-            content_type=content_type,
-            object_id=candidate.id,
-            status=Room.ChatStatus.NEW,
-        )
+        try:
+            instance = Room.objects.create(
+                author=author,
+                receiver=receiver,
+                content_type=content_type,
+                object_id=candidate.id,
+                status=Room.ChatStatus.NEW,
+            )
+        except IntegrityError:
+            raise ValidationError("This chat is already exist")
         return instance
 
     class Meta:
@@ -257,13 +269,16 @@ class InvestorChatCreateSerializer(serializers.ModelSerializer):
         author = self.context["request"].user
         receiver = get_object_or_404(User, pk=candidate.startup_id.owner.id)
         content_type = ContentType.objects.get_for_model(candidate)
-        instance = Room.objects.create(
-            author=author,
-            receiver=receiver,
-            content_type=content_type,
-            object_id=candidate.id,
-            status=Room.ChatStatus.NEW,
-        )
+        try:
+            instance = Room.objects.create(
+                author=author,
+                receiver=receiver,
+                content_type=content_type,
+                object_id=candidate.id,
+                status=Room.ChatStatus.NEW,
+            )
+        except IntegrityError:
+            raise ValidationError("This chat is already exist")
         return instance
 
     class Meta:
