@@ -18,7 +18,9 @@ from profiles.serializers.startup import StartupToArticleSerializer
 from vacancy.models.candidate import Candidate
 from django.contrib.contenttypes.models import ContentType
 
+from vacancy.models.workteam import WorkTeam
 from vacancy.serializers.candidate import CandidateBaseSerializer
+from vacancy.serializers.workteam import WorkTeamBaseSerializer
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -121,6 +123,8 @@ class RoomListSerializer(serializers.ModelSerializer):
             return CandidateBaseSerializer(instance.content_object).data
         if isinstance(instance.content_object, CandidateStartup):
             return CandidateStartupBaseSerializer(instance.content_object).data
+        if isinstance(instance.content_object, WorkTeam):
+            return WorkTeamBaseSerializer(instance.content_object).data
 
     class Meta:
         model = Room
@@ -294,3 +298,41 @@ class ChangeRoomStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = ["status"]
+
+
+class StartupWorkteamRoomSerializer(serializers.ModelSerializer):
+    author = UserBaseSerializer(read_only=True)
+    receiver = UserBaseSerializer(read_only=True)
+    receiver_info = SerializerMethodField(read_only=True)
+
+    def create(self, validated_data):
+        startup = get_object_or_404(Startup, owner=self.context["request"].user)
+        team_member = get_object_or_404(
+            startup.work_team.all(), pk=self.context.get("view").kwargs.get("pk")
+        )
+        content_type = ContentType.objects.get_for_model(team_member)
+
+        try:
+            instance = Room.objects.create(
+                author=self.context["request"].user,
+                receiver=team_member.candidate_id.professional_id.owner,
+                content_type=content_type,
+                object_id=team_member.id,
+                status=Room.ChatStatus.NEW,
+            )
+        except IntegrityError:
+            raise ValidationError("This chat is already exist")
+        return instance
+
+    def get_receiver_info(self, instance: Room):
+        return WorkTeamBaseSerializer(instance.content_object).data
+
+    class Meta:
+        model = Room
+        # fields = "__all__"
+        exclude = ["object_id", "content_type"]
+
+    # {
+    #     "email": "alexeygalt@gmail.com",
+    #     "password": "Trytoenter1"
+    # }

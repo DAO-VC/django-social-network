@@ -13,10 +13,14 @@ from chat.serializers import (
     StartupChatCreateSerializer,
     InvestorChatCreateSerializer,
     ChangeRoomStatusSerializer,
+    StartupWorkteamRoomSerializer,
 )
 from core.models import User
 from offer.permissions import OfferStartupCandidatesPermission
-from vacancy.permissions import StartupCandidateFavoriteRetrievePermission
+from vacancy.permissions import (
+    StartupCandidateFavoriteRetrievePermission,
+    StartupWorkTeamUpdatePermission,
+)
 
 
 class StartNewChat(generics.CreateAPIView):
@@ -82,3 +86,11 @@ class ChangeRoomStatus(generics.UpdateAPIView):
     serializer_class = ChangeRoomStatusSerializer
     http_method_names = ["put"]
     permission_classes = (RoomPermission,)
+
+
+class StartupWorkteamRoom(generics.CreateAPIView):
+    """Представление создания нового чата Startup / WorkTeamMember"""
+
+    queryset = Room.objects.all()
+    serializer_class = StartupWorkteamRoomSerializer
+    permission_classes = (IsAuthenticated, StartupWorkTeamUpdatePermission)

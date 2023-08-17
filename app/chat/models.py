@@ -25,9 +25,12 @@ class Room(models.Model):
     created_at = CreationDateTimeField(
         verbose_name="Дата создания",
     )
-    limit = models.Q(app_label="vacancy", model="candidate") | models.Q(
-        app_label="offer", model="candidateStartup"
+    limit = (
+        models.Q(app_label="vacancy", model="candidate")
+        | models.Q(app_label="offer", model="candidateStartup")
+        | models.Q(app_label="vacancy", model="workteam")
     )
+
     content_type = models.ForeignKey(
         ContentType,
         blank=True,
