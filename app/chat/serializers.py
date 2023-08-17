@@ -332,7 +332,40 @@ class StartupWorkteamRoomSerializer(serializers.ModelSerializer):
         # fields = "__all__"
         exclude = ["object_id", "content_type"]
 
-    # {
-    #     "email": "alexeygalt@gmail.com",
-    #     "password": "Trytoenter1"
-    # }
+
+class ProfessionalToStartupRoomSerializer(serializers.ModelSerializer):
+    author = UserBaseSerializer(read_only=True)
+    receiver = UserBaseSerializer(read_only=True)
+    receiver_info = SerializerMethodField(read_only=True)
+
+    def create(self, validated_data):
+        queryset = Candidate.objects.select_related(
+            "professional_id", "vacancy_id"
+        ).filter(
+            professional_id__owner_id=self.context["request"].user,
+            accept_status=Candidate.AcceptStatus.IN_THE_TEAM,
+        )
+        candidate = get_object_or_404(
+            queryset, pk=self.context.get("view").kwargs.get("pk")
+        )
+        content_type = ContentType.objects.get_for_model(candidate)
+
+        try:
+            instance = Room.objects.create(
+                author=self.context["request"].user,
+                receiver=candidate.vacancy_id.company_id.owner,
+                content_type=content_type,
+                object_id=candidate.id,
+                status=Room.ChatStatus.NEW,
+            )
+        except IntegrityError:
+            raise ValidationError("This chat is already exist")
+        return instance
+
+    def get_receiver_info(self, instance: Room):
+        return CandidateBaseSerializer(instance.content_object).data
+
+    class Meta:
+        model = Room
+        # fields = "__all__"
+        exclude = ["object_id", "content_type"]

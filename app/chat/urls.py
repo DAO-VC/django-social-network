@@ -10,6 +10,7 @@ from chat.views import (
     InvestorStartChat,
     ChangeRoomStatus,
     StartupWorkteamRoom,
+    ProfessionalToStartupRoom,
 )
 
 urlpatterns = [
@@ -36,6 +37,11 @@ urlpatterns = [
         "main/startup/my_team/<int:pk>/chat/",
         StartupWorkteamRoom.as_view(),
         name="new_chat_startup_to_team_member",
+    ),
+    path(
+        "main/professional/my_works/<int:pk>/chat/",
+        ProfessionalToStartupRoom.as_view(),
+        name="new_chat_professional_to_startup",
     ),
     path(
         "chat/<int:pk>/status/", ChangeRoomStatus.as_view(), name="change_chat_status"
