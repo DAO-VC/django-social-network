@@ -369,3 +369,75 @@ class ProfessionalToStartupRoomSerializer(serializers.ModelSerializer):
         model = Room
         # fields = "__all__"
         exclude = ["object_id", "content_type"]
+
+
+class InvestorToConfirmedStartupRoomSerializer(serializers.ModelSerializer):
+    author = UserBaseSerializer(read_only=True)
+    receiver = UserBaseSerializer(read_only=True)
+    receiver_info = SerializerMethodField(read_only=True)
+
+    def create(self, validated_data):
+        queryset = CandidateStartup.objects.filter(
+            offer_id__investor_id__owner=self.context["request"].user,
+            accept_status=CandidateStartup.AcceptStatus.ACCEPT,
+        )
+        candidate = get_object_or_404(
+            queryset, pk=self.context.get("view").kwargs.get("pk")
+        )
+        content_type = ContentType.objects.get_for_model(candidate)
+
+        try:
+            instance = Room.objects.create(
+                author=self.context["request"].user,
+                receiver=candidate.startup_id.owner,
+                content_type=content_type,
+                object_id=candidate.id,
+                status=Room.ChatStatus.NEW,
+            )
+        except IntegrityError:
+            raise ValidationError("This chat is already exist")
+        return instance
+
+    def get_receiver_info(self, instance: Room):
+        return CandidateStartupBaseSerializer(instance.content_object).data
+
+    class Meta:
+        model = Room
+        # fields = "__all__"
+        exclude = ["object_id", "content_type"]
+
+
+class StartupToInvestorRoomSerializer(serializers.ModelSerializer):
+    author = UserBaseSerializer(read_only=True)
+    receiver = UserBaseSerializer(read_only=True)
+    receiver_info = SerializerMethodField(read_only=True)
+
+    def create(self, validated_data):
+        queryset = CandidateStartup.objects.filter(
+            startup_id__owner=self.context["request"].user,
+            accept_status=CandidateStartup.AcceptStatus.ACCEPT,
+        )
+        candidate = get_object_or_404(
+            queryset, pk=self.context.get("view").kwargs.get("pk")
+        )
+        content_type = ContentType.objects.get_for_model(candidate)
+
+        try:
+            instance = Room.objects.create(
+                author=self.context["request"].user,
+                receiver=candidate.offer_id.investor_id.owner,
+                content_type=content_type,
+                object_id=candidate.id,
+                status=Room.ChatStatus.NEW,
+            )
+        except IntegrityError:
+            raise ValidationError("This chat is already exist")
+        return instance
+
+    def get_receiver_info(self, instance: Room):
+        return CandidateStartupBaseSerializer(instance.content_object).data
+
+    class Meta:
+        model = Room
+        # fields = "__all__"
+        exclude = ["object_id", "content_type"]
