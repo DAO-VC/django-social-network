@@ -14,12 +14,17 @@ from chat.serializers import (
     InvestorChatCreateSerializer,
     ChangeRoomStatusSerializer,
     StartupWorkteamRoomSerializer,
+    ProfessionalToStartupRoomSerializer,
+    InvestorToConfirmedStartupRoomSerializer,
+    StartupToInvestorRoomSerializer,
 )
 from core.models import User
+from core.permissions import StartupCreatePermission
 from offer.permissions import OfferStartupCandidatesPermission
 from vacancy.permissions import (
     StartupCandidateFavoriteRetrievePermission,
     StartupWorkTeamUpdatePermission,
+    ProfessionalMyApplicationsPermission,
 )
 
 
@@ -94,3 +99,27 @@ class StartupWorkteamRoom(generics.CreateAPIView):
     queryset = Room.objects.all()
     serializer_class = StartupWorkteamRoomSerializer
     permission_classes = (IsAuthenticated, StartupWorkTeamUpdatePermission)
+
+
+class ProfessionalToStartupRoom(generics.CreateAPIView):
+    """Представление создания нового чата Professional / Startup"""
+
+    queryset = Room.objects.all()
+    serializer_class = ProfessionalToStartupRoomSerializer
+    permission_classes = (IsAuthenticated, ProfessionalMyApplicationsPermission)
+
+
+class InvestorToConfirmedStartupRoom(generics.CreateAPIView):
+    """Представление создания нового чата Investor / Startup"""
+
+    queryset = Room.objects.all()
+    serializer_class = InvestorToConfirmedStartupRoomSerializer
+    permission_classes = (IsAuthenticated,)
+
+
+class StartupToInvestorRoom(generics.CreateAPIView):
+    """Представление создания нового чата Startup / Investor"""
+
+    queryset = Room.objects.all()
+    serializer_class = StartupToInvestorRoomSerializer
+    permission_classes = (IsAuthenticated, StartupCreatePermission)
