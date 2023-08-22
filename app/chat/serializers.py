@@ -7,6 +7,7 @@ from django.db.utils import IntegrityError
 from chat.models import Message, Room, ChatNotification
 from core.models import User
 from core.serializers import UserBaseSerializer
+from image.serializers import ImageSerializer, FileSerializer
 from offer.models.offer_candidate import CandidateStartup
 from offer.serializers.candidate import CandidateStartupBaseSerializer
 from profiles.models.investor import Investor
@@ -25,6 +26,9 @@ from vacancy.serializers.workteam import WorkTeamBaseSerializer
 
 class MessageSerializer(serializers.ModelSerializer):
     """Сериализатор сообщений"""
+
+    images = ImageSerializer(many=True, read_only=True)
+    files = FileSerializer(many=True, read_only=True)
 
     class Meta:
         model = Message

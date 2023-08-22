@@ -3,6 +3,7 @@ from django_extensions.db.fields import CreationDateTimeField
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from core.models import User
+from image.models import Image, File
 
 
 class Room(models.Model):
@@ -81,6 +82,8 @@ class Message(models.Model):
         verbose_name="Дата создания",
     )
     is_read = models.BooleanField(verbose_name="Прочитано", null=True, blank=True)
+    images = models.ManyToManyField(Image, blank=True, related_name="message_images")
+    files = models.ManyToManyField(File, blank=True, related_name="message_files")
 
     class Meta:
         ordering = ("-created_at",)

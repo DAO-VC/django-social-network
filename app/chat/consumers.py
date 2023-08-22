@@ -1,11 +1,15 @@
 import json
+
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.db.models import F
-
+import base64
+import secrets
+from django.core.files.base import ContentFile
 from chat.models import Room, Message, ChatNotification
 from chat.serializers import MessageSerializer
 from core.models import User
+from image.models import Image, File
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -25,8 +29,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data=None):
         text_data_json = json.loads(text_data)
-        result = await self.save_message(text_data_json["message"])
-        serializer = MessageSerializer(result)
+        attachments = text_data_json.get("attachment")
+        if attachments:
+            images, files = await self.save_images(attachments)
+            result = await self.save_message(text_data_json["message"])
+            result = await self.add_image_to_message(result, images, files)
+        else:
+
+            result: Message = await self.save_message(text_data_json["message"])
+
+        serializer = MessageSerializer(await self.get_object(result))
         if serializer.data["text"] == "Сhat banned":
             error_code = 4011
 
@@ -83,6 +95,48 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
 
         return instance
+
+    @database_sync_to_async
+    def save_images(self, attachments):
+        images = []
+        files = []
+        for attachment in attachments:
+            file_str, file_ext = attachment["data"], attachment["format"]
+            if file_ext == "pdf":
+                file_data = ContentFile(
+                    base64.b64decode(file_str),
+                    name=f"{secrets.token_hex(8)}.{file_ext}",
+                )
+                instance = File.objects.create()
+                instance.pdf.save(file_data.name, file_data)
+                files.append(instance)
+            else:
+                file_data = ContentFile(
+                    base64.b64decode(file_str),
+                    name=f"{secrets.token_hex(8)}.{file_ext}",
+                )
+                instance = Image.objects.create()
+                instance.image.save(file_data.name, file_data)
+                images.append(instance)
+        return images, files
+
+    @database_sync_to_async
+    def add_image_to_message(self, message: Message, images, files):
+        for image in images:
+            message.images.add(image)
+        message.save()
+        for file in files:
+            message.files.add(file)
+        message.save()
+        return message
+
+    @database_sync_to_async
+    def get_object(self, obj):
+        return (
+            Message.objects.prefetch_related("images")
+            .prefetch_related("files")
+            .get(id=obj.id)
+        )
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):
