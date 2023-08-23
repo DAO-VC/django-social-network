@@ -16,7 +16,7 @@ class CandidateStartup(models.Model):
         Startup, models.CASCADE, related_name="startup_to_offer"
     )
     offer_id = models.ForeignKey(
-        Offer, models.CASCADE, related_name="offer_to_candidate"
+        Offer, models.SET_NULL, related_name="offer_to_candidate", null=True
     )
 
     accept_status = models.CharField(
