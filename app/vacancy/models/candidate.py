@@ -26,9 +26,10 @@ class Candidate(models.Model):
     )
     vacancy_id = models.ForeignKey(
         Vacancy,
-        models.CASCADE,
+        models.SET_NULL,
         related_name="candidate_vacancy",
         verbose_name="Вакансия",
+        null=True,
     )
     about = models.TextField("Обо мне")
     base_status = models.CharField(
