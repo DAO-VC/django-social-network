@@ -38,7 +38,7 @@ class Room(models.Model):
         null=True,
         limit_choices_to=limit,
         related_name="content_type",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
     )
     object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey("content_type", "object_id")
