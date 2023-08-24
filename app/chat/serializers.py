@@ -256,6 +256,7 @@ class StartupChatCreateSerializer(serializers.ModelSerializer):
             obj = Room.objects.filter(
                 author_id=self.context["request"].user,
                 receiver_id=candidate.id,
+                content_type=content_type,
                 object_id=candidate.id,
             ).first()
             raise ValidationError(f"This chat is already exist : id {obj.id} ")
