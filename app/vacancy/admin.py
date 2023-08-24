@@ -6,6 +6,8 @@ from vacancy.models.candidate import Candidate
 from vacancy.models.vacancy import Vacancy, Skill, Requirement
 from vacancy.models.workteam import WorkTeam
 
+admin.site.empty_value_display = "-empty-"
+
 
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):
@@ -59,6 +61,7 @@ class VacancyAdmin(admin.ModelAdmin):
 
 @admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):
+    empty_value_display = "-empty-"  # Or
     list_display = (
         "id",
         "professional_link",
@@ -91,12 +94,17 @@ class CandidateAdmin(admin.ModelAdmin):
     professional_link.short_description = "Профессионал"
 
     def vacancy_link(self, candidate: Candidate):
-        url = reverse("admin:vacancy_vacancy_change", args=[candidate.vacancy_id.id])
-        link = '<a href="%s">%s</a>' % (
-            url,
-            candidate.vacancy_id.position,
-        )
-        return mark_safe(link)
+        if candidate.vacancy_id:
+            url = reverse(
+                "admin:vacancy_vacancy_change", args=[candidate.vacancy_id.id]
+            )
+            link = '<a href="%s">%s</a>' % (
+                url,
+                candidate.vacancy_id.position,
+            )
+            return mark_safe(link)
+        else:
+            return self.empty_value_display
 
     vacancy_link.short_description = "Вакансия"
 
