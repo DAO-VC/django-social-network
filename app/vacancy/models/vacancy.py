@@ -5,6 +5,10 @@ from django_extensions.db.fields import CreationDateTimeField
 class Vacancy(models.Model):
     """Сущность вакансии стартапа"""
 
+    class ActiveStatus(models.TextChoices):
+        ACTIVE = "active", "активна"
+        ARCHIVE = "archive", "в архиве"
+
     class SalaryType(models.TextChoices):
         HOURLY = "hourly", "почасовая"
         MONTHLY = "monthly", "ежемесячно"
@@ -49,6 +53,9 @@ class Vacancy(models.Model):
     )
     is_visible = models.BooleanField(verbose_name="Активна")
     created_at = CreationDateTimeField(verbose_name="Дата создания")
+    active_status = models.CharField(
+        "Активный статус", choices=ActiveStatus.choices, max_length=32
+    )
 
     class Meta:
         ordering = ["-created_at"]

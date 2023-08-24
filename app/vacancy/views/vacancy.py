@@ -23,6 +23,7 @@ class VacancyListCreateView(generics.ListCreateAPIView):
 
     serializer_class = VacancyCreateSerializer
     permission_classes = (IsAuthenticated, VacancyGetCreatePermission)
+    filterset_fields = ["id", "active_status"]
 
     def get_serializer_class(self):
         if self.request.method == "POST":
@@ -58,6 +59,11 @@ class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return VacancyBaseSerializer
         return VacancyUpdateSerializer
+
+    def perform_destroy(self, instance: Vacancy):
+        instance.active_status = Vacancy.ActiveStatus.ARCHIVE
+        instance.save()
+        return instance
 
 
 class VacancyVisibleRetrieveView(generics.UpdateAPIView):

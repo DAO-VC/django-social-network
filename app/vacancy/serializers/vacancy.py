@@ -31,7 +31,7 @@ class VacancyBaseSerializer(serializers.ModelSerializer):
 
 
 class VacancyCreateSerializer(serializers.ModelSerializer):
-    """Сериализато создания вакансии"""
+    """Сериализатор создания вакансии"""
 
     # is_visible = serializers.BooleanField(read_only=True)
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
@@ -45,6 +45,7 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
     update_requirements = serializers.ListField(
         child=serializers.CharField(max_length=500), write_only=True
     )
+    active_status = serializers.CharField(read_only=True)
 
     class Meta:
         model = Vacancy
@@ -64,7 +65,11 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
         requirements_titles = validated_data.pop("update_requirements")
 
         with transaction.atomic():
-            vacancy = Vacancy.objects.create(**validated_data, company_id=company_id)
+            vacancy = Vacancy.objects.create(
+                **validated_data,
+                company_id=company_id,
+                active_status=Vacancy.ActiveStatus.ACTIVE
+            )
             update_skills = []
             for title in skills_titles:
                 skill, created = Skill.objects.get_or_create(title=title)
@@ -85,6 +90,7 @@ class VacancyCreateSerializer(serializers.ModelSerializer):
 class VacancyUpdateSerializer(serializers.ModelSerializer):
     """Сериализатор обновления вакансии"""
 
+    active_status = serializers.CharField(read_only=True)
     # is_visible = serializers.BooleanField(read_only=True)
     company_id = serializers.SlugRelatedField(read_only=True, slug_field="id")
     skills = serializers.SlugRelatedField(many=True, slug_field="title", read_only=True)
@@ -140,6 +146,7 @@ class VacancyVisibleSerializer(serializers.ModelSerializer):
             "requirements",
             "is_visible",
             "created_at",
+            "active_status",
         )
 
     def update(self, instance: Vacancy, validated_data):
