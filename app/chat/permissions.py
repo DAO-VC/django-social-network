@@ -15,3 +15,11 @@ class RoomOwnerPermission(permissions.BasePermission):
         if obj.author.id != request.user.id:
             return True
         return False
+
+
+class RoomPermissionNotObj(permissions.BasePermission):
+    def has_permission(self, request, view):
+        room = Room.objects.filter(id=view.kwargs["pk"]).first()
+        if room.author.id != request.user.id or room.receiver.id != request.user.id:
+            return True
+        return False

@@ -2,8 +2,8 @@ from django.db.models import Q
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from chat.models import Room
-from chat.permissions import RoomPermission, RoomOwnerPermission
+from chat.models import Room, Message
+from chat.permissions import RoomPermission, RoomOwnerPermission, RoomPermissionNotObj
 from chat.serializers import (
     CreateRoomSerializer,
     RoomDetailSerializer,
@@ -20,6 +20,8 @@ from chat.serializers import (
 )
 from core.models import User
 from core.permissions import StartupCreatePermission
+from image.models import Image, File
+from image.serializers import ImageSerializer, FileSerializer
 from offer.permissions import OfferStartupCandidatesPermission
 from vacancy.permissions import (
     StartupCandidateFavoriteRetrievePermission,
@@ -123,3 +125,35 @@ class StartupToInvestorRoom(generics.CreateAPIView):
     queryset = Room.objects.all()
     serializer_class = StartupToInvestorRoomSerializer
     permission_classes = (IsAuthenticated, StartupCreatePermission)
+
+
+class AllRoomImages(generics.ListAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+    permission_classes = (RoomPermissionNotObj,)
+
+    def get_queryset(self):
+        messages = Message.objects.filter(
+            room_id=self.kwargs.get("pk"), images__isnull=False
+        )
+        images = []
+        for message in messages:
+            for item in message.images.all():
+                images.append(item)
+        return images
+
+
+class AllRoomFiles(generics.ListAPIView):
+    queryset = File.objects.all()
+    serializer_class = FileSerializer
+    permission_classes = (RoomPermissionNotObj,)
+
+    def get_queryset(self):
+        messages = Message.objects.filter(
+            room_id=self.kwargs.get("pk"), files__isnull=False
+        )
+        files = []
+        for message in messages:
+            for item in message.files.all():
+                files.append(item)
+        return files

@@ -13,6 +13,8 @@ from chat.views import (
     ProfessionalToStartupRoom,
     InvestorToConfirmedStartupRoom,
     StartupToInvestorRoom,
+    AllRoomImages,
+    AllRoomFiles,
 )
 
 urlpatterns = [
@@ -58,4 +60,6 @@ urlpatterns = [
     path(
         "chat/<int:pk>/status/", ChangeRoomStatus.as_view(), name="change_chat_status"
     ),
+    path("chat/<int:pk>/images/", AllRoomImages.as_view(), name="change_images"),
+    path("chat/<int:pk>/files/", AllRoomFiles.as_view(), name="change_files"),
 ]
