@@ -253,7 +253,12 @@ class StartupChatCreateSerializer(serializers.ModelSerializer):
                 status=Room.ChatStatus.NEW,
             )
         except IntegrityError:
-            raise ValidationError("This chat is already exist")
+            obj = Room.objects.filter(
+                author_id=self.context["request"].user,
+                receiver_id=candidate.id,
+                object_id=candidate.id,
+            ).first()
+            raise ValidationError(f"This chat is already exist : id {obj.id} ")
         return instance
 
     class Meta:
@@ -286,7 +291,12 @@ class InvestorChatCreateSerializer(serializers.ModelSerializer):
                 status=Room.ChatStatus.NEW,
             )
         except IntegrityError:
-            raise ValidationError("This chat is already exist")
+            obj = Room.objects.filter(
+                author_id=self.context["request"].user,
+                receiver_id=candidate.id,
+                object_id=candidate.id,
+            ).first()
+            raise ValidationError(f"This chat is already exist : id {obj.id} ")
         return instance
 
     class Meta:
@@ -325,7 +335,12 @@ class StartupWorkteamRoomSerializer(serializers.ModelSerializer):
                 status=Room.ChatStatus.NEW,
             )
         except IntegrityError:
-            raise ValidationError("This chat is already exist")
+            obj = Room.objects.filter(
+                author_id=self.context["request"].user,
+                receiver_id=team_member.candidate_id.professional_id.owner.id,
+                object_id=team_member.id,
+            ).first()
+            raise ValidationError(f"This chat is already exist : id {obj.id} ")
         return instance
 
     def get_receiver_info(self, instance: Room):
@@ -363,7 +378,12 @@ class ProfessionalToStartupRoomSerializer(serializers.ModelSerializer):
                 status=Room.ChatStatus.NEW,
             )
         except IntegrityError:
-            raise ValidationError("This chat is already exist")
+            obj = Room.objects.filter(
+                author_id=self.context["request"].user,
+                receiver_id=candidate.vacancy_id.company_id.owner.id,
+                object_id=candidate.id,
+            ).first()
+            raise ValidationError(f"This chat is already exist : id {obj.id} ")
         return instance
 
     def get_receiver_info(self, instance: Room):
@@ -399,7 +419,12 @@ class InvestorToConfirmedStartupRoomSerializer(serializers.ModelSerializer):
                 status=Room.ChatStatus.NEW,
             )
         except IntegrityError:
-            raise ValidationError("This chat is already exist")
+            obj = Room.objects.filter(
+                author_id=self.context["request"].user,
+                receiver_id=candidate.startup_id.owner.id,
+                object_id=candidate.id,
+            ).first()
+            raise ValidationError(f"This chat is already exist : id {obj.id} ")
         return instance
 
     def get_receiver_info(self, instance: Room):
@@ -435,7 +460,12 @@ class StartupToInvestorRoomSerializer(serializers.ModelSerializer):
                 status=Room.ChatStatus.NEW,
             )
         except IntegrityError:
-            raise ValidationError("This chat is already exist")
+            obj = Room.objects.filter(
+                author_id=self.context["request"].user,
+                receiver_id=candidate.offer_id.investor_id.owner.id,
+                object_id=candidate.id,
+            ).first()
+            raise ValidationError(f"This chat is already exist : id {obj.id} ")
         return instance
 
     def get_receiver_info(self, instance: Room):
