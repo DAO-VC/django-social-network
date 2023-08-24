@@ -255,10 +255,10 @@ class StartupChatCreateSerializer(serializers.ModelSerializer):
         except IntegrityError:
             obj = Room.objects.filter(
                 author_id=self.context["request"].user,
-                receiver_id=candidate.id,
-                content_type=content_type,
+                receiver_id=receiver,
                 object_id=candidate.id,
             ).first()
+            print(obj)
             raise ValidationError(f"This chat is already exist : id {obj.id} ")
         return instance
 
@@ -294,7 +294,7 @@ class InvestorChatCreateSerializer(serializers.ModelSerializer):
         except IntegrityError:
             obj = Room.objects.filter(
                 author_id=self.context["request"].user,
-                receiver_id=candidate.id,
+                receiver_id=receiver,
                 object_id=candidate.id,
             ).first()
             raise ValidationError(f"This chat is already exist : id {obj.id} ")
