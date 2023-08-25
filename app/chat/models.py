@@ -75,9 +75,7 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Чат/комната",
     )
-    text = models.CharField(
-        max_length=200, blank=True, null=True, verbose_name="Текст сообщения"
-    )
+    text = models.TextField(blank=True, null=True, verbose_name="Текст сообщения")
     created_at = CreationDateTimeField(
         verbose_name="Дата создания",
     )
