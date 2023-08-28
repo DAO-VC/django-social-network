@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from core.permissions import InvestorCreatePermission
 from offer.filters import OfferModelFilter
 from offer.models.offer import Offer
+from offer.models.offer_candidate import CandidateStartup
 from offer.permissions import OfferVisiblePermission
 from offer.serializers.offer import (
     OfferCreateSerializer,
@@ -49,6 +50,13 @@ class OfferRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     def perform_destroy(self, instance: Offer):
         instance.active_status = Offer.ActiveStatus.ARCHIVE
         instance.save()
+        candidates = CandidateStartup.objects.filter(offer_id=instance.id)
+        for candidate in candidates:
+            if candidate.accept_status != CandidateStartup.AcceptStatus.ACCEPT:
+                candidate.accept_status = (
+                    CandidateStartup.AcceptStatus.THE_OFFER_IS_OUT_OF_ORDER
+                )
+                candidate.save()
         return instance
 
 

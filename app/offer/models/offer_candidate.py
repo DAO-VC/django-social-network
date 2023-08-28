@@ -11,6 +11,10 @@ class CandidateStartup(models.Model):
         CONCLUDED = "concluded", "Исключен"
         PENDING_FOR_APPROVAL = "pendingforapproval", "Подал заявку"
         ACCEPT = "accept", "Подтвержден"
+        THE_OFFER_IS_OUT_OF_ORDER = (
+            "theofferisoutoforder",
+            "Предложение недействительно",
+        )
 
     startup_id = models.ForeignKey(
         Startup, models.CASCADE, related_name="startup_to_offer"

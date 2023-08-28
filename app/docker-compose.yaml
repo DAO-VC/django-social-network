@@ -27,7 +27,6 @@ services:
     #    entrypoint: poetry run python manage.py migrate
     entrypoint: |
       sh -c "
-      poetry run python manage.py flush --noinput &&
       poetry run python manage.py migrate &&
       poetry run python manage.py loaddata fixtures/bussines.json &&
       poetry run python manage.py loaddata fixtures/industries.json &&
@@ -108,3 +107,6 @@ services:
 volumes:
   postgres_data:
   media_data:
+
+
+#poetry run python manage.py flush --noinput &&

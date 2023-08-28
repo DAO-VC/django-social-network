@@ -17,6 +17,10 @@ class Candidate(models.Model):
         DECLINE = "decline", "Отклонен"
         PENDING_FOR_APPROVAL = "pendingforapproval", "Подал заявку"
         IN_THE_TEAM = "intheteam", "В команде"
+        THE_VACANCY_IS_NOT_CURRENT = (
+            "thevacancyisnotcurrent",
+            "Вакансия более не существует",
+        )
 
     professional_id = models.ForeignKey(
         Professional,

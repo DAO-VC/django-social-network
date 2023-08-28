@@ -4,6 +4,7 @@ from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
 
 from vacancy.filters import VacancyModelFilter
+from vacancy.models.candidate import Candidate
 from vacancy.models.vacancy import Vacancy
 from vacancy.permissions import (
     VacancyGetCreatePermission,
@@ -63,6 +64,13 @@ class VacancyRetrieveView(generics.RetrieveUpdateDestroyAPIView):
     def perform_destroy(self, instance: Vacancy):
         instance.active_status = Vacancy.ActiveStatus.ARCHIVE
         instance.save()
+        candidates = Candidate.objects.filter(vacancy_id=instance.id)
+        for candidate in candidates:
+            if candidate.accept_status != Candidate.AcceptStatus.IN_THE_TEAM:
+                candidate.accept_status = (
+                    Candidate.AcceptStatus.THE_VACANCY_IS_NOT_CURRENT
+                )
+                candidate.save()
         return instance
 
 
