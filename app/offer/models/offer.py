@@ -8,6 +8,10 @@ from vacancy.models.vacancy import Skill
 class Offer(models.Model):
     """Сущность оффера инвестора"""
 
+    class ActiveStatus(models.TextChoices):
+        ACTIVE = "active", "активен"
+        ARCHIVE = "archive", "в архиве"
+
     investor_id = models.ForeignKey(Investor, models.CASCADE, verbose_name="Владелец")
     caption = models.CharField("Заголовок", max_length=128)
     amount = models.IntegerField(verbose_name="Кол-во инвестиций")
@@ -21,6 +25,9 @@ class Offer(models.Model):
     is_visible = models.BooleanField(verbose_name="Активен")
     # TODO: article?
     created_at = CreationDateTimeField(verbose_name="Дата создания")
+    active_status = models.CharField(
+        "Активный статус", choices=ActiveStatus.choices, max_length=32
+    )
 
     class Meta:
         verbose_name = "Офер"

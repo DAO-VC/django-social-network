@@ -40,6 +40,7 @@ class OfferCreateSerializer(serializers.ModelSerializer):
     update_industries = serializers.ListField(
         child=serializers.CharField(max_length=50), write_only=True
     )
+    active_status = serializers.CharField(read_only=True)
 
     class Meta:
         model = Offer
@@ -53,8 +54,7 @@ class OfferCreateSerializer(serializers.ModelSerializer):
         industries_titles = validated_data.pop("update_industries")
         with transaction.atomic():
             offer = Offer.objects.create(
-                **validated_data,
-                investor_id=investor,
+                **validated_data, investor_id=investor, active_status=True
             )
             update_industries = []
             for title in industries_titles:
@@ -73,6 +73,7 @@ class OfferUpdateSerializer(serializers.ModelSerializer):
     update_industries = serializers.ListField(
         child=serializers.CharField(max_length=54), write_only=True
     )
+    active_status = serializers.CharField(read_only=True)
 
     class Meta:
         model = Offer
@@ -103,6 +104,7 @@ class OfferVisibleSerializer(serializers.ModelSerializer):
             "offer_information",
             "created_at",
             "caption",
+            "active_status",
         )
 
     def update(self, instance: Offer, validated_data):
@@ -127,6 +129,7 @@ class ConfirmOfferSerializer(serializers.ModelSerializer):
             "created_at",
             "about",
             "is_favorite",
+            "active_status",
         )
 
     def update(self, instance: CandidateStartup, validated_data):

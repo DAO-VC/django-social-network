@@ -24,6 +24,7 @@ class OfferListCreateView(generics.ListCreateAPIView):
         filters.OrderingFilter,
     ]
     ordering_fields = ["created_at"]
+    filterset_fields = ["id", "active_status"]
 
     def get_queryset(self):
         return Offer.objects.filter(investor_id__owner=self.request.user.id)
@@ -45,6 +46,11 @@ class OfferRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Offer.objects.filter(investor_id__owner=self.request.user.id)
 
+    def perform_destroy(self, instance: Offer):
+        instance.active_status = Offer.ActiveStatus.ARCHIVE
+        instance.save()
+        return instance
+
 
 class AllOffersList(generics.ListAPIView):
     """Список всех офферов платформы"""
@@ -60,7 +66,7 @@ class AllOffersList(generics.ListAPIView):
     search_fields = ("amount", "offer_information", "caption", "investor_id")
 
     def get_queryset(self):
-        return Offer.objects.filter(is_visible=True)
+        return Offer.objects.filter(is_visible=True, active_status=True)
 
 
 class AllOffersRetrieve(generics.RetrieveAPIView):
