@@ -26,8 +26,9 @@ services:
         condition: service_healthy
     #    entrypoint: poetry run python manage.py migrate
     entrypoint: |
+      sh -c "
       poetry run python manage.py flush &&
-      sh -c "poetry run python manage.py migrate &&
+      poetry run python manage.py migrate &&
       poetry run python manage.py loaddata fixtures/bussines.json &&
       poetry run python manage.py loaddata fixtures/industries.json &&
       poetry run python manage.py loaddata fixtures/regions.json &&
