@@ -102,7 +102,7 @@ class VacancyAllView(generics.ListAPIView):
                 "company_id",
             )
             .prefetch_related("skills", "requirements")
-            .filter(is_visible=True, active_status=True)
+            .filter(is_visible=True, active_status="active")
         )
 
 
