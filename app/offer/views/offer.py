@@ -74,7 +74,7 @@ class AllOffersList(generics.ListAPIView):
     search_fields = ("amount", "offer_information", "caption", "investor_id")
 
     def get_queryset(self):
-        return Offer.objects.filter(is_visible=True, active_status=True)
+        return Offer.objects.filter(is_visible=True, active_status="active")
 
 
 class AllOffersRetrieve(generics.RetrieveAPIView):
