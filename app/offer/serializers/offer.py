@@ -54,7 +54,9 @@ class OfferCreateSerializer(serializers.ModelSerializer):
         industries_titles = validated_data.pop("update_industries")
         with transaction.atomic():
             offer = Offer.objects.create(
-                **validated_data, investor_id=investor, active_status=True
+                **validated_data,
+                investor_id=investor,
+                active_status=Offer.ActiveStatus.ACTIVE,
             )
             update_industries = []
             for title in industries_titles:
