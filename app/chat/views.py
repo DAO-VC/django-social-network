@@ -20,6 +20,7 @@ from chat.serializers import (
 )
 from core.models import User
 from core.permissions import StartupCreatePermission
+from core.serializers import UserBaseSerializer
 from image.models import Image, File
 from image.serializers import ImageSerializer, FileSerializer
 from offer.permissions import OfferStartupCandidatesPermission
@@ -86,6 +87,18 @@ class BanUser(generics.UpdateAPIView):
     serializer_class = BanUserSerializer
     http_method_names = ["put"]
     permission_classes = (IsAuthenticated,)
+
+
+class BanUsersList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserBaseSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        instance: User = (
+            User.objects.filter(id=self.request.user.id).first().users_banned_list.all()
+        )
+        return instance
 
 
 class ChangeRoomStatus(generics.UpdateAPIView):

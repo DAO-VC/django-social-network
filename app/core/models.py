@@ -44,18 +44,19 @@ class User(AbstractUser):
         "self",
         verbose_name="Забаненные пользователи",
         blank=True,
-        related_name="user_banned_list",
+        related_name="user_two_banned_list",
         symmetrical=False,
     )
 
     def get_ban_user(self, user):
         if user == self:
             raise ValidationError("You can't block yourself")
-        if user in self.user_banned_list.all():
-            self.user_banned_list.remove(user)
+        if user in self.users_banned_list.all():
+            print("YES")
+            self.users_banned_list.remove(user)
         else:
-            self.user_banned_list.add(user)
-        user.save()
+            print("NO")
+            self.users_banned_list.add(user)
 
     class Meta:
         verbose_name = "Пользователь"
