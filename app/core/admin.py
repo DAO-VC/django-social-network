@@ -23,7 +23,7 @@ class UserAdmin(UserAdmin):
         "profile",
         "online",
     )
-
+    filter_horizontal = ("users_banned_list",)
     fieldsets = (
         (
             None,
@@ -40,6 +40,7 @@ class UserAdmin(UserAdmin):
                     "online",
                     "date_joined",
                     "last_login",
+                    "users_banned_list",
                 )
             },
         ),
