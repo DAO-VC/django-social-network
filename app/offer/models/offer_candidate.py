@@ -7,6 +7,7 @@ from profiles.models.startup import Startup
 
 class CandidateStartup(models.Model):
     class AcceptStatus(models.TextChoices):
+        DELETED = "deleted", "Удалился"
         DECLINE = "decline", "Отклонен"
         CONCLUDED = "concluded", "Исключен"
         PENDING_FOR_APPROVAL = "pendingforapproval", "Подал заявку"

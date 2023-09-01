@@ -166,7 +166,7 @@ class StartupMyApplications(generics.ListAPIView):
     def get_queryset(self):
         return CandidateStartup.objects.filter(
             startup_id__owner=self.request.user,
-        )
+        ).exclude(accept_status=CandidateStartup.AcceptStatus.DELETED)
 
 
 class StartupMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
@@ -179,7 +179,12 @@ class StartupMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
     def get_queryset(self):
         return CandidateStartup.objects.filter(
             startup_id__owner=self.request.user,
-        )
+        ).exclude(accept_status=CandidateStartup.AcceptStatus.DELETED)
+
+    def perform_destroy(self, instance):
+        if instance.accept_status not in (CandidateStartup.AcceptStatus.ACCEPT,):
+            instance.accept_status = CandidateStartup.AcceptStatus.DELETED
+            instance.save()
 
 
 class OfferFavoriteCandidates(generics.ListAPIView):
