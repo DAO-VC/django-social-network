@@ -55,6 +55,7 @@ class User(AbstractUser):
             self.user_banned_list.remove(user)
         else:
             self.user_banned_list.add(user)
+        user.save()
 
     class Meta:
         verbose_name = "Пользователь"
