@@ -13,6 +13,7 @@ class Candidate(models.Model):
         VIEWED = "viewed", "Просмотрен"
 
     class AcceptStatus(models.TextChoices):
+        DELETED = "deleted", "Удалился"
         CONCLUDED = "concluded", "Исключен из команды"
         DECLINE = "decline", "Отклонен"
         PENDING_FOR_APPROVAL = "pendingforapproval", "Подал заявку"

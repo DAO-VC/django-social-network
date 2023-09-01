@@ -96,8 +96,10 @@ class ProfessionalMyApplicationsListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, ProfessionalMyApplicationsPermission)
 
     def get_queryset(self):
-        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
-            professional_id__owner_id=self.request.user.id
+        return (
+            Candidate.objects.select_related("professional_id", "vacancy_id")
+            .filter(professional_id__owner_id=self.request.user.id)
+            .exclude(accept_status=Candidate.AcceptStatus.DELETED)
         )
 
 
@@ -109,9 +111,16 @@ class ProfessionalMyApplicationsRetrieveView(generics.RetrieveDestroyAPIView):
     permission_classes = (IsAuthenticated, ProfessionalMyApplicationsPermission)
 
     def get_queryset(self):
-        return Candidate.objects.select_related("professional_id", "vacancy_id").filter(
-            professional_id__owner_id=self.request.user.id
+        return (
+            Candidate.objects.select_related("professional_id", "vacancy_id")
+            .filter(professional_id__owner_id=self.request.user.id)
+            .exclude(accept_status=Candidate.AcceptStatus.DELETED)
         )
+
+    def perform_destroy(self, instance: Candidate):
+        if instance.accept_status not in (Candidate.AcceptStatus.IN_THE_TEAM,):
+            instance.accept_status = Candidate.AcceptStatus.DELETED
+            instance.save()
 
 
 class CandidateFavoriteRetrieveView(generics.UpdateAPIView):
