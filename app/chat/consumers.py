@@ -41,8 +41,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         serializer = MessageSerializer(await self.get_object(result))
         if serializer.data["text"] == "Сhat banned":
             error_code = 4011
+            return_dict = {
+                "type": "chat_message",
+                # 'message': text_data_json['message'],
+                "message": "Chat Banned!",
+                "username": self.scope["user"].email,
+            }
 
-            await self.close(error_code)
+            await self.channel_layer.group_send(self.room_group_name, return_dict)
+            # await self.close(error_code)
             await self.disconnect({"code": error_code})
 
         return_dict = {
@@ -67,13 +74,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def save_message(self, message):
         room = Room.objects.get(id=int(self.room_name))
         user = self.scope["user"]
-
+        print(room.receiver.users_banned_list.all())
+        print(user.users_banned_list.all())
         if (
             user in room.receiver.users_banned_list.all()
             or room.receiver in user.users_banned_list.all()
         ):
             message = "Сhat banned"
-            return Message(author=user, room=room, text=message, is_read=False)
+            instance = Message.objects.create(
+                author=user, room=room, text=message, is_read=False
+            )
+            # return Message(author=user, room=room, text=message, is_read=False)
+            return instance
         #
         #     self.disconnect({'code': error_code})
         #     self.close(error_code)
@@ -132,11 +144,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_object(self, obj):
+        # return (
+        #     Message.objects.prefetch_related("images")
+        #     .prefetch_related("files")
+        #     .get(id=obj.id)
+        # )
         return (
             Message.objects.prefetch_related("images")
             .prefetch_related("files")
-            .get(id=obj.id)
-        )
+            .filter(id=obj.id)
+        ).first()
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):
