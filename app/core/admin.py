@@ -41,6 +41,7 @@ class UserAdmin(UserAdmin):
                     "date_joined",
                     "last_login",
                     "users_banned_list",
+                    "spam_count",
                 )
             },
         ),

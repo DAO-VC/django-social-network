@@ -229,6 +229,7 @@ class BanUserSerializer(serializers.ModelSerializer):
             "groups",
             "user_permissions",
             "users_banned_list",
+            "spam_count",
         )
 
 

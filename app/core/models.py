@@ -47,16 +47,20 @@ class User(AbstractUser):
         related_name="user_two_banned_list",
         symmetrical=False,
     )
+    spam_count = models.PositiveIntegerField(
+        "Кол-во жалоб", default=0, null=True, blank=True
+    )
 
     def get_ban_user(self, user):
         if user == self:
             raise ValidationError("You can't block yourself")
         if user in self.users_banned_list.all():
-            print("YES")
             self.users_banned_list.remove(user)
+            user.spam_count += 1
         else:
-            print("NO")
             self.users_banned_list.add(user)
+            user.spam_count -= 1
+        user.save()
 
     class Meta:
         verbose_name = "Пользователь"
