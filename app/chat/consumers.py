@@ -74,8 +74,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def save_message(self, message):
         room = Room.objects.get(id=int(self.room_name))
         user = self.scope["user"]
-        print(room.receiver.users_banned_list.all())
-        print(user.users_banned_list.all())
         if (
             user in room.receiver.users_banned_list.all()
             or room.receiver in user.users_banned_list.all()
