@@ -49,7 +49,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
 
             await self.channel_layer.group_send(self.room_group_name, return_dict)
-            # await self.close(error_code)
+            await self.close(error_code)
             await self.disconnect({"code": error_code})
 
         return_dict = {

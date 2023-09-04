@@ -28,7 +28,7 @@ urlpatterns = [
         name="read_all_messages_from_user",
     ),
     path("user/<int:pk>/ban/", BanUser.as_view(), name="ban_user_with_id"),
-    path("user//ban_lits/", BanUsersList.as_view(), name="user_bans_list"),
+    path("user/ban_list/", BanUsersList.as_view(), name="user_bans_list"),
     path(
         "main/startup/candidates/<int:pk>/chat/",
         StartupStartChat.as_view(),
