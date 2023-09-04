@@ -41,14 +41,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         serializer = MessageSerializer(await self.get_object(result))
         if serializer.data["text"] == "Сhat banned":
             error_code = 4011
-            return_dict = {
-                "type": "chat_message",
-                # 'message': text_data_json['message'],
-                "message": "Chat Banned!",
-                "username": self.scope["user"].email,
-            }
-
-            await self.channel_layer.group_send(self.room_group_name, return_dict)
+            # return_dict = {
+            #     "type": "chat_message",
+            #     # 'message': text_data_json['message'],
+            #     "message": "Chat Banned!",
+            #     "username": self.scope["user"].email,
+            # }
+            #
+            # await self.channel_layer.group_send(self.room_group_name, return_dict)
             await self.close(error_code)
             await self.disconnect({"code": error_code})
 
