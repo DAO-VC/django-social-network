@@ -477,3 +477,37 @@ class StartupToInvestorRoomSerializer(serializers.ModelSerializer):
         model = Room
         # fields = "__all__"
         exclude = ["object_id", "content_type"]
+
+
+class SpamUserSerializer(serializers.ModelSerializer):
+    def update(self, instance: User, validated_data):
+        user = self.context["request"].user
+        user.get_ban_user(instance)
+        instance.increase_spam_count()
+        return super().update(instance, validated_data)
+
+    class Meta:
+        model = User
+
+        exclude = (
+            "password",
+            "last_login",
+            "is_superuser",
+            "first_name",
+            "last_name",
+            "is_staff",
+            "is_active",
+            "date_joined",
+            "email",
+            "phone",
+            "code",
+            "username",
+            "is_onboarding",
+            "profile",
+            "online",
+            "permissions",
+            "groups",
+            "user_permissions",
+            "users_banned_list",
+            "spam_count",
+        )

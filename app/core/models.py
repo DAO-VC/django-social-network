@@ -56,11 +56,12 @@ class User(AbstractUser):
             raise ValidationError("You can't block yourself")
         if user in self.users_banned_list.all():
             self.users_banned_list.remove(user)
-            user.spam_count += 1
         else:
             self.users_banned_list.add(user)
-            user.spam_count -= 1
-        user.save()
+
+    def increase_spam_count(self):
+        self.spam_count += 1
+        self.save()
 
     class Meta:
         verbose_name = "Пользователь"

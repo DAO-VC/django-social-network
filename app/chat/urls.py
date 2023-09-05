@@ -16,6 +16,7 @@ from chat.views import (
     AllRoomImages,
     AllRoomFiles,
     BanUsersList,
+    SpamUser,
 )
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
         name="read_all_messages_from_user",
     ),
     path("user/<int:pk>/ban/", BanUser.as_view(), name="ban_user_with_id"),
+    path("user/<int:pk>/spam/", SpamUser.as_view(), name="spam_user_with_id"),
     path("user/ban_list/", BanUsersList.as_view(), name="user_bans_list"),
     path(
         "main/startup/candidates/<int:pk>/chat/",

@@ -17,6 +17,7 @@ from chat.serializers import (
     ProfessionalToStartupRoomSerializer,
     InvestorToConfirmedStartupRoomSerializer,
     StartupToInvestorRoomSerializer,
+    SpamUserSerializer,
 )
 from core.models import User
 from core.permissions import StartupCreatePermission
@@ -85,6 +86,13 @@ class ReadAllMessage(generics.UpdateAPIView):
 class BanUser(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = BanUserSerializer
+    http_method_names = ["put"]
+    permission_classes = (IsAuthenticated,)
+
+
+class SpamUser(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = SpamUserSerializer
     http_method_names = ["put"]
     permission_classes = (IsAuthenticated,)
 
