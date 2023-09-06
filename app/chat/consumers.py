@@ -1,8 +1,6 @@
 import json
-
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.db.models import F
 import base64
 import secrets
 from django.core.files.base import ContentFile
@@ -262,3 +260,82 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         else:
             user.online = False
             user.save()
+
+
+class MessagesConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        my_id = self.scope["user"].id
+        self.room_group_name = f"message_{my_id}"
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+        await self.accept()
+
+    async def disconnect(self, code):
+        self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+    async def receive(self, text_data=None):
+        text_data_json = json.loads(text_data)
+        message_id = text_data_json["message_id"]
+
+        message = await self.read_message(message_id=message_id)
+        serializer = MessageSerializer(await self.get_object(message))
+        return_dict = {
+            "type": "chat_message",
+            "message_id": serializer.data.get("id"),
+            "read_status": serializer.data.get("is_read"),
+            "chat_id": serializer.data.get("room"),
+            # "username": self.scope["user"].email,
+        }
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            return_dict,
+        )
+
+    async def chat_message(self, event):
+        message_id = event["message_id"]
+        # username = event["username"]
+        read_status = event["read_status"]
+        chat_id = event["chat_id"]
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "message_id": message_id,
+                    "read_status": read_status,
+                    "chat_id": chat_id,
+                    # "username": username,
+                },
+                ensure_ascii=False,
+            )
+        )
+
+    async def send_message_status(self, event):
+        data = json.loads(event.get("value"))
+        message_id = data["message_id"]
+        read_status = data["read_status"]
+        chat_id = data["chat_id"]
+
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "message_id": message_id,
+                    "read_status": read_status,
+                    "chat_id": chat_id,
+                    # "username": username,
+                },
+                ensure_ascii=False,
+            )
+        )
+
+    @database_sync_to_async
+    def read_message(self, message_id):
+        obj = Message.objects.filter(id=message_id).first()
+        obj.is_read = True
+        obj.save()
+        return obj
+
+    @database_sync_to_async
+    def get_object(self, obj):
+        return (
+            Message.objects.prefetch_related("images")
+            .prefetch_related("files")
+            .filter(id=obj.id)
+        ).first()

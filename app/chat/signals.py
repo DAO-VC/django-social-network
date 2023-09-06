@@ -1,7 +1,7 @@
 import json
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from chat.models import ChatNotification, Room
+from chat.models import ChatNotification, Room, Message
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from chat.serializers import NotificationSerializer
@@ -53,3 +53,22 @@ def send_close_room_notification(sender, instance: Room, **kwargs):
     ChatNotification.objects.create(
         user=author, author=receiver, text=f"Chat with {receiver} is closed"
     )
+
+
+@receiver(post_save, sender=Message)
+def send_notification(sender, instance: Message, created, **kwargs):
+    if not created:
+        channel_layer = get_channel_layer()
+        user_id = str(instance.author.id)
+        # receiver_id = Room.objects.filter(id=instance.room.id).first().receiver.id
+
+        data = {
+            "message_id": instance.id,
+            "read_status": instance.is_read,
+            "chat_id": instance.room.id,
+        }
+
+        channel_name = f"message_{user_id}"
+        async_to_sync(channel_layer.group_send)(
+            channel_name, {"type": "send_message_status", "value": json.dumps(data)}
+        )

@@ -1,4 +1,3 @@
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -29,10 +28,12 @@ class MessageSerializer(serializers.ModelSerializer):
 
     images = ImageSerializer(many=True, read_only=True)
     files = FileSerializer(many=True, read_only=True)
+    room = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Message
-        exclude = ("room",)
+        # exclude = ("room",)
+        fields = "__all__"
 
 
 # class RoomDetailSerializer(serializers.ModelSerializer,RoomListSerializer):
