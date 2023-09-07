@@ -64,7 +64,7 @@ urlpatterns = [
         name="all_confirmed_offers",
     ),
     path(
-        "main/confirmed_offers/<int:pk>",
+        "main/confirmed_offers/<int:pk>/",
         StartupConfirmedRetrieveDeleteView.as_view(),
         name="retrieve_delete_confirmed_offer",
     ),
