@@ -152,9 +152,9 @@ class StartupConfirmedRetrieveDeleteView(generics.RetrieveDestroyAPIView):
     def perform_destroy(self, instance: CandidateStartup):
         instance.accept_status = CandidateStartup.AcceptStatus.CONCLUDED
         instance.save()
-        ConfirmedOffer.objects.filter(
-            startup_id=instance.startup_id, offer_id=instance.offer_id.id
-        ).delete()
+        # ConfirmedOffer.objects.filter(
+        #     startup_id=instance.startup_id, offer_id=instance.offer_id.id
+        # ).delete()
 
 
 class StartupMyApplications(generics.ListAPIView):
