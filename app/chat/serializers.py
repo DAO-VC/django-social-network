@@ -4,6 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from django.db.utils import IntegrityError
 from chat.models import Message, Room, ChatNotification
+from chat.utils import banned_user_chats
 from core.models import User
 from core.serializers import UserBaseSerializer
 from image.serializers import ImageSerializer, FileSerializer
@@ -199,12 +200,9 @@ class ReadAllMessageSerializer(serializers.ModelSerializer):
 
 class BanUserSerializer(serializers.ModelSerializer):
     def update(self, instance: User, validated_data):
-        # user = self.context["request"].user
-        # if instance in user.user_banned_list.all():
-        #     raise ValidationError("The user is already in the ban list")
-        # user.user_banned_list.add(instance)
         user = self.context["request"].user
-        user.get_ban_user(instance)
+        status = user.get_ban_user(instance)
+        banned_user_chats(status, user, instance)
         return super().update(instance, validated_data)
 
     class Meta:
@@ -252,7 +250,7 @@ class StartupChatCreateSerializer(serializers.ModelSerializer):
                 receiver=receiver,
                 content_type=content_type,
                 object_id=candidate.id,
-                status=Room.ChatStatus.NEW,
+                status=Room.ChatStatus.ACTIVE,
             )
         except IntegrityError:
             obj = Room.objects.filter(
@@ -291,7 +289,7 @@ class InvestorChatCreateSerializer(serializers.ModelSerializer):
                 receiver=receiver,
                 content_type=content_type,
                 object_id=candidate.id,
-                status=Room.ChatStatus.NEW,
+                status=Room.ChatStatus.ACTIVE,
             )
         except IntegrityError:
             obj = Room.objects.filter(
@@ -335,7 +333,7 @@ class StartupWorkteamRoomSerializer(serializers.ModelSerializer):
                 receiver=team_member.candidate_id.professional_id.owner,
                 content_type=content_type,
                 object_id=team_member.id,
-                status=Room.ChatStatus.NEW,
+                status=Room.ChatStatus.ACTIVE,
             )
         except IntegrityError:
             obj = Room.objects.filter(
@@ -378,7 +376,7 @@ class ProfessionalToStartupRoomSerializer(serializers.ModelSerializer):
                 receiver=candidate.vacancy_id.company_id.owner,
                 content_type=content_type,
                 object_id=candidate.id,
-                status=Room.ChatStatus.NEW,
+                status=Room.ChatStatus.ACTIVE,
             )
         except IntegrityError:
             obj = Room.objects.filter(
@@ -419,7 +417,7 @@ class InvestorToConfirmedStartupRoomSerializer(serializers.ModelSerializer):
                 receiver=candidate.startup_id.owner,
                 content_type=content_type,
                 object_id=candidate.id,
-                status=Room.ChatStatus.NEW,
+                status=Room.ChatStatus.ACTIVE,
             )
         except IntegrityError:
             obj = Room.objects.filter(
@@ -460,7 +458,7 @@ class StartupToInvestorRoomSerializer(serializers.ModelSerializer):
                 receiver=candidate.offer_id.investor_id.owner,
                 content_type=content_type,
                 object_id=candidate.id,
-                status=Room.ChatStatus.NEW,
+                status=Room.ChatStatus.ACTIVE,
             )
         except IntegrityError:
             obj = Room.objects.filter(

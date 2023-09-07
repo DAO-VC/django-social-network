@@ -21,7 +21,7 @@ from chat.serializers import (
 )
 from core.models import User
 from core.permissions import StartupCreatePermission
-from core.serializers import UserBaseSerializer
+from core.serializers import UserBaseSerializer, BannedUsersListSerializer
 from image.models import Image, File
 from image.serializers import ImageSerializer, FileSerializer
 from offer.permissions import OfferStartupCandidatesPermission
@@ -73,7 +73,7 @@ class MyChatsList(generics.ListAPIView):
     def get_queryset(self):
         return Room.objects.filter(
             Q(author=self.request.user) | Q(receiver=self.request.user)
-        )
+        ).filter(status=Room.ChatStatus.ACTIVE)
 
 
 class ReadAllMessage(generics.UpdateAPIView):
@@ -99,7 +99,7 @@ class SpamUser(generics.UpdateAPIView):
 
 class BanUsersList(generics.ListAPIView):
     queryset = User.objects.all()
-    serializer_class = UserBaseSerializer
+    serializer_class = BannedUsersListSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):

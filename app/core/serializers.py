@@ -6,9 +6,17 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 import django.contrib.auth.password_validation as validators
+
+from core.admin import User
 from core.utils import send_verification_mail
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from profiles.models.investor import Investor
+from profiles.models.professional import Professional
+from profiles.models.startup import Startup
+from profiles.serializers.investor import InvestorSerializer
+from profiles.serializers.professional import ProfessionalSerializer
+from profiles.serializers.startup import StartupSerializer
 from vacancy.serializers.workteam import WorkTeamBaseSerializer
 
 USER_MODEL = get_user_model()
@@ -178,3 +186,27 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["access"] = str(refresh.access_token)
 
         return data
+
+
+class BannedUsersListSerializer(UserBaseSerializer):
+    object = serializers.SerializerMethodField(read_only=True)
+
+    def get_object(self, instance: User):
+        if Startup.objects.filter(owner=instance).exists():
+            return StartupSerializer(
+                Startup.objects.filter(owner=instance).first()
+            ).data
+
+        if Professional.objects.filter(owner=instance).exists():
+            return ProfessionalSerializer(
+                Professional.objects.filter(owner=instance).first()
+            ).data
+
+        if Investor.objects.filter(owner=instance).exists():
+            return InvestorSerializer(
+                Investor.objects.filter(owner=instance).first()
+            ).data
+
+    class Meta:
+        model = USER_MODEL
+        fields = "__all__"

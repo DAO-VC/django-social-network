@@ -47,7 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             # }
             #
             # await self.channel_layer.group_send(self.room_group_name, return_dict)
-            # await self.close(error_code)
+            await self.close(error_code)
             await self.disconnect({"code": error_code})
 
         return_dict = {
@@ -72,9 +72,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def save_message(self, message):
         room = Room.objects.get(id=int(self.room_name))
         user = self.scope["user"]
+        # if (
+        #     user in room.receiver.users_banned_list.all()
+        #     or room.receiver in user.users_banned_list.all()
+        # ):
         if (
             user in room.receiver.users_banned_list.all()
-            or room.receiver in user.users_banned_list.all()
+            or user in room.author.users_banned_list.all()
         ):
             message = "Сhat banned"
             instance = Message.objects.create(

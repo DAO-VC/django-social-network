@@ -56,8 +56,10 @@ class User(AbstractUser):
             raise ValidationError("You can't block yourself")
         if user in self.users_banned_list.all():
             self.users_banned_list.remove(user)
+            return "unbanned"
         else:
             self.users_banned_list.add(user)
+            return "banned"
 
     def increase_spam_count(self):
         self.spam_count += 1
