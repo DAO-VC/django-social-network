@@ -236,6 +236,7 @@ class StartupChatCreateSerializer(serializers.ModelSerializer):
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     receiver_info = SerializerMethodField(read_only=True)
+    status = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         candidate = get_object_or_404(
@@ -258,7 +259,6 @@ class StartupChatCreateSerializer(serializers.ModelSerializer):
                 receiver_id=receiver,
                 object_id=candidate.id,
             ).first()
-            print(obj)
             raise ValidationError(f"This chat is already exist : id {obj.id} ")
         return instance
 
@@ -275,6 +275,7 @@ class InvestorChatCreateSerializer(serializers.ModelSerializer):
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     receiver_info = SerializerMethodField(read_only=True)
+    status = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         candidate = get_object_or_404(
@@ -319,6 +320,7 @@ class StartupWorkteamRoomSerializer(serializers.ModelSerializer):
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     receiver_info = SerializerMethodField(read_only=True)
+    status = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         startup = get_object_or_404(Startup, owner=self.context["request"].user)
@@ -357,6 +359,7 @@ class ProfessionalToStartupRoomSerializer(serializers.ModelSerializer):
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     receiver_info = SerializerMethodField(read_only=True)
+    status = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         queryset = Candidate.objects.select_related(
@@ -400,6 +403,7 @@ class InvestorToConfirmedStartupRoomSerializer(serializers.ModelSerializer):
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     receiver_info = SerializerMethodField(read_only=True)
+    status = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         queryset = CandidateStartup.objects.filter(
@@ -441,6 +445,7 @@ class StartupToInvestorRoomSerializer(serializers.ModelSerializer):
     author = UserBaseSerializer(read_only=True)
     receiver = UserBaseSerializer(read_only=True)
     receiver_info = SerializerMethodField(read_only=True)
+    status = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         queryset = CandidateStartup.objects.filter(

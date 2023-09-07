@@ -129,7 +129,7 @@ class StartupConfirmedList(generics.ListAPIView):
 class StartupConfirmedRetrieveDeleteView(generics.RetrieveDestroyAPIView):
     """Детальный просмотр | удаление подтвержденного стартапа"""
 
-    serializer_class = ConfirmedOfferInvestorSerializer
+    serializer_class = CandidateStartupBaseSerializer
 
     # def get_queryset(self):
     #     return ConfirmedOffer.objects.filter(
