@@ -486,7 +486,8 @@ class StartupToInvestorRoomSerializer(serializers.ModelSerializer):
 class SpamUserSerializer(serializers.ModelSerializer):
     def update(self, instance: User, validated_data):
         user = self.context["request"].user
-        user.get_ban_user(instance)
+        status = user.get_ban_user(instance)
+        banned_user_chats(status, user, instance)
         instance.increase_spam_count()
         return super().update(instance, validated_data)
 
