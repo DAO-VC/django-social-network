@@ -62,7 +62,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user = self.scope["user"]
         if (
             user in room.receiver.users_banned_list.all()
-            or room.receiver in user.users_banned_list.all()
+            or user in room.author.users_banned_list.all()
         ):
             instance = Message.objects.create(
                 author=user,
