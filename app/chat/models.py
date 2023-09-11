@@ -86,6 +86,7 @@ class Message(models.Model):
     is_read = models.BooleanField(verbose_name="Прочитано", null=True, blank=True)
     images = models.ManyToManyField(Image, blank=True, related_name="message_images")
     files = models.ManyToManyField(File, blank=True, related_name="message_files")
+    ban_status = models.BooleanField(verbose_name="Бан статус", null=True, blank=True)
 
     class Meta:
         ordering = ("-created_at",)

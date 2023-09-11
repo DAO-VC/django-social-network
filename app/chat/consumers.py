@@ -37,18 +37,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             result: Message = await self.save_message(text_data_json["message"])
 
         serializer = MessageSerializer(await self.get_object(result))
-        if serializer.data["text"] == "Сhat banned":
-            error_code = 4011
-            # return_dict = {
-            #     "type": "chat_message",
-            #     # 'message': text_data_json['message'],
-            #     "message": "Chat Banned!",
-            #     "username": self.scope["user"].email,
-            # }
-            #
-            # await self.channel_layer.group_send(self.room_group_name, return_dict)
-            await self.close(error_code)
-            await self.disconnect({"code": error_code})
 
         return_dict = {
             "type": "chat_message",
@@ -64,7 +52,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def chat_message(self, event):
         message = event["message"]
-        user = event["username"]
+        # user = event["username"]
 
         await self.send(text_data=json.dumps({"message": message}, ensure_ascii=False))
 
@@ -72,26 +60,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def save_message(self, message):
         room = Room.objects.get(id=int(self.room_name))
         user = self.scope["user"]
-        # if (
-        #     user in room.receiver.users_banned_list.all()
-        #     or room.receiver in user.users_banned_list.all()
-        # ):
         if (
             user in room.receiver.users_banned_list.all()
-            or user in room.author.users_banned_list.all()
+            or room.receiver in user.users_banned_list.all()
         ):
-            message = "Сhat banned"
             instance = Message.objects.create(
-                author=user, room=room, text=message, is_read=False
+                author=user,
+                room=room,
+                text=message,
+                is_read=False,
+                ban_status=True,
             )
-            # return Message(author=user, room=room, text=message, is_read=False)
             return instance
-        #
-        #     self.disconnect({'code': error_code})
-        #     self.close(error_code)
 
         instance = Message.objects.create(
-            author=user, room=room, text=message, is_read=False
+            author=user, room=room, text=message, is_read=False, ban_status=False
         )
         if user.id == room.author.id:
             ChatNotification.objects.create(
@@ -144,11 +127,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_object(self, obj):
-        # return (
-        #     Message.objects.prefetch_related("images")
-        #     .prefetch_related("files")
-        #     .get(id=obj.id)
-        # )
         return (
             Message.objects.prefetch_related("images")
             .prefetch_related("files")
@@ -162,13 +140,11 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         my_id = self.scope["user"].id
         self.room_group_name = f"notify_{my_id}"
-        # await self.update_user_incr(self.scope["user"])
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
         await self.accept()
 
     async def disconnect(self, code):
-        # await self.update_user_decr(self.scope["user"])
         self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     async def send_notification(self, event):
@@ -240,7 +216,6 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         email = data["email"]
         connection_type = data["type"]
-        print(connection_type)
         await self.change_online_status(email, connection_type)
 
     async def send_OnlineStatus(self, event):

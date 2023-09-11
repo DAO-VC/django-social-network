@@ -12,7 +12,7 @@ User = get_user_model()
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    list_display = ("id", "email_link", "is_onboarding", "profile")
+    list_display = ("id", "email_link", "is_onboarding", "profile", "spam_count")
     search_fields = (
         "email__startswith",
         "id",
