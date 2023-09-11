@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from chat.models import ChatNotification, Room, Message
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
-from chat.serializers import NotificationSerializer
+from chat.serializers import NotificationSerializer, MessageSerializer
 
 
 @receiver(post_save, sender=ChatNotification)
@@ -80,16 +80,19 @@ def send_create_message_notification(sender, instance: Message, created, **kwarg
         channel_layer = get_channel_layer()
         receiver_id = Room.objects.filter(id=instance.room.id).first().receiver.id
         unread_messages_count = Message.objects.filter(
-            room_id=instance.room.id, is_read=False, author__id=instance.author.id
+            room_id=instance.room.id, is_read=False, author_id=instance.author.id
         ).count()
+        last_message = Message.objects.filter(room_id=instance.room.id).first()
+
         data = {
             "user_id": receiver_id,
             "unread_messages_count": unread_messages_count,
             "chat_id": instance.room.id,
+            "last_message": MessageSerializer(last_message).data,
         }
 
         channel_name = f"count_messages_{receiver_id}"
         async_to_sync(channel_layer.group_send)(
             channel_name,
-            {"type": "send_count_messages_status", "value": json.dumps(data)},
+            {"type": "send_count_messages", "value": json.dumps(data)},
         )

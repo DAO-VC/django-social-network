@@ -334,22 +334,25 @@ class MessagesCountConsumer(AsyncWebsocketConsumer):
         user_id = event["user_id"]
         unread_messages_count = event["unread_messages_count"]
         chat_id = event["chat_id"]
+        last_message = event["last_message"]
         await self.send(
             text_data=json.dumps(
                 {
                     "user_id": user_id,
                     "unread_messages_count": unread_messages_count,
                     "chat_id": chat_id,
+                    "last_message": last_message,
                 },
                 ensure_ascii=False,
             )
         )
 
-    async def send_count_messages_status(self, event):
+    async def send_count_messages(self, event):
         data = json.loads(event.get("value"))
         user_id = data["user_id"]
         unread_messages_count = data["unread_messages_count"]
         chat_id = data["chat_id"]
+        last_message = data["last_message"]
 
         await self.send(
             text_data=json.dumps(
@@ -357,15 +360,8 @@ class MessagesCountConsumer(AsyncWebsocketConsumer):
                     "user_id": user_id,
                     "unread_messages_count": unread_messages_count,
                     "chat_id": chat_id,
+                    "last_message": last_message,
                 },
                 ensure_ascii=False,
             )
         )
-
-    @database_sync_to_async
-    def get_object(self, obj):
-        return (
-            Message.objects.prefetch_related("images")
-            .prefetch_related("files")
-            .filter(id=obj.id)
-        ).first()
