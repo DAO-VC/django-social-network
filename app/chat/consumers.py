@@ -318,3 +318,54 @@ class MessagesConsumer(AsyncWebsocketConsumer):
             .prefetch_related("files")
             .filter(id=obj.id)
         ).first()
+
+
+class MessagesCountConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        my_id = self.scope["user"].id
+        self.room_group_name = f"count_messages_{my_id}"
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+        await self.accept()
+
+    async def disconnect(self, code):
+        self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+    async def chat_message(self, event):
+        user_id = event["user_id"]
+        unread_messages_count = event["unread_messages_count"]
+        chat_id = event["chat_id"]
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "user_id": user_id,
+                    "unread_messages_count": unread_messages_count,
+                    "chat_id": chat_id,
+                },
+                ensure_ascii=False,
+            )
+        )
+
+    async def send_count_messages_status(self, event):
+        data = json.loads(event.get("value"))
+        user_id = data["user_id"]
+        unread_messages_count = data["unread_messages_count"]
+        chat_id = data["chat_id"]
+
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "user_id": user_id,
+                    "unread_messages_count": unread_messages_count,
+                    "chat_id": chat_id,
+                },
+                ensure_ascii=False,
+            )
+        )
+
+    @database_sync_to_async
+    def get_object(self, obj):
+        return (
+            Message.objects.prefetch_related("images")
+            .prefetch_related("files")
+            .filter(id=obj.id)
+        ).first()

@@ -56,7 +56,7 @@ def send_close_room_notification(sender, instance: Room, **kwargs):
 
 
 @receiver(post_save, sender=Message)
-def send_notification(sender, instance: Message, created, **kwargs):
+def send_message_read_notification(sender, instance: Message, created, **kwargs):
     if not created:
         channel_layer = get_channel_layer()
         user_id = str(instance.author.id)
@@ -71,4 +71,25 @@ def send_notification(sender, instance: Message, created, **kwargs):
         channel_name = f"message_{user_id}"
         async_to_sync(channel_layer.group_send)(
             channel_name, {"type": "send_message_status", "value": json.dumps(data)}
+        )
+
+
+@receiver(post_save, sender=Message)
+def send_create_message_notification(sender, instance: Message, created, **kwargs):
+    if created:
+        channel_layer = get_channel_layer()
+        receiver_id = Room.objects.filter(id=instance.room.id).first().receiver.id
+        unread_messages_count = Message.objects.filter(
+            room_id=instance.room.id, is_read=False, author__id=instance.author.id
+        ).count()
+        data = {
+            "user_id": receiver_id,
+            "unread_messages_count": unread_messages_count,
+            "chat_id": instance.room.id,
+        }
+
+        channel_name = f"count_messages_{receiver_id}"
+        async_to_sync(channel_layer.group_send)(
+            channel_name,
+            {"type": "send_count_messages_status", "value": json.dumps(data)},
         )

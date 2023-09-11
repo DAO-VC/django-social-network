@@ -185,8 +185,8 @@ class RoomDetailSerializer(RoomListSerializer):
 class ReadAllMessageSerializer(serializers.ModelSerializer):
     def update(self, instance: Room, validated_data):
         user = self.context["request"].user
-        messages = Message.objects.filter(room_id=instance.id).exclude(
-            author__id=user.id
+        messages = Message.objects.filter(room_id=instance.id, is_read=False).exclude(
+            author_id=user.id
         )
         for message in messages:
             message.is_read = True
@@ -195,7 +195,15 @@ class ReadAllMessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        exclude = ["id", "author", "receiver", "created_at"]
+        exclude = [
+            "id",
+            "author",
+            "receiver",
+            "created_at",
+            "object_id",
+            "status",
+            "content_type",
+        ]
 
 
 class BanUserSerializer(serializers.ModelSerializer):
