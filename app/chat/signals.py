@@ -78,7 +78,13 @@ def send_message_read_notification(sender, instance: Message, created, **kwargs)
 def send_create_message_notification(sender, instance: Message, created, **kwargs):
     if created:
         channel_layer = get_channel_layer()
-        receiver_id = Room.objects.filter(id=instance.room.id).first().receiver.id
+        message_author_id = instance.author.id
+        room = Room.objects.filter(id=instance.room.id).first()
+        # receiver_id = Room.objects.filter(id=instance.room.id).first().receiver.id
+        if message_author_id == room.author.id:
+            receiver_id = room.receiver.id
+        else:
+            receiver_id = room.author.id
         unread_messages_count = Message.objects.filter(
             room_id=instance.room.id, is_read=False, author_id=instance.author.id
         ).count()

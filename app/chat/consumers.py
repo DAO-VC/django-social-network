@@ -330,22 +330,22 @@ class MessagesCountConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, code):
         self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
-    async def chat_message(self, event):
-        user_id = event["user_id"]
-        unread_messages_count = event["unread_messages_count"]
-        chat_id = event["chat_id"]
-        last_message = event["last_message"]
-        await self.send(
-            text_data=json.dumps(
-                {
-                    "user_id": user_id,
-                    "unread_messages_count": unread_messages_count,
-                    "chat_id": chat_id,
-                    "last_message": last_message,
-                },
-                ensure_ascii=False,
-            )
-        )
+    # async def chat_message(self, event):
+    #     user_id = event["user_id"]
+    #     unread_messages_count = event["unread_messages_count"]
+    #     chat_id = event["chat_id"]
+    #     last_message = event["last_message"]
+    #     await self.send(
+    #         text_data=json.dumps(
+    #             {
+    #                 "user_id": user_id,
+    #                 "unread_messages_count": unread_messages_count,
+    #                 "chat_id": chat_id,
+    #                 "last_message": last_message,
+    #             },
+    #             ensure_ascii=False,
+    #         )
+    #     )
 
     async def send_count_messages(self, event):
         data = json.loads(event.get("value"))
