@@ -351,6 +351,7 @@ class MessagesCountConsumer(AsyncWebsocketConsumer):
         data = json.loads(event.get("value"))
         user_id = data["user_id"]
         unread_messages_count = data["unread_messages_count"]
+        all_unread_messages_count = data["all_unread_messages_count"]
         chat_id = data["chat_id"]
         last_message = data["last_message"]
 
@@ -359,6 +360,7 @@ class MessagesCountConsumer(AsyncWebsocketConsumer):
                 {
                     "user_id": user_id,
                     "unread_messages_count": unread_messages_count,
+                    "all_unread_messages_count": all_unread_messages_count,
                     "chat_id": chat_id,
                     "last_message": last_message,
                 },

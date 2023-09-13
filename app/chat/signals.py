@@ -5,6 +5,7 @@ from chat.models import ChatNotification, Room, Message
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from chat.serializers import NotificationSerializer, MessageSerializer
+from django.db.models import Q
 
 
 @receiver(post_save, sender=ChatNotification)
@@ -86,8 +87,28 @@ def send_create_message_notification(sender, instance: Message, created, **kwarg
         else:
             receiver_id = room.author.id
         unread_messages_count = Message.objects.filter(
-            room_id=instance.room.id, is_read=False, author_id=instance.author.id
+            room_id=instance.room.id,
+            is_read=False,
+            author_id=instance.author.id,
+            ban_status=False,
         ).count()
+        # all_unread_messages_count = Message.objects.filter(
+        #     is_read=False, author_id=instance.author.id
+        # ).count()
+        rooms_id_queryset = [
+            room.id
+            for room in Room.objects.filter(
+                Q(author=receiver_id) | Q(receiver=receiver_id)
+            )
+        ]
+        all_unread_messages_count = 0
+        for id in rooms_id_queryset:
+            all_unread_messages_count += (
+                Message.objects.filter(room_id=id, is_read=False, ban_status=False)
+                .exclude(author_id=receiver_id)
+                .count()
+            )
+
         last_message = Message.objects.filter(room_id=instance.room.id).first()
 
         data = {
@@ -95,6 +116,7 @@ def send_create_message_notification(sender, instance: Message, created, **kwarg
             "unread_messages_count": unread_messages_count,
             "chat_id": instance.room.id,
             "last_message": MessageSerializer(last_message).data,
+            "all_unread_messages_count": all_unread_messages_count,
         }
 
         channel_name = f"count_messages_{receiver_id}"
