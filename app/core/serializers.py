@@ -1,5 +1,6 @@
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.db import transaction
+from django.db.models import Q
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
@@ -7,6 +8,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 import django.contrib.auth.password_validation as validators
 
+from chat.models import Room, Message
 from core.admin import User
 from core.utils import send_verification_mail
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -80,10 +82,28 @@ class UserBaseSerializer(serializers.ModelSerializer):
     """Базовый сериализатор пользователя"""
 
     permissions = WorkTeamBaseSerializer(read_only=True)
+    all_messages = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = USER_MODEL
         fields = "__all__"
+
+    def get_all_messages(self, instance: User):
+        rooms_id_queryset = [
+            room.id
+            for room in Room.objects.filter(
+                Q(author=instance.id) | Q(receiver=instance.id)
+            )
+        ]
+        all_unread_messages_count = 0
+        for id in rooms_id_queryset:
+            all_unread_messages_count += (
+                Message.objects.filter(room_id=id, is_read=False, ban_status=False)
+                .exclude(author_id=instance.id)
+                .count()
+            )
+
+        return all_unread_messages_count
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
