@@ -203,42 +203,108 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         obj.save()
 
 
+# class OnlineStatusConsumer(AsyncWebsocketConsumer):
+#     """Сущность потребителя для реализации онлайн статуса пользователя."""
+#
+#     async def connect(self):
+#         self.room_group_name = "user"
+#         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+#
+#         await self.accept()
+#
+#     async def receive(self, text_data=None, bytes_data=None):
+#         data = json.loads(text_data)
+#         email = data["email"]
+#         connection_type = data["type"]
+#         await self.change_online_status(email, connection_type)
+#
+#     async def send_OnlineStatus(self, event):
+#         data = json.loads(event.get("value"))
+#         email = data["email"]
+#         online_status = data["status"]
+#         await self.send(
+#             text_data=json.dumps({"email": email, "online_status": online_status})
+#         )
+#
+#     async def disconnect(self, message):
+#         self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+#
+#     @database_sync_to_async
+#     def change_online_status(self, email, c_type):
+#         user = User.objects.get(email=email)
+#
+#         if c_type == "open":
+#             user.online = True
+#             user.save()
+#         else:
+#             user.online = False
+#             user.save()
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
     """Сущность потребителя для реализации онлайн статуса пользователя."""
 
     async def connect(self):
-        self.room_group_name = "user"
+        my_id = self.scope["user"].id
+        self.room_group_name = f"online_{my_id}"
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-
+        await self.change_online_status(id=my_id)
         await self.accept()
 
-    async def receive(self, text_data=None, bytes_data=None):
-        data = json.loads(text_data)
-        email = data["email"]
-        connection_type = data["type"]
-        await self.change_online_status(email, connection_type)
+    # async def receive(self, text_data=None, bytes_data=None):
+    #     data = json.loads(text_data)
+    #     email = data["email"]
+    #     connection_type = data["type"]
+    #     await self.change_online_status(email, connection_type)
 
-    async def send_OnlineStatus(self, event):
-        data = json.loads(event.get("value"))
-        email = data["email"]
-        online_status = data["status"]
-        await self.send(
-            text_data=json.dumps({"email": email, "online_status": online_status})
-        )
+    # async def send_OnlineStatus(self, event):
+    #     data = json.loads(event.get("value"))
+    #     email = data["email"]
+    #     online_status = data["status"]
+    #     await self.send(
+    #         text_data=json.dumps({"email": email, "online_status": online_status})
+    #     )
 
     async def disconnect(self, message):
+        my_id = self.scope["user"].id
+        await self.change_offline_status(id=my_id)
         self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
-    @database_sync_to_async
-    def change_online_status(self, email, c_type):
-        user = User.objects.get(email=email)
+    async def chat_message(self, event):
+        id = event["id"]
+        status = event["status"]
+        await self.send(
+            text_data=json.dumps({"id": id, "status": status}, ensure_ascii=False)
+        )
 
-        if c_type == "open":
-            user.online = True
-            user.save()
-        else:
-            user.online = False
-            user.save()
+    async def receive(self, text_data=None):
+        text_data_json = json.loads(text_data)
+        user_id = text_data_json["id"]
+        status = await self.get_current_user_status(user_id)
+        return_dict = {
+            "type": "chat_message",
+            "id": user_id,
+            "status": status,
+        }
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            return_dict,
+        )
+
+    @database_sync_to_async
+    def change_online_status(self, id: int):
+        user = User.objects.get(id=id)
+        user.online = True
+        user.save()
+
+    @database_sync_to_async
+    def change_offline_status(self, id: int):
+        user = User.objects.get(id=id)
+        user.online = False
+        user.save()
+
+    @database_sync_to_async
+    def get_current_user_status(self, id: int):
+        user = User.objects.get(id=id)
+        return user.online
 
 
 class MessagesConsumer(AsyncWebsocketConsumer):
