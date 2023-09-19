@@ -34,6 +34,7 @@ urlpatterns = [
     path("", include("articles.urls")),
     path("", include("offer.urls")),
     path("", include("chat.urls")),
+    path("network/", include("network.urls")),
 ]
 
 if settings.DEBUG:

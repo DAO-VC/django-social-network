@@ -1,5 +1,4 @@
 from rest_framework import permissions
-
 from profiles.models.startup import Startup
 
 
@@ -27,5 +26,12 @@ class ProfessionalCreatePermission(permissions.BasePermission):
 class InvestorCreatePermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.profile != "investor":
+            return False
+        return True
+
+
+class UserIsOnboarding(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if not request.user.is_onboarding:
             return False
         return True
