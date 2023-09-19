@@ -12,7 +12,7 @@ class ConnectNetwork(object):
                 random_network = random.choice(all_networks_queryset)
                 if network.connect_network:
                     if random_network.id != network.connect_network.id:
-                        network.connect_network.id = random_network.id
+                        network.connect_network = random_network
                         network.save()
                         break
                 else:
