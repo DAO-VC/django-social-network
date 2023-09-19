@@ -3,13 +3,24 @@ import random
 
 
 class ConnectNetwork(object):
-    def connect_all(self) -> None:
-        all_networks_queryset = Network.objects.all()
-        # list_id_networks = [item for item in Network.objects.all()]
+    def __init__(self):
+        self.all_networks_queryset = Network.objects.all()
 
-        for network in all_networks_queryset:
+    def connect_to_new_network(self, network: Network):
+        while True:
+            try:
+                random_network = random.choice(self.all_networks_queryset)
+            except IndexError:
+                break
+
+            network.connect_network = random_network
+            break
+
+    def connect_all(self) -> None:
+
+        for network in self.all_networks_queryset:
             while True:
-                random_network = random.choice(all_networks_queryset)
+                random_network = random.choice(self.all_networks_queryset)
                 if network.connect_network:
                     if random_network.id != network.connect_network.id:
                         network.connect_network = random_network

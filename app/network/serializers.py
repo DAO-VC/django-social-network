@@ -4,11 +4,19 @@ from network.models import Network
 from django.db import transaction
 from django.db.utils import IntegrityError
 from image.tasks import cleaner
+from network.utils import ConnectNetwork
+
+
+class NetworkBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Network
+        fields = "__all__"
 
 
 class CreateMyNetworkSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(read_only=True)
     owner = serializers.PrimaryKeyRelatedField(read_only=True)
+    connect_network = NetworkBaseSerializer(read_only=True)
 
     class Meta:
         model = Network
@@ -29,18 +37,14 @@ class CreateMyNetworkSerializer(serializers.ModelSerializer):
         except IntegrityError:
             transaction.rollback()
             raise ValidationError("Network for this user is already exist")
+        ConnectNetwork().connect_to_new_network(network=network)
         return network
-
-
-class NetworkBaseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Network
-        fields = "__all__"
 
 
 class UpdateNetworkSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(read_only=True)
     owner = serializers.PrimaryKeyRelatedField(read_only=True)
+    connect_network = NetworkBaseSerializer(read_only=True)
 
     class Meta:
         model = Network
@@ -72,4 +76,4 @@ class MyNetworkChangeStatusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Network
-        exclude = ("owner", "logo", "interests", "about")
+        exclude = ("owner", "logo", "interests", "about", "connect_network")
