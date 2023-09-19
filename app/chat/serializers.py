@@ -119,7 +119,7 @@ class RoomListSerializer(serializers.ModelSerializer):
 
     def get_count_unread_messages(self, instance: Room):
         return (
-            Message.objects.filter(room_id=instance.id, is_read=False)
+            Message.objects.filter(room_id=instance.id, is_read=False, ban_status=False)
             .exclude(author__id=self.context["request"].user.id)
             .count()
         )

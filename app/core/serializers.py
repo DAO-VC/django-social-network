@@ -92,7 +92,8 @@ class UserBaseSerializer(serializers.ModelSerializer):
         rooms_id_queryset = [
             room.id
             for room in Room.objects.filter(
-                Q(author=instance.id) | Q(receiver=instance.id)
+                Q(author=instance.id, status=Room.ChatStatus.ACTIVE)
+                | Q(receiver=instance.id, status=Room.ChatStatus.ACTIVE)
             )
         ]
         all_unread_messages_count = 0
