@@ -1,4 +1,6 @@
 import os
+from datetime import timedelta
+
 from celery import Celery
 from celery.schedules import crontab
 
@@ -28,6 +30,7 @@ app.conf.beat_schedule = {
     "create_all_networks_connect": {
         "task": "network.tasks.connect_network",
         # "schedule": crontab(day_of_week='0,2,4,6', ),
-        "schedule": crontab(minute="*/1"),
+        # "schedule": crontab(minute="*/1"),
+        "schedule": timedelta(seconds=15),
     },
 }
