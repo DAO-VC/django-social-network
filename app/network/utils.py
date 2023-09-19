@@ -16,6 +16,6 @@ class ConnectNetwork(object):
                         network.save()
                         break
                 else:
-                    network.connect_network.id = random_network_id
+                    network.connect_network = random_network_id
                     network.save()
                     break
