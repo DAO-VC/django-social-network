@@ -25,8 +25,8 @@ app.conf.beat_schedule = {
         "task": "vacancy.tasks.full_requirements_clean",
         "schedule": crontab(hour=7, minute=30, day_of_week=1),
     },
-    "create_all_networks_connect": {
-        "task": "network.tasks.connect_network",
-        "schedule": crontab(hour=48),
-    },
+    # "create_all_networks_connect": {
+    #     "task": "network.tasks.connect_network",
+    #     "schedule": crontab(hour=48, minute=30, day_of_week=1),
+    # },
 }
