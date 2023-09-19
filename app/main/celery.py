@@ -31,6 +31,6 @@ app.conf.beat_schedule = {
         "task": "network.tasks.connect_network",
         # "schedule": crontab(day_of_week='0,2,4,6', ),
         # "schedule": crontab(minute="*/1"),
-        "schedule": timedelta(seconds=15),
+        "schedule": timedelta(days=2),
     },
 }
