@@ -113,6 +113,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
                 instance = Image.objects.create()
                 instance.image.save(file_data.name, file_data, save=True)
+
                 images.append(instance)
         return images, files
 
