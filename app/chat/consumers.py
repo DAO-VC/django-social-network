@@ -110,8 +110,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     base64.b64decode(file_str),
                     name=f"{secrets.token_hex(8)}.{file_ext}",
                 )
-                instance = Image.objects.create(image=file_data.name)
-                instance.image.save(file_data.name, file_data)
+
+                instance = Image.objects.create()
+                instance.image.save(file_data.name, file_data, save=True)
                 images.append(instance)
         return images, files
 
