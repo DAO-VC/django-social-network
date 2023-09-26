@@ -6,8 +6,8 @@ from image.models import Image, File
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    def has_module_permission(self, request):
-        return False
+    # def has_module_permission(self, request):
+    #     return False
 
     def image_tag(self, obj: Image):
         return mark_safe(
