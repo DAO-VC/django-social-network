@@ -5,3 +5,6 @@ class OfferConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "offer"
     verbose_name = "Блок Офер"
+
+    def ready(self) -> None:
+        import offer.signals
