@@ -1,8 +1,9 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from chat.models import Room, Message
+from chat.models import Room, Message, ChatNotification
 from chat.permissions import RoomPermission, RoomOwnerPermission, RoomPermissionNotObj
 from chat.serializers import (
     CreateRoomSerializer,
@@ -18,6 +19,8 @@ from chat.serializers import (
     InvestorToConfirmedStartupRoomSerializer,
     StartupToInvestorRoomSerializer,
     SpamUserSerializer,
+    MyNotificationsCountSerializer,
+    MyNotificationsReadAllSerializer,
 )
 from core.models import User
 from core.permissions import StartupCreatePermission
@@ -178,3 +181,20 @@ class AllRoomFiles(generics.ListAPIView):
             for item in message.files.all():
                 files.append(item)
         return files
+
+
+class MyNotificationsCount(generics.RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = MyNotificationsCountSerializer
+
+    def get_object(self):
+        return get_object_or_404(User, pk=self.request.user.id)
+
+
+class ReadAllMyNotificationsCount(generics.UpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = MyNotificationsReadAllSerializer
+    http_method_names = ["put"]
+
+    def get_object(self):
+        return get_object_or_404(User, pk=self.request.user.id)

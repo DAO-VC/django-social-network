@@ -1,7 +1,7 @@
 from django.db.models import Q
 
 from core.admin import User
-from chat.models import Room, Message
+from chat.models import Room, Message, ChatNotification
 
 
 def banned_user_chats(status: str, author: User, receiver: User) -> None:
@@ -34,3 +34,10 @@ def banned_user_chats(status: str, author: User, receiver: User) -> None:
                 message.ban_status = False
                 message.text = "System message : Chat unbanned."
                 message.save()
+
+
+def read_all_notif(user: User):
+    queryset = ChatNotification.objects.filter(user=user, is_seen=False)
+    for notif in queryset:
+        notif.is_seen = True
+        notif.save()

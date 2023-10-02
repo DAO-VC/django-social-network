@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from django.db.utils import IntegrityError
 from chat.models import Message, Room, ChatNotification
-from chat.utils import banned_user_chats
+from chat.utils import banned_user_chats, read_all_notif
 from core.models import User
 from core.serializers import UserBaseSerializer
 from image.serializers import ImageSerializer, FileSerializer
@@ -524,3 +524,29 @@ class SpamUserSerializer(serializers.ModelSerializer):
             "users_banned_list",
             "spam_count",
         )
+
+
+class MyNotificationsCountSerializer(serializers.ModelSerializer):
+    count = serializers.SerializerMethodField(read_only=True)
+
+    def get_count(self, obj: User):
+        return ChatNotification.objects.filter(user=obj, is_seen=False).count()
+
+    class Meta:
+        model = User
+        fields = ["count"]
+
+
+class MyNotificationsReadAllSerializer(serializers.ModelSerializer):
+    count = serializers.SerializerMethodField(read_only=True)
+
+    def get_count(self, obj: User):
+        return ChatNotification.objects.filter(user=obj, is_seen=False).count()
+
+    def update(self, instance, validated_data):
+        read_all_notif(instance)
+        return super().update(instance, validated_data)
+
+    class Meta:
+        model = User
+        fields = ["count"]

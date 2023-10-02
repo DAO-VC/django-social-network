@@ -17,6 +17,8 @@ from chat.views import (
     AllRoomFiles,
     BanUsersList,
     SpamUser,
+    MyNotificationsCount,
+    ReadAllMyNotificationsCount,
 )
 
 urlpatterns = [
@@ -66,4 +68,14 @@ urlpatterns = [
     ),
     path("chat/<int:pk>/images/", AllRoomImages.as_view(), name="change_images"),
     path("chat/<int:pk>/files/", AllRoomFiles.as_view(), name="change_files"),
+    path(
+        "notifications/all_unread_count/",
+        MyNotificationsCount.as_view(),
+        name="count_unread_notif",
+    ),
+    path(
+        "notifications/read_all_notif/",
+        ReadAllMyNotificationsCount.as_view(),
+        name="read_all_notif",
+    ),
 ]
